@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.custom-toolbar {
+  background-color: white;
+  border-bottom: 2px solid #274354e0;
+  color: #274354e0;
+  display: flex; 
+  justify-content: space-between;
+  align-items: center; 
+  padding: 0 16px; 
+}
+
+
+.mat-toolbar-row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.home {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.nav-container {
+  flex-grow: 1; 
+  display: flex;
+  justify-content: flex-start; 
+  margin-left: 15px;
+
+}
+
+.custom-toolbar > div {
+  margin-left: auto; 
+}
+
+@media (max-width: 600px) {
+  .custom-toolbar {
+    padding: 0 8px; 
+  }
+
+  .nav-container {
+    justify-content: flex-start;
+  }
+
+  .custom-toolbar > div {
+    margin-left: 0; /* בטל את המרווח שמאלה */
+    margin-right: 0; /* בטל את המרווח מימין */
+  }
+}
+
+

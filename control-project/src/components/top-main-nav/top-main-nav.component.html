@@ -1,0 +1,21 @@
+<mat-toolbar class="custom-toolbar">
+    <mat-toolbar-row>
+  
+      <mat-icon class="home" routerLink="/home" routerLinkActive="active-button">
+        home
+      </mat-icon>
+  
+      <nav class="nav-container">
+        <button mat-button routerLink="/users" routerLinkActive="active-button" aria-current="page" style="color: #274354e0;">
+          Courses
+        </button>
+      </nav>
+  
+      <div>
+        <app-user-auth></app-user-auth>
+      </div>
+  
+    </mat-toolbar-row>
+  </mat-toolbar>
+    
+    <router-outlet></router-outlet>
