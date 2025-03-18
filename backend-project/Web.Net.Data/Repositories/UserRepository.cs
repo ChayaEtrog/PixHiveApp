@@ -37,16 +37,37 @@ namespace Web.Net.Data.Repositories
         public void DeleteStudent(int userId)
         {
             var user = _context.Users
-           .Include(u => u.Files)  
-           .Include(u => u.Albums)
-           .Include(u=>u.Messages)
-           .FirstOrDefault(u => u.Id == userId);
+    .Include(u => u.Files)
+    .Include(u => u.Albums)
+    .Include(u => u.Messages)
+    .FirstOrDefault(u => u.Id == userId);
 
             if (user != null)
             {
+                // 1️⃣ מחיקת כל הרשומות בטבלת AlbumFile עבור הקבצים של המשתמש
+                var fileIds = user.Files.Select(f => f.Id).ToList();
+                var albumIds = user.Albums.Select(a => a.Id).ToList();
+
+                var albumFiles = _context.Set<Dictionary<string, object>>("AlbumFile")
+                    .Where(af => fileIds.Contains((int)af["FilesId"]) || albumIds.Contains((int)af["AlbumsId"]))
+                    .ToList();
+
+                _context.RemoveRange(albumFiles);
+                _context.SaveChanges();
+
+                // 2️⃣ מחיקת כל הקבצים של המשתמש
+                _context.Files.RemoveRange(user.Files);
+                _context.SaveChanges();
+
+                // 3️⃣ מחיקת כל האלבומים של המשתמש
+                _context.Albums.RemoveRange(user.Albums);
+                _context.SaveChanges();
+
+                // 4️⃣ מחיקת המשתמש עצמו
                 _context.Users.Remove(user);
-                 _context.SaveChanges();
+                _context.SaveChanges();
             }
+
         }
 
         public async Task<UserEntity> UpdateUserAsync(UserEntity user, int index)

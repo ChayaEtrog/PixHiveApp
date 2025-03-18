@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 import { AppBar, Box, Toolbar } from "@mui/material";
-import UserAuth from "./user/UserAuth";
+import UserAvatar from "./user/UserAvatar";
 
 function NavBar() {
     return (<>
@@ -27,7 +27,7 @@ function NavBar() {
                     </NavLink>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <UserAuth/>
+                    <UserAvatar/>
                 </Box>
             </Toolbar>
         </AppBar>

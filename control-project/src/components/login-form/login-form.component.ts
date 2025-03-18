@@ -25,8 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css'
 })
-export class LoginFormComponent {
-
+export class LoginFormComponent { 
   @Output() formClosed = new EventEmitter<void>();
   loginForm: FormGroup;
 

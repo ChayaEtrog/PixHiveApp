@@ -1,14 +1,14 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "./UserReducer";
 import { Box, Button, IconButton, Modal, TextField, Typography } from "@mui/material";
-import axios from "axios";
 import ErrorMessage from "../ErrorMessage";
 import CloseIcon from '@mui/icons-material/Close';
 import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
+import { registerUser } from "./UserService";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const Register = ({ open, close, setIsLogedIn }: { open: boolean, close: Function, setIsLogedIn: Function }) => {
+const Register = ({ open, close, setIsLogedIn }: { open: boolean, close: Function, setIsLogedIn?: Function }) => {
     const { userDispatch } = useContext(UserContext);
     const [isSubmitOk, setIsSubmitOk] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -38,15 +38,15 @@ const Register = ({ open, close, setIsLogedIn }: { open: boolean, close: Functio
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${API_BASE_URL}/${uri}`, {
-                email: emailRef.current?.value || "",
-                passwordHash: passwordRef.current?.value || "",
-                userName: userNameRef.current?.value || "",
-                phoneNumber: phonNumberRef.current?.value || ""
-            });
-
-            const data = response.data;
-
+            const data = await registerUser(
+                emailRef.current?.value || "",
+                passwordRef.current?.value || "",
+                userNameRef.current?.value || "",
+                phonNumberRef.current?.value || "",
+                API_BASE_URL,
+                uri
+            );
+    
             userDispatch({
                 type: 'CREATE_USER',
                 data: {
@@ -56,13 +56,13 @@ const Register = ({ open, close, setIsLogedIn }: { open: boolean, close: Functio
                     phonNumber: data.user.phonNumber
                 },
             });
-
-            setIsLogedIn(true);
+    
+            //setIsLogedIn(true);
             close(false);
-
-        } catch (e: any) {
-            console.log(e.response.data);
-            setError(e.response.data)
+    
+        } catch (error:any) {
+            console.log(error);
+            setError(error);
         }
     };
 

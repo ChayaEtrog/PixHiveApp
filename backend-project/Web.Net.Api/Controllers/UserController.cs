@@ -77,5 +77,16 @@ namespace Web.Net.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("growth")]
+        public async Task<ActionResult<IEnumerable<UserGrowthDto>>> GetUserGrowthByMonth()
+        {
+            var result = await _userService.GetUserGrowthByMonth();
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result.ErrorMessage);
+
+            return Ok(result.Data);
+        }
     }
 }

@@ -121,7 +121,7 @@ namespace Web.Net.Service
             }
 
             var token = GenerateJwtToken(result);
-            _repositoryManager.Save();
+            await _repositoryManager.Save();
 
             var responseUserDto = _mapper.Map<UserDto>(result);
             var response = new LoginResponseDto

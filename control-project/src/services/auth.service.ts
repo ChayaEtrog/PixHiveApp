@@ -46,15 +46,11 @@ export class AuthService {
     );
   }
 
-  upgradeToAdmin(userId: number, adminPassword: string): Observable<LoginResponse> {
-    console.log(adminPassword);
-    
+  upgradeToAdmin(userId: number, adminPassword: string): Observable<LoginResponse> {    
     return this.http.post<LoginResponse>(`${this.apiUrl}/upgrade-to-admin/${userId}`, 
       { password: adminPassword },
     ).pipe(
       tap(response => {
-        console.log(response);
-    
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('user', JSON.stringify(response.user));
         this.currentUserSubject.next(response.user);

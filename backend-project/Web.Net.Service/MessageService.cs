@@ -22,9 +22,9 @@ namespace Web.Net.Service
             entity.CreatedAt = DateTime.Now;
             var message = _mapper.Map<MessageEntity>(entity);
             await _repositoryManager.Messages.AddAsync(message);
-            _repositoryManager.Save();
+            await _repositoryManager.Save();
 
-            return Result<MessageDto>.Success(_mapper.Map<MessageDto>(message)); // Return message wrapped in Result
+            return Result<MessageDto>.Success(_mapper.Map<MessageDto>(message)); 
         }
 
         public async Task<Result<MessageDto>> DeleteMessageAsync(int messageId)
@@ -34,7 +34,7 @@ namespace Web.Net.Service
                 return Result<MessageDto>.NotFound("Message not found.");
 
             _repositoryManager.Messages.DeleteMessage(messageId);
-            _repositoryManager.Save();
+            await _repositoryManager.Save();
 
             return Result<MessageDto>.Success(null); 
         }
@@ -61,7 +61,7 @@ namespace Web.Net.Service
                 return Result<MessageDto>.NotFound("Message not found.");
 
             var result = await _repositoryManager.Messages.ToggleMessageStatusAsync(id);
-            _repositoryManager.Save();
+            await _repositoryManager.Save();
             return Result<MessageDto>.Success(_mapper.Map<MessageDto>(result)); // Return updated message wrapped in Result
         }
     }

@@ -1,0 +1,24 @@
+<div >
+    <div class="card-container">
+        @for (message of messages; track $index) {
+        <mat-card class="message-card">
+            <mat-card-header>
+                <div class="card-header">
+                    <span class="creation-date">{{ message.createdAt | date:'dd/MM/yyyy' }}</span>
+                    <mat-slide-toggle [(ngModel)]="message.isActive" (change)="updateMessageStatus(message)" >
+                        {{ message.isActive? 'active' : 'inactive' }}
+                    </mat-slide-toggle>
+                </div>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ message.message }}</p>
+            </mat-card-content>
+        </mat-card>
+        }
+    </div>
+</div>
+<button (click)="addMessage=!addMessage">add message</button>
+
+@if(addMessage){
+<app-add-message (formClosed)="closeAddMessage()"></app-add-message>
+}

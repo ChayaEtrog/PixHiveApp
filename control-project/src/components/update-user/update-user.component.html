@@ -1,0 +1,52 @@
+<div class="overlay">
+    <div class="user-form">
+        <mat-card>
+            <form [formGroup]="updateUserForm" >
+                <mat-card-content>
+  
+                    <!-- Name -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput id="name" formControlName="name">
+                        @if (updateUserForm.get('name')?.invalid && updateUserForm.get('name')?.touched) {
+                        <mat-error>Name is required.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                    <!-- Email -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" id="email" formControlName="email">
+                        @if (updateUserForm.get('email')?.invalid && updateUserForm.get('email')?.touched) {
+                        <mat-error>Email is not valid.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                    <!-- PhonNumber -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Phone number</mat-label>
+                        <input matInput id="phoneNumber" formControlName="phoneNumber">
+                        @if (updateUserForm.get('phoneNumber')?.invalid && updateUserForm.get('phoneNumber')?.touched) {
+                        <mat-error>phoneNumber is required.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                </mat-card-content>
+  
+                <mat-card-actions>
+                    <button  mat-flat-button  type="submit" color="primary"
+                        (click)="onSubmit()" 
+                        class="button">
+                        save
+                    </button>
+                    <button  mat-flat-button  type="submit" color="warn"
+                    (click)="closeForm.emit()"
+                        class="button">
+                        cancel
+                    </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+  </div>
+    

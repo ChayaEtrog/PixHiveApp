@@ -46,7 +46,6 @@ namespace Web.Net.Data.Repositories
             file.Albums.Clear();
 
             _context.SaveChanges();
-            _context.SaveChanges();
 
             _context.Files.Remove(file);
             _context.SaveChanges();

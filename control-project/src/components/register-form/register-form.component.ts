@@ -28,7 +28,6 @@ import { UserPostModel } from '../../types/UserPostModel';
   styleUrl: './register-form.component.css'
 })
 export class RegisterFormComponent {
-
   @Output() formClosed = new EventEmitter<void>();
   registerForm: FormGroup;
   userTypes: string[]=["student", "teacher", "admin"]

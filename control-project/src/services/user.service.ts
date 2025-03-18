@@ -2,20 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../types/User';
-
-export interface UserPostModel {
-  name: string;
-  email: string;
-  password: string;
-  phoneNumber:string;
-}
+import { UserPostModel } from '../types/UserPostModel';
+import { UserGrowth } from '../types/UserGrowth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private readonly apiUrl = 'https://localhost:7091/users';
+  private readonly apiUrl = 'https://localhost:7091/api/User';
 
   private usersSubject = new BehaviorSubject<User[]>([]); // משתנה פנימי מסוג BehaviorSubject
   public users$ = this.usersSubject.asObservable(); // Observable שמחזיר את הרשימה
@@ -26,7 +21,7 @@ export class UserService {
   getUsers(): void {
     this.http.get<User[]>(this.apiUrl).subscribe(
       (users) => {
-        this.usersSubject.next(users); // עדכון הרשימה כאשר הנתונים מתקבלים
+        this.usersSubject.next(users); 
       },
       (error) => {
         console.error('Error fetching users:', error);
@@ -73,6 +68,13 @@ addUser(user: UserPostModel): Observable<User> {
         this.usersSubject.next(updatedUsers); // עדכון ה-BehaviorSubject
       })
     );
+  }
+
+  getUserGrowth(): Observable<UserGrowth[]> {
+    return this.http.get<UserGrowth[]>(`${this.apiUrl}/growth`)
+      .pipe(
+       
+      );
   }
 }
 

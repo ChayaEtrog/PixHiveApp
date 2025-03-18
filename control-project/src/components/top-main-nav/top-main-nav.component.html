@@ -1,3 +1,4 @@
+@if(userAuth.isLoggedIn()){
 <mat-toolbar class="custom-toolbar">
     <mat-toolbar-row>
   
@@ -7,7 +8,15 @@
   
       <nav class="nav-container">
         <button mat-button routerLink="/users" routerLinkActive="active-button" aria-current="page" style="color: #274354e0;">
-          Courses
+          Users
+        </button>
+
+        <button mat-button routerLink="/messages" routerLinkActive="active-button" aria-current="page" style="color: #274354e0;">
+          Messages
+        </button>
+
+        <button mat-button routerLink="/user-growth" routerLinkActive="active-button" aria-current="page" style="color: #274354e0;">
+          user growth
         </button>
       </nav>
   
@@ -19,3 +28,8 @@
   </mat-toolbar>
     
     <router-outlet></router-outlet>
+}
+
+@else{
+  <app-home></app-home>
+}

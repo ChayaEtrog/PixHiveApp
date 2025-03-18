@@ -1,0 +1,21 @@
+@if(user.id!=-1){
+<mat-card >
+    <mat-card-content>
+      <h2>{{ user.userName }}</h2>
+      <p><strong>ID:</strong> {{ user.id }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Phone:</strong> {{ user.phoneNumber }}</p>
+      <button mat-button (click)="goBack()">go back</button>
+      <button mat-icon-button (click)="onDeleteUser()">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button (click)="updateUser=!updateUser">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  @if(updateUser){
+    <app-update-user (closeForm)="closeUpdateUser()" [user]="user"></app-update-user>
+  }
+}

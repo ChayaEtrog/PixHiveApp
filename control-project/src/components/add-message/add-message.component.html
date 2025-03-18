@@ -1,0 +1,34 @@
+<div class="overlay">
+    <div class="user-form">
+        <mat-card>
+            <form [formGroup]="messageForm" >
+                <mat-card-content>
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Message</mat-label>
+                        <textarea matInput id="message" formControlName="message" rows="5"></textarea>
+                        @if (messageForm.get('message')?.invalid && messageForm.get('message')?.touched) {
+                            <mat-error>Message is required.</mat-error>
+                            }
+                      </mat-form-field>
+
+                    <mat-slide-toggle formControlName="isActive" >isActive</mat-slide-toggle>
+
+                </mat-card-content>
+  
+                <mat-card-actions>
+                    <button mat-flat-button color="primary" type="submit" 
+                        (click)="onSubmit()" 
+                        class="button">
+                        save
+                    </button>
+                    <button mat-flat-button color="warn" type="submit" 
+                        (click)="formClosed.emit()"  
+                        class="button">
+                        cancle
+                    </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+  </div>
+

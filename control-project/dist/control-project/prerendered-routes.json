@@ -1,0 +1,9 @@
+{
+  "routes": [
+    "/add-user",
+    "/admin-auth",
+    "/home",
+    "/login",
+    "/users"
+  ]
+}

@@ -1,0 +1,23 @@
+.user-list {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  .user-card {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .user-card:hover {
+    transform: scale(1.05);
+    background-color: rgba(0, 0, 0, 0.073);
+  }

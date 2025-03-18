@@ -11,7 +11,7 @@ namespace Web.Net.Core.InterfaceService
 {
     public interface IUserService
     {
-        Task<Result<IEnumerable<UserDto>>> GetUsersAsync();
+        Task<Result<List<UserDto>>> GetUsersAsync();
 
         Task<Result<UserDto>> GetUserByIdAsync(int id);
 
@@ -20,6 +20,8 @@ namespace Web.Net.Core.InterfaceService
         Task<Result<UserDto>> UpdateUserAsync(int id, UserDto entity);
 
         Task<Result<UserDto>> DeleteUserAsync(int userId);
+
+        Task<Result<List<UserGrowthDto>>> GetUserGrowthByMonth();
 
     }
 }

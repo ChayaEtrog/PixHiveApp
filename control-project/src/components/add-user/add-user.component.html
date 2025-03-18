@@ -1,0 +1,63 @@
+<div class="overlay">
+    <div class="user-form">
+        <mat-card>
+            <form [formGroup]="addUserForm" >
+                <mat-card-content>
+  
+                    <!-- Name -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput id="name" formControlName="name">
+                        @if (addUserForm.get('name')?.invalid && addUserForm.get('name')?.touched) {
+                        <mat-error>Name is required.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                    <!-- Password -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput type="password" formControlName="password">
+                        @if (addUserForm.get('password')?.invalid && addUserForm.get('password')?.touched) {
+                        @if (addUserForm.get('password')?.hasError('required')) {
+                        <mat-error>Password is required.</mat-error>
+                        }
+                        }
+                    </mat-form-field>
+  
+                    <!-- Email -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" id="email" formControlName="email">
+                        @if (addUserForm.get('email')?.invalid && addUserForm.get('email')?.touched) {
+                        <mat-error>Email is not valid.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                    <!-- PhonNumber -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Phone number</mat-label>
+                        <input matInput id="phoneNumber" formControlName="phoneNumber">
+                        @if (addUserForm.get('phoneNumber')?.invalid && addUserForm.get('phoneNumber')?.touched) {
+                        <mat-error>phoneNumber is required.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                </mat-card-content>
+  
+                <mat-card-actions>
+                    <button  mat-flat-button  type="submit" color="primary"
+                        (click)="onSubmit()" 
+                        class="button">
+                        save
+                    </button>
+                    <button  mat-flat-button  type="submit" color="warn"
+                    (click)="closeForm.emit()"
+                        class="button">
+                        cancel
+                    </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+  </div>
+    

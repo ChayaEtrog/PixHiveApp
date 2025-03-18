@@ -14,7 +14,7 @@ export type Action = {
 
 export const emptyUser: User =
 {
-  userName: "",
+  userName: '',
   email: '',
   password: '',
 };
