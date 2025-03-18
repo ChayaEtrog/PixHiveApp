@@ -8,7 +8,7 @@ import { registerUser } from "./UserService";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const Register = ({ open, close, setIsLogedIn }: { open: boolean, close: Function, setIsLogedIn?: Function }) => {
+const Register = ({ open, close }: { open: boolean, close: Function }) => {
     const { userDispatch } = useContext(UserContext);
     const [isSubmitOk, setIsSubmitOk] = useState(false);
     const [error, setError] = useState<string | null>(null);

@@ -1,20 +1,11 @@
-<div class="container">
-    <h1>צמיחה במספר המשתמשים</h1>
-    
-    <!-- גרף -->
-    <div class="chart-container">
-      <canvas baseChart
-              [data]="chartData"
-              [options]="chartOptions"
-              [type]="'line'"
-              [legend]="true">
-      </canvas>
-    </div>
-  
-    <!-- אם אתה רוצה להוסיף עוד אלמנטים לעמוד, כמו כפתור או מידע נוסף -->
-    <div class="extra-info">
-      <button mat-raised-button color="primary" (click)="loadUserGrowthData()">רענן נתונים</button>
-    </div>
-  </div>
-  
-  
+<div class="p-4">
+  <h2 class="text-xl font-bold mb-4">סטטיסטיקות משתמשים</h2>
+
+  <canvas baseChart
+    [datasets]="chartData"
+    [labels]="chartLabels"
+    [options]="chartOptions"
+    [type]="chartType"
+    class="w-full h-96">
+  </canvas>
+</div>

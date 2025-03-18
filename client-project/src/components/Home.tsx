@@ -8,7 +8,7 @@ import { UserContext } from "./user/UserReducer";
 function Home() {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isLogedIn, setIsLogedIn] = useState(false);
+
   const { user } = useContext(UserContext);
   return (
     <>
