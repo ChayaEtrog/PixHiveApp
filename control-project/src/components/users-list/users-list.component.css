@@ -1,0 +1,48 @@
+.user-list {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.user-card {
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.user-card:hover {
+  transform: scale(1.05);
+  background-color: rgba(0, 0, 0, 0.073);
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-img {
+  width: 20%;
+  object-fit: cover;
+}
+
+.add-user {
+  width: 20vw;
+  margin-top: 40px;
+  margin-bottom: 60px;
+  margin-left: 40vw;
+  border-radius: 3px;
+  font-size: 16px;
+}

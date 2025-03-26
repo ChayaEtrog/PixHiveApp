@@ -1,0 +1,74 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  margin: 0;
+  color-scheme: light dark;
+  color: rgb(86, 86, 86);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+}
+
+.drag-circle {
+  max-height: 100%;
+  width: 300px;
+  overflow: hidden;
+  height: 300px;
+  border-radius: 50%;
+  /* border: 2px dashed #ccc; */
+  background-color: #1e1e1e13;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: pulse 2s infinite;
+  transition: background-color 0.3s;
+}
+
+.drag-circle:hover {
+  background-color: #1e1e1e1a;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    border-color: #ccc;
+  }
+
+  50% {
+    transform: scale(0.95);
+    border-color: #888;
+  }
+
+  100% {
+    transform: scale(1);
+    border-color: #ccc;
+  }
+}
+
+.gradient-button {
+  border: 2px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right, #47dcd1, #dc8dec);
+  color: #743ad5;
+  background-color: #fff;
+  padding: 10px 30px;
+  border-radius: 0;
+  width: 10vw;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.gradient-button:hover,
+.gradient-button:active {
+  background: linear-gradient(45deg, #47dcd1, #dc8dec);
+  border: none;
+  border-radius: 0;
+  color: white;
+}

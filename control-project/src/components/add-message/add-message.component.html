@@ -1,0 +1,36 @@
+<div class="overlay">
+    <div class="user-form">
+        <mat-card>
+            <div class="form-header">
+                <img src="assets/pictures/addMessage.png" alt="message Icon" class="login-icon">
+                <h2 class="form-title">Add message</h2>
+            </div>
+            <form [formGroup]="messageForm" >
+                <mat-card-content>
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Message</mat-label>
+                        <textarea matInput id="message" formControlName="message" rows="3"></textarea>
+                        @if (messageForm.get('message')?.invalid && messageForm.get('message')?.touched) {
+                            <mat-error>Message is required.</mat-error>
+                            }
+                      </mat-form-field>
+
+                    <mat-slide-toggle formControlName="isActive" color="primary" >isActive</mat-slide-toggle>
+
+                </mat-card-content>
+  
+                <mat-card-actions>
+                    <button class="gradient-border-button" type="submit" 
+                        (click)="onSubmit()">
+                        save
+                    </button>
+                    <button class="gradient-button" 
+                        (click)="formClosed.emit()">
+                        cancel
+                    </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+  </div>
+

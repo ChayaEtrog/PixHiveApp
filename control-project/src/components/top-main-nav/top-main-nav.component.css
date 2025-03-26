@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.custom-toolbar {
+  background-color: white;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  padding: 0 16px; 
+  border-bottom: 0.3px solid transparent; 
+  border-image: linear-gradient(to right, #47dcd1, #dc8dec) 1; 
+  height: 70px;
+}
+
+.mat-toolbar-row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center; 
+}
+
+.home{
+  border: none;
+  background: none;
+}
+
+.home img{
+  width: 40px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  flex-grow: 1;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.custom-toolbar > div {
+  margin-left: auto; 
+  margin-right: 0;
+}
+
+.nav-container button {
+  padding: 8px 16px; /* הפחתת הריווח בכפתורים */
+  margin: 0 40px; /* מרווח בין הכפתורים */
+  font-family: 'Poppins', sans-serif; /* הגדרת פונט */
+  text-transform: none; /* מבטל את ההופעה הדפולטיבית של האותיות הגדולות */
+  background: none; /* מבטל את הרקע הדפולטי */
+  border: none; /* מבטל את הגבול הדפולטי */
+  display: flex;
+  flex-direction: column; /* התמונה למעלה והכיתוב מתחת */
+  align-items: center; /* ממרכז את התמונה והכיתוב */
+  cursor: pointer;
+}
+
+.nav-container button img {
+  width: 30px; /* קביעת גודל קטן לתמונות */
+  object-fit: cover;
+  margin-bottom: 5px; /* מרווח בין התמונה לכיתוב */
+}
+
+.nav-container button.active {
+  border-bottom: 2px solid #47dcd1; /* קו תחתי כאשר הכפתור נלחץ */
+}
+
+.nav-container button:hover {
+  background: none; /* מבטל את שינוי הצבע הדפולטי בעת hover */
+  color: #47dcd1; /* שינוי צבע הכפתור בעת hover */
+}
+
+@media (max-width: 600px) {
+  .custom-toolbar {
+    padding: 0 8px;
+  }
+
+  .nav-container {
+    flex-direction: column; /* הופך את הכפתורים לאורכיים במובייל */
+    justify-content: center;
+  }
+
+  .custom-toolbar > div {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

@@ -1,0 +1,24 @@
+  <div class="user-list">
+    <div class="card-container">
+      @for (user of users; track $index) {
+        <mat-card class="user-card" (click)="goToDetails(user.id)">
+          <mat-card-content class="card-content">
+            <div class="user-info">
+              <h3>{{ user.userName }}</h3>
+              <p>ID: {{ user.id }}</p>
+            </div>
+            <img src="assets/pictures/userIcon.png" alt="user icon" class="user-img">
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+  @if(users.length==0){
+    <h1 style="margin-left: 45vw;">No users found</h1>
+  }
+  
+  <button class="gradient-button add-user" (click)="addUser=!addUser">Add User</button>
+
+  @if(addUser){
+    <app-add-user (closeForm)="closeAddUser()"></app-add-user>
+  }

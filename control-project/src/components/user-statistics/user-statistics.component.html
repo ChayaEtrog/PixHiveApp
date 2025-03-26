@@ -1,0 +1,59 @@
+<div class="charts-row">
+  <div class="chart-container">
+    <canvas baseChart #userGrowthChart [data]="chartData" [options]="chartOptions" type="line">
+    </canvas>
+  </div>
+
+  <div class="chart-container">
+    <canvas baseChart #systemBarChart [data]="systemBarChartData" [options]="systemBarChartOptions" type="bar">
+    </canvas>
+  </div>
+</div>
+
+<mat-divider style="margin-top: 40px;"></mat-divider>
+<div class="sen" style="padding-left: 43vw !important;">System Statistics</div>
+
+<div class="cards-container">
+  <mat-card class="stat-card">
+    <h1>Total Number of Users:</h1>
+    {{ systemStatistics.totalUsers }}
+  </mat-card>
+  <mat-card class="stat-card">
+    <h1>Total Number of Albums:</h1>
+    {{ systemStatistics.totalAlbums }}
+  </mat-card>
+  <mat-card class="stat-card">
+    <h1>Total Number of Images:</h1>
+    {{ systemStatistics.totalFiles }}
+  </mat-card>
+</div>
+
+<mat-divider style="margin-top: 70px;"></mat-divider>
+<div class="sen" style="padding-left: 43vw !important;">User Statistics</div>
+
+<!-- User Statistics Table -->
+<div class="user-statistics-table">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Username </th>
+      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="albumCount">
+      <th mat-header-cell *matHeaderCellDef> Albums </th>
+      <td mat-cell *matCellDef="let element"> {{element.albumCount}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fileCount">
+      <th mat-header-cell *matHeaderCellDef> Files </th>
+      <td mat-cell *matCellDef="let element"> {{element.fileCount}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <mat-paginator [pageSize]="8" showFirstLastButtons></mat-paginator>
+</div>

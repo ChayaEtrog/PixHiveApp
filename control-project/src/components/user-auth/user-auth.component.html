@@ -1,0 +1,17 @@
+@if((userService.currentUser$ | async)?.email?.[0]){
+<div mat-card-avatar class="avatar">
+  <span>{{(userService.currentUser$ | async)?.email?.[0]}}</span>
+</div>
+}
+@else{
+<button mat-flat-button (click)="isFormLoginOpen=!isFormLoginOpen" class="login">login</button>
+
+<button mat-flat-button (click)="isFormRegisterOpen=!isFormRegisterOpen" class="register">sign up</button>
+
+@if(isFormRegisterOpen){
+<app-register-form (formClosed)="FormRegisterClose()"></app-register-form>
+}
+}
+@if(isFormLoginOpen){
+<app-login-form (formClosed)="FormLoginClose()"></app-login-form>
+}

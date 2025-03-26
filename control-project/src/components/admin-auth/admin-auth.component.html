@@ -1,0 +1,32 @@
+<div class="overlay">
+    <div class="user-form">
+        <mat-card>
+            <div class="form-header">
+                <img src="assets/pictures/admin.png" alt="Login Icon" class="login-icon">
+                <h2 class="form-title">Identifying as Manager</h2>
+            </div>
+            <form [formGroup]="adminForm" (ngSubmit)="upgradeToAdmin()">
+                <mat-card-content>
+  
+                    <!-- Password -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput type="password" formControlName="password">
+                        @if (adminForm.get('password')?.invalid && adminForm.get('password')?.touched) {
+                        <mat-error>Password is required.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                </mat-card-content>
+  
+                <mat-card-actions>
+                    <button type="submit" class="gradient-border-button">
+                        send
+                    </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+  </div>
+    
+  

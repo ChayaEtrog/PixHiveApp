@@ -1,0 +1,73 @@
+.chart-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.user-statistics-table {
+  max-width: 900px;
+  margin: 30px auto;
+  overflow-x: auto;
+}
+
+.table-scroll {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.system-statistics-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 30px auto;
+  max-width: 900px;
+}
+
+.stat-card {
+  width: 250px;
+  text-align: center;
+}
+
+mat-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.cards-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  padding: 16px;
+  flex: 1;
+  text-align: center;
+  font-size: 25px;
+  border: 0.06px solid rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+}
+
+.stat-card h1{
+  margin-bottom: 40px;
+}
+
+.charts-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.chart-container {
+  flex: 1;
+  min-width: 400px;
+}
+
+.sen {
+  font-size: 35px;
+  padding-left: 37vw;
+  margin-bottom: 56px;
+  margin-top: 10px;
+}

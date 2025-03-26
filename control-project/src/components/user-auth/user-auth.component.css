@@ -1,0 +1,17 @@
+
+.avatar {
+    width: 40px; 
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #47dcd1, #dc8dec);; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    color: white; 
+    font-size: 22px; 
+    text-transform: uppercase; 
+  }
+
+  .avatar span {
+   padding-top: 2px;
+  }

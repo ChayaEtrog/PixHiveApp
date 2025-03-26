@@ -1,0 +1,55 @@
+<div class="overlay">
+    <div class="user-form">
+        <mat-card>
+            <div class="form-header">
+                <img src="assets/pictures/updateUser.png" alt="Login Icon" class="login-icon">
+                <h2 class="form-title">Add User</h2>
+            </div>
+            <form [formGroup]="updateUserForm" >
+                <mat-card-content>
+  
+                    <!-- Name -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput id="name" formControlName="name">
+                        @if (updateUserForm.get('name')?.invalid && updateUserForm.get('name')?.touched) {
+                        <mat-error>Name is required.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                    <!-- Email -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" id="email" formControlName="email">
+                        @if (updateUserForm.get('email')?.invalid && updateUserForm.get('email')?.touched) {
+                        <mat-error>Email is not valid.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                    <!-- PhonNumber -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Phone number</mat-label>
+                        <input matInput id="phoneNumber" formControlName="phoneNumber">
+                        @if (updateUserForm.get('phoneNumber')?.invalid && updateUserForm.get('phoneNumber')?.touched) {
+                        <mat-error>phoneNumber is required.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                </mat-card-content>
+  
+                <mat-card-actions>
+                    <button type="submit"
+                        (click)="onSubmit()" 
+                        class="gradient-border-button">
+                        save
+                    </button>
+                    <button class="gradient-button"
+                    (click)="closeForm.emit()">
+                        cancel
+                    </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+  </div>
+    

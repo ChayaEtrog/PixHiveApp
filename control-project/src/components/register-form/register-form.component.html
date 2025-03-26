@@ -1,0 +1,66 @@
+<div class="overlay">
+    <div class="user-form">
+        <mat-card>
+            <div class="form-header">
+                <img src="assets/pictures/lock.png" alt="Login Icon" class="login-icon">
+                <h2 class="form-title">Signup</h2>
+            </div>
+            <form [formGroup]="registerForm" >
+                <mat-card-content>
+  
+                    <!-- Name -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput id="name" formControlName="name">
+                        @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+                        <mat-error>Name is required.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                    <!-- Password -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput type="password" formControlName="password">
+                        @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+                        @if (registerForm.get('password')?.hasError('required')) {
+                        <mat-error>Password is required.</mat-error>
+                        }
+                        }
+                    </mat-form-field>
+  
+                    <!-- Email -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" id="email" formControlName="email">
+                        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+                        <mat-error>Email is not valid.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                    <!-- PhonNumber -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Phone number</mat-label>
+                        <input matInput id="phoneNumber" formControlName="phoneNumber">
+                        @if (registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched) {
+                        <mat-error>phoneNumber is required.</mat-error>
+                        }
+                    </mat-form-field>
+  
+                </mat-card-content>
+  
+                <mat-card-actions>
+                    <button type="submit"
+                        (click)="onSubmit()" 
+                        class="gradient-border-button">
+                        save
+                    </button>
+                    <button  class="gradient-button"
+                        (click)="formClosed.emit()">
+                        cancel
+                    </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+  </div>
+    

@@ -1,0 +1,38 @@
+.message-card {
+    width: fit-content;
+    max-width: 80vw;
+    font-size: 16px !important;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    box-shadow: none !important;
+    border: 0.1px solid #00000033;
+    padding: 10px;
+    margin-left: 15px;
+    line-height: 1.6;
+    word-wrap: break-word; /* מאפשר לפרוץ מילים ארוכות לשורות */
+    overflow-wrap: break-word; /* מאפשר לפרוץ מילים ארוכות לשורות (חלופה) */
+}
+
+.card-header {
+    width: 100%;
+    display: flex;
+    justify-content: end; /* מיישר את שניהם לימין */
+    align-items: center;
+    gap: 10px; /* רווח ביניהם */
+    margin-bottom: 10px;
+}
+
+.creation-date {
+    font-size: 11px;
+    color: gray;
+}
+
+.gradient-button.add-message {
+    font-size: 16px;
+    border-radius: 3px;
+    min-width: fit-content;
+    width: 20vw;
+    margin-bottom: 60px;
+    margin-left: 37vw;
+    margin-top: 30px;
+}

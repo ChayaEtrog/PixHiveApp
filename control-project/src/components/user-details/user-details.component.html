@@ -1,0 +1,28 @@
+@if(user.id!=-1){
+  <div class="user-details-container">
+    <mat-card class="user-details-card">
+      <button mat-icon-button class="back-button" (click)="goBack()"><img src="assets/pictures/arrow.png" alt="go back"></button>
+      <mat-card-content>
+        <p><strong>Name:</strong> {{ user.userName }}</p>
+        <p><strong>ID:</strong> {{ user.id }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone:</strong> {{ user.phoneNumber }}</p>
+        @if(user.createdAt){
+        <p><strong>Created At:</strong> {{ user.createdAt | date:'dd/MM/yyyy'}}</p>
+        }
+        <div class="action-buttons">
+          <button mat-icon-button (click)="onDeleteUser()">
+            <img src="assets/pictures/deleteUser.png" alt="icon of delete user">
+          </button>
+          <button mat-icon-button (click)="updateUser = !updateUser">
+            <img src="assets/pictures/updateUser.png" alt="icon of update user">
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  @if(updateUser){
+    <app-update-user (closeForm)="closeUpdateUser()" [user]="user"></app-update-user>
+  }
+}

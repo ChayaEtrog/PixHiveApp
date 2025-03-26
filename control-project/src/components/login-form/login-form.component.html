@@ -1,0 +1,46 @@
+<div class="overlay">
+    <div class="user-form">
+        <mat-card>
+
+            <div class="form-header">
+                <img src="assets/pictures/lock.png" alt="Login Icon" class="login-icon">
+                <h2 class="form-title">Login</h2>
+            </div>
+
+            <form [formGroup]="loginForm">
+                <mat-card-content>
+                    <!-- Email -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>userNameOrEmail</mat-label>
+                        <input matInput type="userNameOrEmail" id="userNameOrEmail" formControlName="userNameOrEmail">
+                        @if (loginForm.get('userNameOrEmail')?.invalid && loginForm.get('userNameOrEmail')?.touched) {
+                        <mat-error>Email or user name is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <!-- Password -->
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput type="password" formControlName="password">
+                        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                        @if (loginForm.get('password')?.hasError('required')) {
+                        <mat-error>Password is required.</mat-error>
+                        }
+                        }
+                    </mat-form-field>
+
+
+                </mat-card-content>
+
+                <mat-card-actions>
+                    <button class="gradient-border-button" type="submit" (click)="onSubmit()">
+                        save
+                    </button>
+                    <button type="submit" (click)="formClosed.emit()" class="gradient-button">
+                        cancel
+                    </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+</div>

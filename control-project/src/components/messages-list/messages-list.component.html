@@ -1,0 +1,27 @@
+<div >
+    <div class="card-container">
+        @for (message of messages; track $index) {
+        <mat-card class="message-card">
+            <mat-card-header>
+                <div class="card-header">
+                    <span class="creation-date">{{ message.createdAt | date:'dd/MM/yyyy' }}</span>
+                    <mat-slide-toggle  color="primary" [(ngModel)]="message.isActive" (change)="updateMessageStatus(message)" >
+                        {{ message.isActive? 'active' : 'inactive' }}
+                    </mat-slide-toggle>
+                </div>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ message.message }}</p>
+            </mat-card-content>
+        </mat-card>
+        }
+        @if(messages.length ==0){
+            <h1 style="margin-top: 40px; margin-left: 40vw;">No messages found</h1>
+        }
+    </div>
+</div>
+<button class="gradient-button add-message" (click)="addMessage=!addMessage">Add Message</button>
+
+@if(addMessage){
+<app-add-message (formClosed)="closeAddMessage()"></app-add-message>
+}

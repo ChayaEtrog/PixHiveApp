@@ -1,0 +1,76 @@
+/* @use '@angular/material' as mat;
+
+// פלטת צבעים מלאה עם הצבע שלך
+$my-primary-palette: mat.define-palette(mat.$green-palette);
+
+// פלטת צבעים נוספת לאקסנט (דוגמה)
+$my-accent-palette: mat.define-palette(mat.$pink-palette);
+
+// הגדרת ה-theme
+$my-theme: mat.define-light-theme(
+       (color: (primary: $my-primary-palette,
+                accent: $my-accent-palette,
+            )));
+
+// טעינת כל ה-core של Angular Material
+@include mat.core();
+@include mat.all-component-themes($my-theme); */
+
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    color: rgb(83, 83, 83);
+    overflow-x: hidden;
+}
+
+
+.gradient-button {
+    background: linear-gradient(45deg, #47dcd1, #dc8dec);
+    border: 0;
+    border-radius: 0;
+    color: white;
+    padding: 10px 30px;
+    cursor: pointer;
+    width: 10vw;
+    font-size: 16px;
+}
+
+.gradient-button:hover,
+.gradient-button:active {
+    border: 2px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to right, #47dcd1, #dc8dec);
+    color: #743ad5;
+    background: none;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.gradient-border-button {
+    border: 2px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to right, #47dcd1, #dc8dec);
+    color: #743ad5;
+    background-color: #fff;
+    padding: 10px 30px;
+    border-radius: 0;
+    width: 10vw;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.gradient-border-button:hover,
+.gradient-border-button:active {
+    background: linear-gradient(45deg, #47dcd1, #dc8dec);
+    border: 0;
+    border-radius: 0;
+    color: white;
+}

@@ -1,0 +1,22 @@
+@if(!authService.isLoggedIn()){
+<div class="background-container">
+    <div class="button-container">
+        <button mat-raised-button class="contained-btn" (click)="isLogInOpen=true">LOGIN</button>
+      <button mat-stroked-button class="outlined-btn" (click)="isRegisterOpen=true">SIGNUP</button>
+    </div>
+  </div>
+
+@if(isLogInOpen){
+    <app-login-form (formClosed)="loginFormClose()"></app-login-form>
+}  
+
+@if(isRegisterOpen){ 
+    <app-register-form (formClosed)="registerFormClose()"></app-register-form>
+}
+}
+
+@else {
+  <div class="banner">
+    <img src="assets/pictures/PixHiveLoged.png" alt="pixHive logo website">
+</div>
+}

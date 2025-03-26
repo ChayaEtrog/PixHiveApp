@@ -1,0 +1,34 @@
+@if(userAuth.isLoggedIn()){
+<mat-toolbar class="custom-toolbar">
+    <mat-toolbar-row>
+  
+      <button class="home" routerLink="/home" routerLinkActive="active-button">
+        <img src="assets/pictures/home.png" alt="users">
+      </button>
+  
+      <nav class="nav-container">
+        <button routerLink="/users" routerLinkActive="active-button" aria-current="page" style="color: #274354e0;">
+          <img src="assets/pictures/users.png" alt="users">
+          Users
+        </button>
+
+        <button routerLink="/messages" routerLinkActive="active-button" aria-current="page" style="color: #274354e0;">
+          <img src="assets/pictures/messages.png" alt="message">
+          Messages
+        </button>
+
+        <button routerLink="/user-statistics" routerLinkActive="active-button" aria-current="page" style="color: #274354e0;">
+          <img src="assets/pictures/statistics.png" alt="statistics">
+          Statistics
+        </button>
+      </nav>
+  
+      <div>
+        <app-user-auth></app-user-auth>
+      </div>
+  
+    </mat-toolbar-row>
+  </mat-toolbar>
+    
+}
+<router-outlet></router-outlet>
