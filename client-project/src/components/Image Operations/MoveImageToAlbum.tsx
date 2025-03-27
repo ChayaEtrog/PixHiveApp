@@ -2,14 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreType } from "../appStore";
 import { UserContext } from "../user/UserReducer";
 import { useContext, useEffect, useState } from "react";
-import { addFileToAlbum, fetchAlbumsByUser } from "../albums/albumSlice";
+import { fetchAlbumsByUser } from "../albums/albumSlice";
 import { Box, Button, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { Album } from "../../types/Album";
+import { addFileToAlbum } from "../images/imageSlice";
 
 const MoveImageToAlbum = ({ fileId, closeForm }: { closeForm: Function, fileId: number }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { user } = useContext(UserContext);
-    
     
     useEffect(() => {
         dispatch(fetchAlbumsByUser(user.id));
@@ -19,14 +19,10 @@ const MoveImageToAlbum = ({ fileId, closeForm }: { closeForm: Function, fileId: 
     const { allAlbums } = useSelector((store: StoreType) => store.album);
     const [selectedAlbumId, setSelectedAlbumId] = useState<number | null>(null);
 
-    useEffect(() => {
-        console.log("Albums:", allAlbums);  
-    }, [allAlbums]);
-
     const handleMove = async () => {
         if (selectedAlbumId) {
             await dispatch(addFileToAlbum({ albumId: selectedAlbumId, fileId }));
-            closeForm(false);
+            closeForm();
         }
     };
 

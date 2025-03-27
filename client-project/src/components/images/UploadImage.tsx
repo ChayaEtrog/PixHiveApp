@@ -47,7 +47,6 @@ const UploadImage = () => {
     return true;
   };
 
-  // עדכון פרטי קובץ
   const updateFileDetails = (selectedFile: File) => {
     setFileDetails({
       UserId: user.id,
@@ -58,7 +57,6 @@ const UploadImage = () => {
     });
   };
 
-  // כשמעלים קובץ (ידנית או בגרירה)
   const handleFileSelect = (selectedFile: File) => {
     if (validateFile(selectedFile)) {
       setFile(selectedFile);
@@ -122,9 +120,9 @@ const UploadImage = () => {
           FilePath: uploadUrl,
           fileSize: fileDetails.FileSize,
           type: fileDetails.Type
-        }; 
+        };
 
-        const resultAction = await dispatch(uploadImage(image));
+        const resultAction = await dispatch(uploadImage({ image: image, albumId: -1 }));
 
         if (uploadImage.fulfilled.match(resultAction)) {
           setAlert("File uploaded successfully!");
@@ -139,7 +137,7 @@ const UploadImage = () => {
       }
     } catch (err: any) {
       console.log(err);
-      
+
       setError('Upload failed: ' + err.ErrorMessage);
     } finally {
       setUploading(false);

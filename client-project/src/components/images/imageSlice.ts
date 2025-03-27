@@ -7,7 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 //upload image
 export const uploadImage = createAsyncThunk(
   'image/uploadImage',
-  async (image: ImagePostModal, thunkAPI) => {
+  async ({ image, albumId }: { image: ImagePostModal, albumId: number }, thunkAPI) => {
     try {
       const token = sessionStorage.getItem('authToken');
 
@@ -15,7 +15,7 @@ export const uploadImage = createAsyncThunk(
         return thunkAPI.rejectWithValue('Authorization token is missing!');
       }
 
-      const response = await axios.post(`${API_BASE_URL}/File`, image, {
+      const response = await axios.post(`${API_BASE_URL}/File/to-album/${albumId}`, image, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -92,8 +92,49 @@ export const updateFileName = createAsyncThunk(
   }
 );
 
+// add file to album
+export const addFileToAlbum = createAsyncThunk(
+  'album/addFile',
+  async ({ albumId, fileId }: { albumId: number; fileId: number }, thunkAPI) => {
+    try {
+      const token = sessionStorage.getItem('authToken');
+      if (!token) return thunkAPI.rejectWithValue('Authorization token is missing!');
+      const response = await axios.post(`${API_BASE_URL}/Album/${albumId}/add-file/${fileId}`, null,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// get files from album
+export const getFilesByAlbum = createAsyncThunk(
+  'album/getFilesByAlbum',
+  async (albumId: number, thunkAPI) => {
+    try {
+      const token = sessionStorage.getItem('authToken');
+      if (!token) return thunkAPI.rejectWithValue('Authorization token is missing!');
+      const response = await axios.get(`${API_BASE_URL}/Album/${albumId}/files`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 //reset image state
-export const resetRootFiles = createAction('image/resetRootFiles');
+export const resetFiles = createAction('image/resetFiles');
 
 //download image
 export const getDownloadUrl = createAsyncThunk(
@@ -118,6 +159,29 @@ export const getDownloadUrl = createAsyncThunk(
   }
 );
 
+//delete image
+export const removeFileFromAlbum = createAsyncThunk(
+  'files/removeFileFromAlbum',
+  async ({ fileId, albumId }: { fileId: number; albumId: number }, thunkAPI) => {
+    try {
+      const token = sessionStorage.getItem('authToken');
+
+      if (!token) {
+        return thunkAPI.rejectWithValue('Authorization token is missing!');
+      }
+
+      await axios.delete(`${API_BASE_URL}/File/${fileId}/albums/${albumId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return { fileId };
+    } catch (error: any) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response?.data || 'Failed to remove file from album');
+    }
+  }
+);
+
 const imageSlice = createSlice({
   name: 'image',
   initialState: {
@@ -127,7 +191,8 @@ const imageSlice = createSlice({
     success: false,
     pending: true,
     files: [] as Image[],
-    downloadUrl: ''
+    downloadUrl: '',
+    isRootFiles: false,
   },
   reducers: {
     resetImageState: (state) => {
@@ -135,12 +200,13 @@ const imageSlice = createSlice({
       state.uploading = false;
       state.error = '';
       state.success = false;
-      state.downloadUrl = ''
+      state.downloadUrl = '';
+      state.isRootFiles = false;
     },
   },
   extraReducers: (builder) => {
     builder
-      // מקרים של העלאת קובץ
+      // upload image
       .addCase(uploadImage.pending, (state) => {
         state.uploading = true;
         state.error = '';
@@ -149,6 +215,7 @@ const imageSlice = createSlice({
       .addCase(uploadImage.fulfilled, (state, action) => {
         state.uploading = false;
         state.image = action.payload;
+        state.files.push(action.payload);
         state.success = true;
       })
       .addCase(uploadImage.rejected, (state, action) => {
@@ -157,7 +224,7 @@ const imageSlice = createSlice({
         state.error = action.payload as string;
         state.success = false;
       })
-      // מקרים של שליפת קבצים של משתמש
+      // get all files
       .addCase(getFilesByUser.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -170,6 +237,38 @@ const imageSlice = createSlice({
         state.pending = false;
         state.error = action.payload as string;
       })
+      // Add File To Album
+      .addCase(addFileToAlbum.pending, (state) => {
+        state.pending = true;
+        state.error = '';
+      })
+      .addCase(addFileToAlbum.fulfilled, (state, action) => {
+        if (state.isRootFiles) {
+          state.files = state.files.filter(file => file.id != action.payload.data.id)
+        }
+        state.pending = false;
+        state.error = '';
+      })
+      .addCase(addFileToAlbum.rejected, (state, action) => {
+        state.pending = false;
+        state.error = action.payload as string;
+      })
+      // Get Files By Album
+      .addCase(getFilesByAlbum.pending, (state) => {
+        state.pending = true;
+        state.error = '';
+      })
+      .addCase(getFilesByAlbum.fulfilled, (state, action) => {
+        state.pending = false;
+        state.files = action.payload;
+        state.isRootFiles = false;
+        state.success = true;
+      })
+      .addCase(getFilesByAlbum.rejected, (state, action) => {
+        state.pending = false;
+        state.error = action.payload as string;
+      })
+      //get root files
       .addCase(getRootFilesByUser.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -177,14 +276,18 @@ const imageSlice = createSlice({
       .addCase(getRootFilesByUser.fulfilled, (state, action) => {
         state.pending = false;
         state.files = action.payload;
+        state.isRootFiles = true;
       })
       .addCase(getRootFilesByUser.rejected, (state, action) => {
         state.pending = false;
         state.error = action.payload as string;
       })
-      .addCase(resetRootFiles, (state) => {
+      //reset files
+      .addCase(resetFiles, (state) => {
         state.files = [];
+        state.isRootFiles = false;
       })
+      //get download url
       .addCase(getDownloadUrl.fulfilled, (state, action) => {
         state.pending = false;
         state.downloadUrl = action.payload;
@@ -212,6 +315,19 @@ const imageSlice = createSlice({
       })
       .addCase(updateFileName.rejected, (state, action) => {
         state.pending = false;
+        state.error = action.payload as string;
+      })
+      .addCase(removeFileFromAlbum.pending, (state) => {
+        state.pending = true;
+        state.error = '';
+      })
+      .addCase(removeFileFromAlbum.fulfilled, (state, action) => {
+        state.error = '';
+        state.pending = false;
+        const { fileId } = action.payload;
+        state.files = state.files.filter(f => f.id != fileId);
+      })
+      .addCase(removeFileFromAlbum.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },

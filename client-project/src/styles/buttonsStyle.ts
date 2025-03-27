@@ -7,6 +7,7 @@ export const gradientBorderButton = {
     padding: '10px 30px',
     borderRadius: 0,
     width: '10vw',
+    display: {xs: 'none',lg:'inline'} ,
     transition: 'all 0.3s ease',
     '&:hover': {
       background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)',
@@ -27,6 +28,9 @@ export const gradientBorderButton = {
     color: '#743ad5',
     borderRadius: 0,
     width: '5vw',
+    '@media (max-width:1200px)': { // lg לפי MUI
+      width: '70%',
+    }
   };
   
  export const GradientButton ={

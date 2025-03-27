@@ -15,7 +15,7 @@ namespace Web.Net.Core.InterfaceService
 
         Task<Result<FileDto>> GetFileByIdAsync(int id);
 
-        Task<Result<FileDto>> AddFileAsync(FileDto entity);
+        Task<Result<FileDto>> AddFileAsync(FileDto entity, int albumId);
 
         Task<Result<FileDto>> UpdateFileAsync(int userId, int id, string newName);
 
@@ -34,5 +34,7 @@ namespace Web.Net.Core.InterfaceService
         Task<Result<List<TagDto>>> GetTagsByFileIdAsync(int fileId);
 
         Task<Result<List<FileDto>>> GetRootFilesByUserIdAsync(int userId);
+
+        Task<Result<int>> RemoveFileFromAlbumAsync(int fileId, int albumId);
     }
 }

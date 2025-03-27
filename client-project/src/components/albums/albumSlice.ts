@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { AlbumPostModel } from '../../types/AlbumPostModel';
 import { Image } from '../../types/Image';
@@ -35,53 +35,43 @@ export const updateAlbum = createAsyncThunk(
       const response = await axios.put(`${API_BASE_URL}/Album/${id}/album-of/${userId}`, albumName, authHeader);
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+      return thunkAPI.rejectWithValue(error.response || error.message);
     }
   }
 );
 
-// delete album
-export const deleteAlbum = createAsyncThunk(
-  'album/delete',
-  async (id: number, thunkAPI) => {
-    try {
-      await axios.delete(`${API_BASE_URL}/Album/${id}`, authHeader);
-      return id;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
+// // delete album
+// export const deleteAlbum = createAsyncThunk(
+//   'album/delete',
+//   async (id: number, thunkAPI) => {
+//     try {
+//       await axios.delete(`${API_BASE_URL}/Album/${id}`, authHeader);
+//       return id;
+//     } catch (error: any) {
+//       return thunkAPI.rejectWithValue(error.response?.data || error.message);
+//     }
+//   }
+// );
 
-// add file to album
-export const addFileToAlbum = createAsyncThunk(
-  'album/addFile',
-  async ({ albumId, fileId }: { albumId: number; fileId: number }, thunkAPI) => {
+//get albums by user
+export const fetchAlbumsByUser = createAsyncThunk(
+  'album/fetchByUser',
+  async (userId: number, thunkAPI) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/Album/${albumId}/add-file/${fileId}`, null, authHeader);
-      return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
-
-// get files from album
-export const getFilesByAlbum = createAsyncThunk(
-  'album/getFilesByAlbum',
-  async (albumId: number, thunkAPI) => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/Album/${albumId}/files`, {
+      const response = await axios.get(`${API_BASE_URL}/Album/user/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
-        }
-      });
+        },
+      }
+      );
       return response.data;
+
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   }
 );
+
 
 // get albums child
 export const fetchChildAlbums = createAsyncThunk(
@@ -107,33 +97,33 @@ export const fetchChildAlbums = createAsyncThunk(
   }
 );
 
-//get albums by user
-export const fetchAlbumsByUser = createAsyncThunk(
-  'album/fetchByUser',
-  async (userId: number, thunkAPI) => {
+export const deleteAlbum = createAsyncThunk(
+  'albums/deleteAlbum',
+  async (albumId: number, thunkAPI) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Album/user/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      }
-      );
-      return response.data;
+      const token = sessionStorage.getItem('authToken');
 
+      if (!token) {
+        return thunkAPI.rejectWithValue('Authorization token is missing!');
+      }
+
+      await axios.delete(`${API_BASE_URL}/Album/${albumId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return albumId; // מחזירים את ה-albumId כדי לעדכן את ה-Redux
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response?.data || 'Failed to delete album');
     }
   }
 );
-
-export const resetFiles = createAction('album/resetFiles');
 
 // Slice
 const albumSlice = createSlice({
   name: 'album',
   initialState: {
     albums: [] as any[],
-    files: [] as Image[],
     loading: false,
     error: null as string | null,
     success: false,
@@ -142,18 +132,11 @@ const albumSlice = createSlice({
   reducers: {
     resetAlbumState: (state) => {
       state.albums = [];
-      state.files = [];
+      // state.files = [];
       state.loading = false;
       state.error = null;
       state.success = false;
       state.allAlbums = []
-    },
-    updateFileInAlbum: (state, action) => {
-      const updatedFile = action.payload;
-      const index = state.files.findIndex(f => f.id === updatedFile.id);
-      if (index !== -1) {
-        state.files[index] = updatedFile;
-      }
     }
   },
   extraReducers: (builder) => {
@@ -172,13 +155,17 @@ const albumSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
       // Update Album
       .addCase(updateAlbum.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateAlbum.fulfilled, (state) => { // אולי צריך להוסיף action
+      .addCase(updateAlbum.fulfilled, (state, action) => {
+        const updatedAlbum = action.payload;
+        const index = state.albums.findIndex(a => a.id === updatedAlbum.id);
+        if (index !== -1) {
+          state.albums[index] = updatedAlbum;
+        }
         state.loading = false;
         state.success = true;
       })
@@ -187,50 +174,20 @@ const albumSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Delete Album
-      .addCase(deleteAlbum.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(deleteAlbum.fulfilled, (state, action) => {
-        state.loading = false;
-        state.albums = state.albums.filter(album => album.id !== action.payload);
-        state.success = true;
-      })
-      .addCase(deleteAlbum.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-
-      // Add File To Album
-      .addCase(addFileToAlbum.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(addFileToAlbum.fulfilled, (state) => {
-        state.loading = false;
-        state.success = true;
-      })
-      .addCase(addFileToAlbum.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-
-      // Get Files By Album
-      .addCase(getFilesByAlbum.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getFilesByAlbum.fulfilled, (state, action) => {
-        state.loading = false;
-        state.files = action.payload;
-        state.success = true;
-      })
-      .addCase(getFilesByAlbum.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-
+      // // Delete Album
+      // .addCase(deleteAlbum.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(deleteAlbum.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.albums = state.albums.filter(album => album.id !== action.payload);
+      //   state.success = true;
+      // })
+      // .addCase(deleteAlbum.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload as string;
+      // })
       // Get Child Albums
       .addCase(fetchChildAlbums.pending, (state) => {
         state.loading = true;
@@ -258,13 +215,23 @@ const albumSlice = createSlice({
         // state.loading = false;
         // state.error = action.payload as string;
       })
-      .addCase(resetFiles, (state) => {
-        state.files = [];
+      .addCase(deleteAlbum.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteAlbum.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error=''
+        state.albums = state.albums.filter(album => album.id !== action.payload);
+      })
+      .addCase(deleteAlbum.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
+      
   },
 });
 
-export const { resetAlbumState } = albumSlice.actions;
-export const { updateFileInAlbum } = albumSlice.actions;
+export const { resetAlbumState} = albumSlice.actions;
 
 export default albumSlice;

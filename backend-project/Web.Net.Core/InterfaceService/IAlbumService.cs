@@ -19,14 +19,16 @@ namespace Web.Net.Core.InterfaceService
 
         Task<Result<AlbumDto>> UpdateAlbumAsync(int userId, int id, string newName);
 
-        Task<Result<AlbumDto>> DeleteAlbumAsync(int albumId);
+        //Task<Result<AlbumDto>> DeleteAlbumAsync(int albumId);
 
-        Task<Result<bool>> AddFileToAlbumAsync(int albumId, int fileId);
+        Task<Result<FileDto>> AddFileToAlbumAsync(int albumId, int fileId);
 
         Task<Result<List<FileDto>>> GetFilesByAlbumIdAsync(int albumId);
 
         Task<Result<List<AlbumDto>>> GetAlbumsByUserIdAsync(int userId);
 
         Task<Result<List<AlbumDto>>> GetChildAlbumsAsync(int userId, int? parentId = null);
+
+        Task<Result<int>> DeleteAlbumAsync(int albumId);
     }
 }

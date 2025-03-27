@@ -17,7 +17,7 @@ namespace Web.Net.Data.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<AlbumEntity>> GetFullAsync()
+        public async Task<List<AlbumEntity>> GetFullAsync()
         {
             return await _context.Albums
         .Include(a => a.User)
@@ -64,16 +64,16 @@ namespace Web.Net.Data.Repositories
             return album;
         }
 
-        public async Task<bool> AddFileToAlbumAsync(int albumId, int fileId)
+        public async Task<FileEntity> AddFileToAlbumAsync(int albumId, int fileId)
         {
             var album = await _context.Albums
                 .Include(a => a.Files)
                 .FirstOrDefaultAsync(a => a.Id == albumId);
 
-            if (album == null) return false;
+            if (album == null) return null;
 
             var file = await _context.Files.FindAsync(fileId);
-            if (file == null) return false;
+            if (file == null) return null;
 
             if (!album.Files.Contains(file))
             {
@@ -82,7 +82,7 @@ namespace Web.Net.Data.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            return true;
+            return file;
         }
 
         public async Task<List<FileEntity>> GetFilesByAlbumIdAsync(int albumId )

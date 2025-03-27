@@ -1,21 +1,20 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import imageIcon from "../../../public/Icons/imageIcon.png";
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import ShowImage from './ShowImage';
 import download from "../../../public/Icons/download.png";
 import rename from "../../../public/Icons/rename.png";
-import imagesAndAlbums from "../../../public/Icons/imagesAndAlbums.png";
 import delete1 from "../../../public/Icons/delete.png";
+import imagesAndAlbums from "../../../public/Icons/imagesAndAlbums.png";
 import tag from "../../../public/Icons/tag.png"
 import RenameImage from '../Image Operations/renameImage';
 import { Image } from '../../types/Image';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
 import { DownloadImage } from '../Image Operations/downloadImage';
-import { UserContext } from '../user/UserReducer';
-import { fetchAlbumsByUser } from '../albums/albumSlice';
-import MoveImageToAlbum from '../Image Operations/moveImageToAlbum';
+import MoveImageToAlbum from '../Image Operations/MoveImageToAlbum';
+
 
 const ImageGallery = ({ files }: { files: Image[] }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,8 +23,6 @@ const ImageGallery = ({ files }: { files: Image[] }) => {
   const [isRename, setIsRename] = useState(false);
   const [isMoveOpen, setIsMoveOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<{ id: number, name: string, displayName: string }>({ id: 0, name: '', displayName: '', });
-  const { user } = useContext(UserContext)
-  var albums;
 
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>, file: Image) => {
     setSelectedFile({ id: file.id, displayName: file.displayName, name: file.name });
@@ -35,11 +32,6 @@ const ImageGallery = ({ files }: { files: Image[] }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  // const MoveImageToAlbum = () => {
-  //   setIsMoveOpen(true)
-  //   // dispatch(fetchAlbumsByUser(user.id))
-  // }
 
   return (
     <>

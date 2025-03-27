@@ -50,24 +50,24 @@ namespace Web.Net.Service
             }
         }
 
-        public async Task<Result<AlbumDto>> DeleteAlbumAsync(int albumId)
-        {
-            try
-            {
-                var album = await _repositoryManager.Albums.GetByIdAsync(albumId);
-                if (album == null)
-                    return Result<AlbumDto>.NotFound("Album not found");
+        //public async Task<Result<AlbumDto>> DeleteAlbumAsync(int albumId)
+        //{
+        //    try
+        //    {
+        //        var album = await _repositoryManager.Albums.GetByIdAsync(albumId);
+        //        if (album == null)
+        //            return Result<AlbumDto>.NotFound("Album not found");
 
-                _repositoryManager.Albums.DeleteAlbumAsync(albumId);
-               await _repositoryManager.Save();
+        //        _repositoryManager.Albums.DeleteAlbumAsync(albumId);
+        //       await _repositoryManager.Save();
 
-                return Result<AlbumDto>.Success(null); // Return success with null albumDto, since album was deleted
-            }
-            catch (Exception ex)
-            {
-                return Result<AlbumDto>.Failure($"Error deleting album: {ex.Message}");
-            }
-        }
+        //        return Result<AlbumDto>.Success(null); // Return success with null albumDto, since album was deleted
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Result<AlbumDto>.Failure($"Error deleting album: {ex.Message}");
+        //    }
+        //}
 
         public async Task<Result<AlbumDto>> GetAlbumByIdAsync(int id)
         {
@@ -127,19 +127,40 @@ namespace Web.Net.Service
             }
         }
 
-        public async Task<Result<bool>> AddFileToAlbumAsync(int albumId, int fileId)
+        public async Task<Result<FileDto>> AddFileToAlbumAsync(int albumId, int fileId)
         {
             try
             {
-                var success = await _repositoryManager.Albums.AddFileToAlbumAsync(albumId, fileId);
+                var file = await _repositoryManager.Files.GetByIdAsync(fileId);
+                if (file == null)
+                {
+                    return Result<FileDto>.Failure("File not found");
+                }
+
+                // בדיקה אם השם של הקובץ כבר קיים באלבום
+                bool isFileNameExistInAlbum = await IsFileNameExistInAlbumAsync(albumId, file.DisplayName); 
+                if (isFileNameExistInAlbum)
+                {
+                    return Result<FileDto>.Failure("File with the same name already exists in this album.");
+                }
+
+                // הוספת הקובץ לאלבום
+                var response = await _repositoryManager.Albums.AddFileToAlbumAsync(albumId, fileId);
+                if (response == null)
+                {
+                    return Result<FileDto>.Failure("File or album not found.");
+                }
+
+                // שמירה ושידור התוצאה
                 await _repositoryManager.Save();
-                return Result<bool>.Success(success); 
+                return Result<FileDto>.Success(_mapper.Map<FileDto>(response));
             }
             catch (Exception ex)
             {
-                return Result<bool>.Failure($"Error adding file to album: {ex.Message}");
+                return Result<FileDto>.Failure($"Error adding file to album: {ex.Message}");
             }
         }
+
 
         public async Task<Result<List<FileDto>>> GetFilesByAlbumIdAsync(int albumId)
         {
@@ -184,6 +205,45 @@ namespace Web.Net.Service
             var albums = await _repositoryManager.Albums.GetChildAlbumsByUserId(userId,parentId);
 
             return Result<List<AlbumDto>>.Success(_mapper.Map<List<AlbumDto>>(albums));
+        }
+
+        private async Task<bool> IsFileNameExistInAlbumAsync(int albumId, string newName)
+        {
+            // שליפת כל הקבצים באלבום הספציפי
+            var files = await _repositoryManager.Albums.GetFilesByAlbumIdAsync(albumId);
+
+            // בדיקה אם קיים קובץ עם שם זהה (בהשוואה לא משנה רגישות לרישיות)
+            var fileExists = files.Any(f => f.DisplayName.Equals(newName, StringComparison.OrdinalIgnoreCase) || f.Name.Equals(newName, StringComparison.OrdinalIgnoreCase));
+
+            return fileExists;
+        }
+
+        public async Task<Result<int>> DeleteAlbumAsync(int albumId)
+        {
+            var albums = await _repositoryManager.Albums.GetFullAsync();
+            var album = albums.FirstOrDefault(a => a.Id == albumId);
+
+            if (album == null)
+                return Result<int>.Failure("Album not found");
+
+            foreach (var file in album.Files.ToList()) 
+            {
+                var files = await _repositoryManager.Files.GetFullAsync();
+                var fileWithAlbums = files.FirstOrDefault(f => f.Id == file.Id);
+
+                if (fileWithAlbums == null)
+                    continue;
+
+                if (fileWithAlbums.Albums.Count == 1)
+                {
+                   _repositoryManager.Files.DeleteFileAsync(fileWithAlbums.Id);
+                }
+            }
+
+            _repositoryManager.Albums.DeleteAlbumAsync(album.Id);
+            await _repositoryManager.Save();
+
+            return Result<int>.Success(album.Id);
         }
     }
 }

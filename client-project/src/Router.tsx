@@ -4,8 +4,6 @@ import AppLayout from "./components/AppLayout"
 import ErrorPage from "./components/ErrorPage"
 import UploadImage from "./components/images/UploadImage"
 import GalleryExplorer from "./components/myGallery/GalleryExplorer"
-import MoveImageToAlbum from "./components/Image Operations/moveImageToAlbum"
-
 
 
 export const router = createBrowserRouter([

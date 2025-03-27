@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle';
 import { updateFileName } from '../images/imageSlice';
-import { updateFileInAlbum } from '../albums/albumSlice';
 
 // הגדרת הסכימה של yup
 const schema = yup.object().shape({
@@ -29,13 +28,17 @@ const RenameImage = ({ oldName, fileId, closeForm }: { oldName: string, closeFor
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    closeForm(false)
-    const result = dispatch(updateFileName({ newName: data.newName, fileId: fileId, userId: user.id }));
-
-    if (updateFileName.fulfilled.match(result)) {
-      const updatedFile = result.payload;
-      dispatch(updateFileInAlbum(updatedFile));
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      await dispatch(updateFileName({ 
+        newName: data.newName, 
+        fileId: fileId, 
+        userId: user.id 
+      })).unwrap(); // מחכה שהתהליך יסתיים
+  
+      closeForm(false);
+    } catch (error) {
+      console.error("Error updating file name:", error);
     }
   };
 

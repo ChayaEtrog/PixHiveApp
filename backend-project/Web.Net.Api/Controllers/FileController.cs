@@ -14,8 +14,8 @@ namespace Web.Net.Api.Controllers
     [Authorize]
     public class FileController(IFileService fileService, IMapper mapper) : ControllerBase
     {
-        private readonly IFileService _fileService=fileService;
-        private readonly IMapper _mapper=mapper;
+        private readonly IFileService _fileService = fileService;
+        private readonly IMapper _mapper = mapper;
 
         // GET: api/<FileController>
         [HttpGet]
@@ -40,13 +40,13 @@ namespace Web.Net.Api.Controllers
         }
 
         // POST api/<FileController>
-        [HttpPost]
-        public async Task<ActionResult> Post([FromBody] FilePostModel file)
+        [HttpPost("to-album/{albumId}")]
+        public async Task<ActionResult> Post([FromBody] FilePostModel file,int albumId)
         {
             var entityDto = _mapper.Map<FileDto>(file);
             if (file == null)
                 return NotFound("no file was send");
-            var result = await _fileService.AddFileAsync(entityDto);
+            var result = await _fileService.AddFileAsync(entityDto,albumId);
 
             if (!result.IsSuccess)
                 return StatusCode(result.StatusCode, result.ErrorMessage);
@@ -156,6 +156,17 @@ namespace Web.Net.Api.Controllers
                 return NotFound("No tags to this file.");
 
             return Ok(result.Data);
+        }
+
+        [HttpDelete("{fileId}/albums/{albumId}")]
+        public async Task<IActionResult> RemoveFileFromAlbum(int fileId, int albumId)
+        {
+            var result = await _fileService.RemoveFileFromAlbumAsync(fileId, albumId);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { message = result.ErrorMessage });
+
+            return Ok(result.Data); 
         }
     }
 }

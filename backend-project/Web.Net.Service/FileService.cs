@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using Web.Net.Core.DTOs;
@@ -23,38 +24,44 @@ namespace Web.Net.Service
             _repositoryManager = repositoryManager;
         }
 
-        public async Task<Result<FileDto>> AddFileAsync(FileDto entity)
+        public async Task<Result<FileDto>> AddFileAsync(FileDto entity, int albumId)
         {
             bool isNameExist = await IsNameExist(entity.UserId, entity.Name);
 
-            if (!isNameExist)
-            {
-                var allowedFileTypes = new List<string> { "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/jpg" };
-                if (!allowedFileTypes.Contains(entity.Type))
-                    return Result<FileDto>.BadRequest("Invalid file type. Allowed types are: jpg, png, gif.");
-
-                var maxSizeInMb = 10;
-                if (entity.FileSize > maxSizeInMb * 1024 * 1024) 
-                    return Result<FileDto>.BadRequest($"File size exceeds the maximum allowed size of {maxSizeInMb}MB.");
-               
-                entity.UploadedAt = DateTime.Now;
-                entity.UpdateAt = DateTime.Now;
-                entity.DisplayName = entity.Name;
-
-                var tag = await _repositoryManager.Tags.GetTagByNameAsync("DefultTag");
-
-                var file = _mapper.Map<FileEntity>(entity);
-                await _repositoryManager.Files.AddAsync(file);
-                await _repositoryManager.Save();
-
-                await AddTagToFileAsync(file.Id, tag.Id);
-
-                return Result<FileDto>.Success(_mapper.Map<FileDto>(file));
-            }
-            else
-            {
+            if (isNameExist)
                 return Result<FileDto>.BadRequest("File with this name already exists.");
+
+            var allowedFileTypes = new List<string> { "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/jpg" };
+            if (!allowedFileTypes.Contains(entity.Type))
+                return Result<FileDto>.BadRequest("Invalid file type. Allowed types are: jpg, png, gif.");
+
+            var maxSizeInMb = 10;
+            if (entity.FileSize > maxSizeInMb * 1024 * 1024)
+                return Result<FileDto>.BadRequest($"File size exceeds the maximum allowed size of {maxSizeInMb}MB.");
+
+            entity.UploadedAt = DateTime.Now;
+            entity.UpdateAt = DateTime.Now;
+            entity.DisplayName = entity.Name;
+
+            var tag = await _repositoryManager.Tags.GetTagByNameAsync("DefultTag");
+
+            var file = _mapper.Map<FileEntity>(entity);
+
+            // אם הגיע albumId תקין - קושר אותו
+            if (albumId != -1)
+            {
+                var album = await _repositoryManager.Albums.GetByIdAsync(albumId);
+                if (album == null)
+                    return Result<FileDto>.BadRequest("Album not found.");
+                file.Albums.Add(album);
             }
+
+            await _repositoryManager.Files.AddAsync(file);
+            await _repositoryManager.Save();
+
+            await AddTagToFileAsync(file.Id, tag.Id);
+
+            return Result<FileDto>.Success(_mapper.Map<FileDto>(file));
         }
 
 
@@ -85,17 +92,25 @@ namespace Web.Net.Service
             return Result<IEnumerable<FileDto>>.Success(_mapper.Map<List<FileDto>>(files));
         }
 
-        public async Task<Result<FileDto>> UpdateFileAsync(int userId, int id, string newName)
+        public async Task<Result<FileDto>> UpdateFileAsync(int userId, int fileId, string newName)
         {
-            bool isNameExist =await IsNameExist(userId, newName);
+            // שליפת כל האלבומים שהקובץ נמצא בהם
+            var fileAlbums = await _repositoryManager.Files.GetByIdAsync(fileId);
+            var albums = fileAlbums.Albums;
 
-            if (isNameExist)
-                return Result<FileDto>.BadRequest("File with this name already exists.");
+            // בדיקה אם השם קיים באחד מהאלבומים של הקובץ
+            foreach (var album in albums)
+            {
+                bool isNameExistInAlbum = await IsFileNameExistInAlbumAsync(album.Id, newName);
+                if (isNameExistInAlbum)
+                    return Result<FileDto>.BadRequest("File with this name already exists in one of its albums.");
+            }
 
-            var result = await _repositoryManager.Files.UpdateFileNameAsync(id, newName);
+            // עדכון שם הקובץ
+            var result = await _repositoryManager.Files.UpdateFileNameAsync(fileId, newName);
             await _repositoryManager.Save();
 
-            return Result<FileDto>.Success(_mapper.Map<FileDto>(result)); 
+            return Result<FileDto>.Success(_mapper.Map<FileDto>(result));
         }
 
         public async Task<Result<IEnumerable<FileDto>>> GetFilesByTagAndUserIdAsync(int userId, string tagName)
@@ -160,6 +175,38 @@ namespace Web.Net.Service
             return false;
         }
 
+        private async Task<bool> IsFileNameExistInAlbumAsync(int albumId, string newName)
+        {
+            // שליפת כל הקבצים באלבום הספציפי
+            var files = await _repositoryManager.Albums.GetFilesByAlbumIdAsync(albumId);
 
+            // בדיקה אם קיים קובץ עם שם זהה (בהשוואה לא משנה רגישות לרישיות)
+            var fileExists = files.Any(f => f.DisplayName.Equals(newName, StringComparison.OrdinalIgnoreCase) || f.Name.Equals(newName, StringComparison.OrdinalIgnoreCase));
+
+            return fileExists;
+        }
+
+        public async Task<Result<int>> RemoveFileFromAlbumAsync(int fileId, int albumId)
+        {
+            var files = await _repositoryManager.Files.GetFullAsync();
+            var file = files.FirstOrDefault(f => f.Id == fileId);
+
+            if (file == null)
+                return Result<int>.Failure("File not found");
+
+            var album = file.Albums.FirstOrDefault(a => a.Id == albumId);
+            if (album == null)
+                return Result<int>.Failure("File is not part of this album");
+
+            file.Albums.Remove(album);
+
+            if (!file.Albums.Any())
+            {
+                 _repositoryManager.Files.DeleteFileAsync(file.Id);
+            }
+
+            await _repositoryManager.Save();
+            return Result<int>.Success(file.Id);
+        }
     }
 }

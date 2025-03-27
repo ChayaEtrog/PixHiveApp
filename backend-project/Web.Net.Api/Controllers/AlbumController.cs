@@ -64,18 +64,30 @@ namespace Web.Net.Api.Controllers
         }
 
         // DELETE api/<AlbumController>/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            var result = await _albumService.GetAlbumByIdAsync(id);
-            if (!result.IsSuccess || result.Data == null)
-            {
-                return NotFound();
-            }
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult> Delete(int id)
+        //{
+        //    var result = await _albumService.GetAlbumByIdAsync(id);
+        //    if (!result.IsSuccess || result.Data == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            await _albumService.DeleteAlbumAsync(id);
-            return NoContent();
+        //    await _albumService.DeleteAlbumAsync(id);
+        //    return NoContent();
+        //}
+
+        [HttpDelete("{albumId}")]
+        public async Task<IActionResult> DeleteAlbum(int albumId)
+        {
+            var result = await _albumService.DeleteAlbumAsync(albumId);
+
+            if (!result.IsSuccess)
+                return NotFound();
+
+            return Ok(result.Data);
         }
+
 
         [HttpPost("{albumId}/add-file/{fileId}")]
         public async Task<IActionResult> AddFileToAlbum(int albumId, int fileId)
@@ -86,7 +98,7 @@ namespace Web.Net.Api.Controllers
                 return NotFound("Album or File not found.");
             }
 
-            return Ok("File added to album successfully.");
+            return Ok(result);
         }
 
         [HttpGet("{albumId}/files")]

@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Album } from '../../types/Album';
 import { AppDispatch, StoreType } from '../appStore';
-import { fetchChildAlbums, getFilesByAlbum, resetFiles } from '../albums/albumSlice';
+import { fetchChildAlbums } from '../albums/albumSlice';
 import { UserContext } from '../user/UserReducer';
 import ErrorMessage from '../ErrorMessage';
 import { Box, CircularProgress } from '@mui/material';
-import { getRootFilesByUser, resetRootFiles } from '../images/imageSlice';
+import { getFilesByAlbum, getRootFilesByUser, resetFiles } from '../images/imageSlice';
 import AlbumsGallery from './AlbumsGallery';
 import ImageGallery from './ImagesGallery';
 import { useNavigate, useParams } from 'react-router';
@@ -16,8 +16,8 @@ import GalleryNavBar from './GalleryNavBar';
 const GalleryExplorer=()  => {
     const dispatch = useDispatch<AppDispatch>();
     const { 
-        image: { files: rootFiles, error: imageError, uploading },
-        album: { albums, error: albumError, loading: albumLoading, files: albumfiles },
+        image: { files: images, error: imageError, uploading },
+        album: { albums, error: albumError, loading: albumLoading },
     } = useSelector((store: StoreType) => ({
         image: store.image,
         album: store.album,
@@ -31,13 +31,13 @@ const GalleryExplorer=()  => {
     useEffect(() => {
         if (albumId) {
             dispatch(fetchChildAlbums({ userId: user.id, parentId: Number(albumId) }));
+            dispatch(resetFiles());
             dispatch(getFilesByAlbum(Number(albumId)));
-            dispatch(resetRootFiles());
         } else {
             setPathStack([]);
             dispatch(fetchChildAlbums({ userId: user.id, parentId: -1 }));
-            dispatch(getRootFilesByUser(user.id));
             dispatch(resetFiles());
+            dispatch(getRootFilesByUser(user.id));
         }
     }, [albumId, user.id, dispatch]);
 
@@ -106,13 +106,12 @@ const GalleryExplorer=()  => {
                     </>
                 ) : (
                     <>
-                        {(rootFiles.length == 0 && albumfiles.length == 0 && albums.length == 0) && <h3>no files or albums found to this album</h3>}
+                        {(images.length == 0 && albums.length == 0) && <h3>no files or albums found to this album</h3>}
 
                         {albums.length > 0 && <AlbumsGallery folders={albums} onFolderClick={handleFolderClick} />}
                         <div style={{ height: '5vh', width: '9px' }}></div>
 
-                        {rootFiles.length > 0 && <ImageGallery files={rootFiles} />}
-                        {albumfiles.length > 0 && <ImageGallery files={albumfiles} />}
+                        {images.length > 0 && <ImageGallery files={images} />}
                     </>
                 )}
             </Box>
