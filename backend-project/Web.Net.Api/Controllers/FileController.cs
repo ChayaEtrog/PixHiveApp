@@ -168,5 +168,23 @@ namespace Web.Net.Api.Controllers
 
             return Ok(result.Data); 
         }
+
+        [HttpGet("deleted")]
+        public async Task<IActionResult> GetDeletedFiles()
+        {
+            var result = await _fileService.GetDeletedFilesAsync();
+
+            if (!result.IsSuccess)
+                return NotFound(new { message = result.ErrorMessage });
+
+            return Ok(result.Data);
+        }
+
+        [HttpPost("recycle/{fileId}")]
+        public async Task<IActionResult> RecycleFile(int fileId)
+        {
+            var result = await _fileService.RecycleFile(fileId);
+            return result.IsSuccess ? Ok(result.Data) : NotFound(result.ErrorMessage);
+        }
     }
 }

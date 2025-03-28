@@ -62,7 +62,7 @@ const RenameAlbum = ({ closeForm, oldName, albumId}: { closeForm: Function, oldN
                 onClick={(e) => e.stopPropagation()}
             >
                 <Typography variant="h5" mb={2}>
-                    new Album
+                Rename Album
                 </Typography>
 
                 <TextField
@@ -79,11 +79,11 @@ const RenameAlbum = ({ closeForm, oldName, albumId}: { closeForm: Function, oldN
                     sx={GradientButton}
                     style={{ width: "48%", marginRight: '4px', marginTop: '20px' }}
                 >
-                    Create
+                    Rename
                 </Button>
                 <Button
                     sx={gradientBorderButton}
-                    style={{ width: '48% !important', marginTop: '20px' }}
+                    style={{ width: '48%', marginTop: '20px' }}
                     onClick={() => closeForm(false)}
                 >
                     Cancel

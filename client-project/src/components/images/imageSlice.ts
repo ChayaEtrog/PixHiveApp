@@ -182,6 +182,56 @@ export const removeFileFromAlbum = createAsyncThunk(
   }
 );
 
+export const fetchDeletedFiles = createAsyncThunk(
+  'files/fetchDeletedFiles', // שם הפעולה ב-Redux
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/File/deleted`, {
+        headers: {
+          'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+        },
+      });
+      return response.data;  
+    } catch (error:any) {
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const recycleFile = createAsyncThunk(
+  'image/recycleFile',
+  async (fileId: number, { rejectWithValue }) => {
+    try {
+      await axios.post(`${API_BASE_URL}/File/recycle/${fileId}`, {}, { // סגור את המחרוזת של ה-URL
+        headers: {
+          'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`, // השתמש ב-backticks כדי להכניס את ה-token
+        },
+      });
+      return fileId;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const deleteFile = createAsyncThunk(
+  'image/deleteFile', // שם הפעולה
+  async (fileId:number, { rejectWithValue }) => {
+    try {
+      const response= await axios.delete(`${API_BASE_URL}/S3/${fileId}`, {
+        headers: {
+          'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+        },
+      });
+
+      console.log("File deleted successfully:", response.status);
+        return fileId; 
+    } catch (error:any) {
+      return rejectWithValue(error.response?.data || error.message); // מחזיר שגיאה אם נכשל
+    }
+  }
+);
+
 const imageSlice = createSlice({
   name: 'image',
   initialState: {
@@ -191,6 +241,7 @@ const imageSlice = createSlice({
     success: false,
     pending: true,
     files: [] as Image[],
+    deletedFiles: [] as Image[],
     downloadUrl: '',
     isRootFiles: false,
   },
@@ -202,6 +253,7 @@ const imageSlice = createSlice({
       state.success = false;
       state.downloadUrl = '';
       state.isRootFiles = false;
+      state.deletedFiles = [] as Image[];
     },
   },
   extraReducers: (builder) => {
@@ -317,6 +369,7 @@ const imageSlice = createSlice({
         state.pending = false;
         state.error = action.payload as string;
       })
+      //delete file
       .addCase(removeFileFromAlbum.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -328,7 +381,49 @@ const imageSlice = createSlice({
         state.files = state.files.filter(f => f.id != fileId);
       })
       .addCase(removeFileFromAlbum.rejected, (state, action) => {
+        state.pending = false;
         state.error = action.payload as string;
+      })
+      //get deleted files
+      .addCase(fetchDeletedFiles.pending, (state) => {
+        state.pending = true;
+        state.error = '';
+      })
+      .addCase(fetchDeletedFiles.fulfilled, (state, action) => {
+        state.pending = false;
+        state.deletedFiles = action.payload;
+      })
+      .addCase(fetchDeletedFiles.rejected, (state, action) => {
+        state.pending = false;
+        state.error = action.payload as string;
+      })
+      .addCase(recycleFile.fulfilled, (state, action) => {
+        state.deletedFiles = state.deletedFiles.filter(file => file.id !== action.payload);
+      })
+      .addCase(recycleFile.pending, (state) => {
+        state.pending = true;
+        state.error=''
+      })
+      .addCase(recycleFile.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.pending = false;
+      })
+      //delete file premenently
+      .addCase(deleteFile.pending, (state) => {
+        state.pending = true; 
+        state.error='';
+      })
+      .addCase(deleteFile.fulfilled, (state, action) => {
+        console.log("deleteFile - fulfilled", action);
+        if (action.payload) {
+          state.deletedFiles = state.deletedFiles.filter(file => file.id !== action.payload);
+        }
+        state.pending = false;
+        state.error = '';
+      })
+      .addCase(deleteFile.rejected, (state, action) => {
+        state.pending = false;
+        state.error = action.payload as string;  // שמירה של השגיאה אם נכשל
       });
   },
 });

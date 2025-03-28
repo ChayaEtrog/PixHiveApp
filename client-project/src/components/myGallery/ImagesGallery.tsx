@@ -14,16 +14,19 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
 import { DownloadImage } from '../Image Operations/downloadImage';
 import MoveImageToAlbum from '../Image Operations/MoveImageToAlbum';
+import { removeFileFromAlbum } from '../images/imageSlice';
+import { useParams } from 'react-router';
 
 
 const ImageGallery = ({ files }: { files: Image[] }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [openImage, setOpenImage] = useState('');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedFile, setSelectedFile] = useState<{ id: number, name: string, displayName: string }>({ id: 0, name: '', displayName: '', });
   const [isRename, setIsRename] = useState(false);
   const [isMoveOpen, setIsMoveOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<{ id: number, name: string, displayName: string }>({ id: 0, name: '', displayName: '', });
-
+  const { albumId } = useParams(); 
+  
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>, file: Image) => {
     setSelectedFile({ id: file.id, displayName: file.displayName, name: file.name });
     setAnchorEl(event.currentTarget);
@@ -32,6 +35,12 @@ const ImageGallery = ({ files }: { files: Image[] }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleDelete=()=>{
+    dispatch(removeFileFromAlbum({fileId:selectedFile.id, albumId: albumId ? Number(albumId) : -1 }));
+    setSelectedFile({ id: 0, name: '', displayName: '', });
+    handleClose();
+  }
 
   return (
     <>
@@ -76,9 +85,9 @@ const ImageGallery = ({ files }: { files: Image[] }) => {
       >
         <MenuItem onClick={()=>{ setIsMoveOpen(true); handleClose();}}><div style={{ display: 'flex' }} ><img src={imagesAndAlbums} alt="" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Organize in Album</div></MenuItem>
         <MenuItem onClick={handleClose}><div style={{ display: 'flex' }}><img src={tag} alt="" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Tag</div></MenuItem>
-        <MenuItem onClick={handleClose}><div style={{ display: 'flex' }} onClick={() => setIsRename(true)}><img src={rename} alt="" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Rename</div></MenuItem>
-        <MenuItem onClick={handleClose}><div style={{ display: 'flex' }} onClick={() => DownloadImage(selectedFile.name, dispatch)}><img src={download} alt="" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Download</div></MenuItem>
-        <MenuItem onClick={handleClose}><div style={{ display: 'flex' }}><img src={delete1} alt="" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Delete</div></MenuItem>
+        <MenuItem onClick={()=>{setIsRename(true),handleClose()}}><div style={{ display: 'flex' }}><img src={rename} alt="" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Rename</div></MenuItem>
+        <MenuItem onClick={() =>{handleClose(),DownloadImage(selectedFile.name, dispatch)}}><div style={{ display: 'flex' }}><img src={download} alt="" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Download</div></MenuItem>
+        <MenuItem onClick={()=>{handleClose(), handleDelete()}}><div style={{ display: 'flex' }}><img src={delete1} alt="" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Delete</div></MenuItem>
       </Menu>
 
       {openImage !== '' && <ShowImage fileName={openImage} closeImage={setOpenImage} />}

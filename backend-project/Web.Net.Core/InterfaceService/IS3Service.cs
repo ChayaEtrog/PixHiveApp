@@ -13,6 +13,8 @@ namespace Web.Net.Core.InterfaceService
 
         Task<Result<string>> GetDownloadUrlAsync(string fileName);
 
+        Task<bool> DeleteFileAsync(string fileName);
+
         public string BucketName();
     }
 }

@@ -36,5 +36,9 @@ namespace Web.Net.Core.InterfaceService
         Task<Result<List<FileDto>>> GetRootFilesByUserIdAsync(int userId);
 
         Task<Result<int>> RemoveFileFromAlbumAsync(int fileId, int albumId);
+
+        Task<Result<List<FileDto>>> GetDeletedFilesAsync();
+
+        Task<Result<bool>> RecycleFile(int fileId);
     }
 }

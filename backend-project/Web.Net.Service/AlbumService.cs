@@ -236,7 +236,7 @@ namespace Web.Net.Service
 
                 if (fileWithAlbums.Albums.Count == 1)
                 {
-                   _repositoryManager.Files.DeleteFileAsync(fileWithAlbums.Id);
+                    file.IsDeleted = true;
                 }
             }
 

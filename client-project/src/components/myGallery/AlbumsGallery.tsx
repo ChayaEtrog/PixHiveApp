@@ -6,6 +6,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import rename from "../../../public/Icons/rename.png";
 import delete1 from "../../../public/Icons/delete.png";
 import RenameAlbum from '../album operations/RenameAlbum';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../appStore';
+import { deleteAlbum } from '../albums/albumSlice';
 
 interface FolderListProps {
   folders: any[];
@@ -16,17 +19,21 @@ const AlbumGallery = ({ folders, onFolderClick }: FolderListProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFolder, setSelectedFolder] = useState<{name:string, albumId:number}>({name:'',albumId:-1});
   const [isRenameOpen, setIsRenameOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>, album: Album) => {
     setSelectedFolder({name:album.albumName, albumId:album.id});
-    console.log(selectedFolder.name);
-    
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const handleDelete=()=>{
+    dispatch(deleteAlbum(selectedFolder.albumId));
+    setSelectedFolder({name:'',albumId:-1})
+  }
 
   return (
     <>
@@ -69,8 +76,8 @@ const AlbumGallery = ({ folders, onFolderClick }: FolderListProps) => {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          <MenuItem onClick={handleMenuClose}><div style={{ display: 'flex' }} onClick={() => setIsRenameOpen(true)}><img src={rename} alt="rename" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Rename</div></MenuItem>
-          <MenuItem onClick={handleMenuClose}><div style={{ display: 'flex' }}><img src={delete1} alt="delete" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Delete</div></MenuItem>
+          <MenuItem onClick={()=>{handleMenuClose(), setIsRenameOpen(true)}}><div style={{ display: 'flex' }}><img src={rename} alt="rename" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Rename</div></MenuItem>
+          <MenuItem onClick={()=>{handleMenuClose(), handleDelete()}}><div style={{ display: 'flex' }}><img src={delete1} alt="delete" style={{ marginRight: '10px', width: '25px', objectFit: 'contain' }} />Delete</div></MenuItem>
         </Menu>
       </TableContainer>
       {isRenameOpen &&<RenameAlbum oldName={selectedFolder.name} closeForm={setIsRenameOpen} albumId={selectedFolder.albumId}/>}

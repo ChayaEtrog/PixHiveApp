@@ -15,8 +15,8 @@ namespace Web.Net.Service
 {
     public class TagService(IRepositoryManager repositoryManager, IMapper mapper) : ITagService
     {
-        private readonly IRepositoryManager _repositoryManager;
-        private readonly IMapper _mapper;
+        private readonly IRepositoryManager _repositoryManager=repositoryManager;
+        private readonly IMapper _mapper=mapper;
 
         public async Task<Result<TagDto>> AddTagAsync(TagDto entity)
         {
@@ -29,7 +29,7 @@ namespace Web.Net.Service
 
             var tag = _mapper.Map<TagEntity>(entity);
             await _repositoryManager.Tags.AddAsync(tag);
-            _repositoryManager.Save();
+            await _repositoryManager.Save();
 
             return Result<TagDto>.Success(_mapper.Map<TagDto>(tag));
         }
@@ -44,7 +44,7 @@ namespace Web.Net.Service
                 return Result<TagDto>.BadRequest("Cant delete the defult tag.");
 
             await _repositoryManager.Tags.DeleteAsync(tag);
-            _repositoryManager.Save();
+            await _repositoryManager.Save();
 
             return Result<TagDto>.Success(null); 
         }
@@ -71,8 +71,25 @@ namespace Web.Net.Service
                 return Result<TagDto>.NotFound("Tag not found.");
 
             var result = await _repositoryManager.Tags.UpdateTagNameAsync(id, newName);
-            _repositoryManager.Save();
+           await _repositoryManager.Save();
             return Result<TagDto>.Success(_mapper.Map<TagDto>(result)); 
+        }
+
+        public async Task<Result<List<TagDto>>> GetUnassignedTagsAsync(int fileId)
+        {
+            var allTags = await _repositoryManager.Tags.GetAllAsync();
+
+            var files = await _repositoryManager.Files.GetFullAsync();
+            var file = files.FirstOrDefault(f=>f.Id==fileId);
+
+            if (file == null)
+                return Result<List<TagDto>>.Failure("File not found");
+
+            var unassignedTags = allTags
+                .Where(tag => !file.Tags.Any(ft => ft.Id == tag.Id))
+                .ToList();
+
+            return Result<List<TagDto>>.Success(_mapper.Map<List<TagDto>>(unassignedTags));
         }
     }
 }

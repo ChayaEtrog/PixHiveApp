@@ -194,6 +194,13 @@ namespace Web.Net.Service
             if (file == null)
                 return Result<int>.Failure("File not found");
 
+            if (albumId == -1)
+            {
+                file.IsDeleted = true;
+                await _repositoryManager.Save();
+                return Result<int>.Success(file.Id);
+            }
+
             var album = file.Albums.FirstOrDefault(a => a.Id == albumId);
             if (album == null)
                 return Result<int>.Failure("File is not part of this album");
@@ -202,11 +209,29 @@ namespace Web.Net.Service
 
             if (!file.Albums.Any())
             {
-                 _repositoryManager.Files.DeleteFileAsync(file.Id);
+                file.IsDeleted = true;
             }
 
             await _repositoryManager.Save();
             return Result<int>.Success(file.Id);
+        }
+
+        public async Task<Result<List<FileDto>>> GetDeletedFilesAsync()
+        {
+            var deletedFiles = await _repositoryManager.Files.GetDeletedFilesAsync();
+
+            return Result<List<FileDto>>.Success(_mapper.Map<List<FileDto>>(deletedFiles));
+
+        }
+
+        public async Task<Result<bool>> RecycleFile(int fileId)
+        {
+            var file =await _repositoryManager.Files.GetByIdAsync(fileId);
+            if (file == null)
+                return Result<bool>.NotFound("File not found.");
+            file.IsDeleted = false;
+            await _repositoryManager.Save();
+            return Result<bool>.Success(true);
         }
     }
 }

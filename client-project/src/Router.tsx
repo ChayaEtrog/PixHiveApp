@@ -4,6 +4,8 @@ import AppLayout from "./components/AppLayout"
 import ErrorPage from "./components/ErrorPage"
 import UploadImage from "./components/images/UploadImage"
 import GalleryExplorer from "./components/myGallery/GalleryExplorer"
+import DeletedFilesGallery from "./components/myGallery/DeletedFilesGallery"
+import GalleryNavBar from "./components/myGallery/GalleryNavBar"
 
 
 export const router = createBrowserRouter([
@@ -13,9 +15,18 @@ export const router = createBrowserRouter([
         children: [
             { index: true, element: <Home /> },
             { path: 'home', element: <Home /> },
+            {path:'nav-bar', element: <GalleryNavBar/>},
             { path: 'upload-image', element: <UploadImage /> },
             { path: 'gallery', element: <GalleryExplorer /> },
-            { path:'album/:albumId', element: <GalleryExplorer /> },
+            {
+                path: "gallery",
+                element: <GalleryExplorer />, // קומפוננטת האב
+                children: [
+                    { path: "album/:albumId", element: <GalleryExplorer /> },
+                    { path: "recycle-bin", element: <DeletedFilesGallery /> },
+                ],
+            },
+            
         ]
     }
 ])

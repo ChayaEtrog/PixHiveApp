@@ -4,10 +4,9 @@ export const gradientBorderButton = {
     borderImageSource: 'linear-gradient(to right, #47dcd1, #dc8dec)',
     color: '#743ad5',
     backgroundColor: '#fff',
-    padding: '10px 30px',
+    padding: '6px 30px',
     borderRadius: 0,
     width: '10vw',
-    display: {xs: 'none',lg:'inline'} ,
     transition: 'all 0.3s ease',
     '&:hover': {
       background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)',

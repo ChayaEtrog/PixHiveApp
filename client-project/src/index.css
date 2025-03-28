@@ -73,15 +73,7 @@ body {
   color: white;
 }
 
-.button-text {
-  display: block; /* ברירת מחדל, מוצג */
-}
 
-@media (max-width: 600px) {
-  .textButton {
-      display: none; /* מוסתר במסכים קטנים יותר */
-  }
-}
 
 .textButton{
   display: block;

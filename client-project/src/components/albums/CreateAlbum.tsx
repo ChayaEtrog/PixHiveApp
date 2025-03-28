@@ -70,7 +70,7 @@ const CreateAlbum = ({closeForm}:{closeForm:Function}) => {
                 onClick={(e)=>e.stopPropagation()}
               >
                 <Typography variant="h5" mb={2}>
-                  new Album
+                  New Album
                 </Typography>
         
                 <TextField
@@ -91,7 +91,7 @@ const CreateAlbum = ({closeForm}:{closeForm:Function}) => {
                 </Button>
                 <Button
                   sx={gradientBorderButton}
-                  style={{width:'48% !important', marginTop: '20px'}}
+                  style={{width:'48%', marginTop: '20px'}}
                   onClick={()=>closeForm(false)}
                 >
                   Cancel

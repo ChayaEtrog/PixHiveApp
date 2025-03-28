@@ -72,7 +72,7 @@ const MoveImageToAlbum = ({ fileId, closeForm }: { closeForm: Function, fileId: 
                     </List>
                 {/* )} */}
     
-                <Button onClick={handleMove}>move</Button>
+                <Button onClick={handleMove}>copy</Button>
                 <Button onClick={() => closeForm(false)}>cancel</Button>
             </Box>
         </Box>

@@ -20,5 +20,7 @@ namespace Web.Net.Core.InterfaceService
         Task<Result<TagDto>> UpdateTagAsync(int id, string newName);
 
         Task<Result<TagDto>> DeleteTagAsync(int tagId);
+
+        Task<Result<List<TagDto>>> GetUnassignedTagsAsync(int fileId);
     }
 }

@@ -5,24 +5,25 @@ import { AppDispatch, StoreType } from '../appStore';
 import { fetchChildAlbums } from '../albums/albumSlice';
 import { UserContext } from '../user/UserReducer';
 import ErrorMessage from '../ErrorMessage';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { getFilesByAlbum, getRootFilesByUser, resetFiles } from '../images/imageSlice';
 import AlbumsGallery from './AlbumsGallery';
 import ImageGallery from './ImagesGallery';
-import { useNavigate, useParams } from 'react-router';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router';
 import GalleryBreadcrumbs from './Breadcrumbs';
 import GalleryNavBar from './GalleryNavBar';
+import DeletedFilesGallery from './DeletedFilesGallery';
 
-const GalleryExplorer=()  => {
+const GalleryExplorer = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { 
+    const {
         image: { files: images, error: imageError, uploading },
         album: { albums, error: albumError, loading: albumLoading },
     } = useSelector((store: StoreType) => ({
         image: store.image,
         album: store.album,
     }));
-    
+    const location = useLocation();
     const { albumId } = useParams();
     const navigate = useNavigate();
     const [pathStack, setPathStack] = useState<Album[]>([]);
@@ -43,23 +44,23 @@ const GalleryExplorer=()  => {
 
     const handleFolderClick = (album: Album) => {
         setPathStack(prev => [...prev, album]);
-        navigate(`/album/${album.id}`);
+        navigate(`/gallery/album/${album.id}`); // עדכון הנתיב שיתאים למבנה החדש
     };
 
     const navigateToBreadcrumb = (index: number) => {
         if (index === -1) {
             setPathStack([]);
-            navigate('/gallery');
+            navigate('/gallery'); // חזרה לעמוד הראשי של הגלריה
             return;
         }
         const targetAlbum = pathStack[index];
         const newStack = pathStack.slice(0, index + 1);
         setPathStack(newStack);
-        navigate(`/album/${targetAlbum.id}`);
+        navigate(`/gallery/album/${targetAlbum.id}`); // עדכון הנתיב בהתאם למבנה החדש
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, width: '100%', marginTop: '80px', height: '100vh', overflow:'hidden'}}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, width: '100%', marginTop: '80px', height: '100vh', overflow: 'hidden' }}>
             <Box sx={{ width: '15vw', }}>
                 <GalleryNavBar />
             </Box>
@@ -71,10 +72,10 @@ const GalleryExplorer=()  => {
                     flexGrow: 1,
                     p: 4,
                     width: { sm: `calc(100% - ${250}px)` },
-                    mt: { xs: 7, sm: 0 }, 
-                    overflowY:'auto',
+                    mt: { xs: 7, sm: 0 },
+                    overflowY: 'auto',
                     bgcolor: 'rgba(244, 244, 244, 0.41)'
-                    ,marginBottom:'60px' 
+                    , marginBottom: '60px'
                 }}
             >
                 {albumId && <GalleryBreadcrumbs pathStack={pathStack} onNavigateToBreadcrumb={navigateToBreadcrumb} />}
@@ -106,17 +107,21 @@ const GalleryExplorer=()  => {
                     </>
                 ) : (
                     <>
-                        {(images.length == 0 && albums.length == 0) && <h3>no files or albums found to this album</h3>}
+                        {location.pathname !== "/gallery/recycle-bin" && <>
+                            {(images.length == 0 && albums.length == 0) && <h3>no files or albums found to this album</h3>}
 
-                        {albums.length > 0 && <AlbumsGallery folders={albums} onFolderClick={handleFolderClick} />}
-                        <div style={{ height: '5vh', width: '9px' }}></div>
+                            {albums.length > 0 && <AlbumsGallery folders={albums} onFolderClick={handleFolderClick} />}
+                            <div style={{ height: '5vh', width: '9px' }}></div>
 
-                        {images.length > 0 && <ImageGallery files={images} />}
+                            {images.length > 0 && <ImageGallery files={images} />}
+                        </>}
+                        {location.pathname === "/gallery/recycle-bin" && <DeletedFilesGallery />}
+
                     </>
                 )}
             </Box>
         </Box >
-  );
+    );
 }
 
 

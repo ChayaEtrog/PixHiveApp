@@ -30,12 +30,12 @@ const RenameImage = ({ oldName, fileId, closeForm }: { oldName: string, closeFor
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      await dispatch(updateFileName({ 
-        newName: data.newName, 
-        fileId: fileId, 
-        userId: user.id 
+      await dispatch(updateFileName({
+        newName: data.newName,
+        fileId: fileId,
+        userId: user.id
       })).unwrap(); // מחכה שהתהליך יסתיים
-  
+
       closeForm(false);
     } catch (error) {
       console.error("Error updating file name:", error);
@@ -56,7 +56,7 @@ const RenameImage = ({ oldName, fileId, closeForm }: { oldName: string, closeFor
         alignItems: "center",
         zIndex: 9999,
       }}
-      // onClick={() => closeForm(false)}
+      onClick={() => closeForm(false)}
     >
       <Box
         component="form"
@@ -71,11 +71,11 @@ const RenameImage = ({ oldName, fileId, closeForm }: { oldName: string, closeFor
         onClick={(e) => e.stopPropagation()}
       >
         <Typography variant="h5" mb={2}>
-          rename
+          Rename Image
         </Typography>
 
         <TextField
-          label="Album Name"
+          label="Image Name"
           defaultValue={oldName}
           fullWidth
           {...register("newName")}
@@ -88,11 +88,11 @@ const RenameImage = ({ oldName, fileId, closeForm }: { oldName: string, closeFor
           sx={GradientButton}
           style={{ width: "48%", marginRight: '4px', marginTop: '20px' }}
         >
-          Create
+          Rename
         </Button>
         <Button
           sx={gradientBorderButton}
-          style={{ width: '48% !important', marginTop: '20px' }}
+          style={{ width: '48% ', marginTop: '20px' }}
           onClick={() => closeForm(false)}
         >
           Cancel

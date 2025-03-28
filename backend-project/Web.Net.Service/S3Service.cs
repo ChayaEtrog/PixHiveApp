@@ -81,6 +81,27 @@ namespace Web.Net.Service
                 return Result<string>.Failure($"Error generating download URL: {ex.Message}");
             }
         }
+
+        public async Task<bool> DeleteFileAsync(string fileName)
+        {
+            try
+            {
+                var deleteRequest = new DeleteObjectRequest
+                {
+                    BucketName = _bucketName,
+                    Key = fileName
+                };
+
+                var response = await _s3Client.DeleteObjectAsync(deleteRequest);
+                return response.HttpStatusCode == System.Net.HttpStatusCode.NoContent;
+            }
+            catch (Exception ex)
+            {
+                // טיפול בשגיאות
+                Console.WriteLine($"Error deleting file from S3: {ex.Message}");
+                return false;
+            }
+        }
     }
 
 }

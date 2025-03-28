@@ -62,5 +62,14 @@ namespace Web.Net.Api.Controllers
             return result.Data == null ? NotFound() : Ok(result.Data);
         }
 
+        [HttpGet("{fileId}/unassigned-tags")]
+        public async Task<ActionResult<IEnumerable<TagDto>>> GetUnassignedTags(int fileId)
+        {
+            var result = await _tagService.GetUnassignedTagsAsync(fileId);
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result.ErrorMessage);
+
+            return Ok(result.Data);
+        }
     }
 }
