@@ -49,6 +49,7 @@ const MoveImageToAlbum = ({ fileId, closeForm }: { closeForm: Function, fileId: 
                     borderRadius: 2,
                     boxShadow: 3,
                     width: "350px",
+                    maxHeight:"60vh"
                 }}
             >
                {/* (

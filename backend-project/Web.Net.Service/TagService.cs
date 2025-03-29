@@ -20,19 +20,30 @@ namespace Web.Net.Service
 
         public async Task<Result<TagDto>> AddTagAsync(TagDto entity)
         {
-            var existingTag = await _repositoryManager.Tags.GetTagByNameAsync(entity.TagName);
+            var newTag = CapitalizeFirstLetter(entity.TagName);
+            var existingTag = await _repositoryManager.Tags.GetTagByNameAsync(newTag);
 
             if (existingTag != null)
             {
                 return Result<TagDto>.Success(_mapper.Map<TagDto>(existingTag));
             }
 
+            entity.TagName = newTag;
             var tag = _mapper.Map<TagEntity>(entity);
             await _repositoryManager.Tags.AddAsync(tag);
             await _repositoryManager.Save();
 
             return Result<TagDto>.Success(_mapper.Map<TagDto>(tag));
         }
+
+        public static string CapitalizeFirstLetter(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            return char.ToUpper(input[0]) + input.Substring(1).ToLower();
+        }
+
 
         public async Task<Result<TagDto>> DeleteTagAsync(int tagId)
         {

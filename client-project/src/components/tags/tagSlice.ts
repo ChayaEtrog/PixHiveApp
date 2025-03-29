@@ -9,7 +9,11 @@ export const fetchTags = createAsyncThunk(
     'tags/fetchTags',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}`);
+            const response = await axios.get(`${API_BASE_URL}`, {
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                },
+            });
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
@@ -22,7 +26,11 @@ export const fetchTagById = createAsyncThunk(
     'tags/fetchTagById',
     async (id: number, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/${id}`);
+            const response = await axios.get(`${API_BASE_URL}/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                },
+            });
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
@@ -35,7 +43,16 @@ export const addTag = createAsyncThunk(
     'tags/addTag',
     async (tagName: string, { rejectWithValue }) => {
         try {
-            const response = await axios.post(`${API_BASE_URL}`, { name: tagName });
+            const response = await axios.post(
+                `${API_BASE_URL}/Tag`,
+                { tagName: tagName },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
@@ -48,9 +65,16 @@ export const updateTag = createAsyncThunk(
     'tags/updateTag',
     async ({ id, newName }: { id: number; newName: string }, { rejectWithValue }) => {
         try {
-            const response = await axios.put(`${API_BASE_URL}/${id}`, newName, {
-                headers: { 'Content-Type': 'application/json' },
-            });
+            const response = await axios.put(
+                `${API_BASE_URL}/${id}`,
+                newName,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
             return { id, name: newName };
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
@@ -58,12 +82,16 @@ export const updateTag = createAsyncThunk(
     }
 );
 
-// ferch all tags of album
+// fetch all tags of album
 export const fetchTagsByFile = createAsyncThunk(
     'fileTags/fetchTagsByFile',
     async (fileId: number, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/${fileId}/tags`);
+            const response = await axios.get(`${API_BASE_URL}/File/${fileId}/tags`, {
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                },
+            });
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
@@ -76,7 +104,15 @@ export const addTagToFile = createAsyncThunk(
     'fileTags/addTagToFile',
     async ({ fileId, tagId }: { fileId: number; tagId: number }, { rejectWithValue }) => {
         try {
-            const response = await axios.post(`${API_BASE_URL}/${fileId}/tags/${tagId}`);
+            const response = await axios.post(
+                `${API_BASE_URL}/File/${fileId}/tags/${tagId}`,
+                {},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                    },
+                }
+            );
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
@@ -89,7 +125,11 @@ export const removeTagFromFile = createAsyncThunk(
     'fileTags/removeTagFromFile',
     async ({ fileId, tagId }: { fileId: number; tagId: number }, { rejectWithValue }) => {
         try {
-            await axios.delete(`${API_BASE_URL}/${fileId}/tags/${tagId}`);
+            await axios.delete(`${API_BASE_URL}/File/${fileId}/tags/${tagId}`, {
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                },
+            });
             return { fileId, tagId };
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
@@ -97,12 +137,16 @@ export const removeTagFromFile = createAsyncThunk(
     }
 );
 
-//fetch tags which not belong to this file
+// fetch tags which are not assigned to this file
 export const fetchUnassignedTags = createAsyncThunk(
-    "tags/fetchUnassignedTags",
-    async (fileId, { rejectWithValue }) => {
+    'tags/fetchUnassignedTags',
+    async (fileId: number, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/files/${fileId}/unassigned-tags`);
+            const response = await axios.get(`${API_BASE_URL}/Tag/${fileId}/unassigned-tags`, {
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                },
+            });
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
@@ -110,8 +154,9 @@ export const fetchUnassignedTags = createAsyncThunk(
     }
 );
 
+
 const tagSlice = createSlice({
-    name: 'tags',
+    name: 'tag',
     initialState: {
         tags: [] as Tag[],
         pending: false,
@@ -222,7 +267,7 @@ const tagSlice = createSlice({
             })
             .addCase(fetchUnassignedTags.fulfilled, (state, action) => {
                 state.pending = false;
-                state.tags = action.payload; 
+                state.tags = action.payload;
             })
             .addCase(fetchUnassignedTags.rejected, (state, action) => {
                 state.pending = false;
@@ -231,4 +276,4 @@ const tagSlice = createSlice({
     },
 });
 
-export default tagSlice.reducer;
+export default tagSlice;

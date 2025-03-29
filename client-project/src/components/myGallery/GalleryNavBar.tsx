@@ -6,7 +6,8 @@ import CreateAlbum from "../albums/CreateAlbum";
 import UploadImagePopup from "../images/UploadImagePopup";
 import upload from "../../../public/Icons/uploadIcon.png"
 import recycleBin from "../../../public/Icons/recycleBin.png"
-import { Outlet, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
+import gallery from"../../../public/Icons/imagesAndAlbums.png"
 
 const GalleryNavBar = () => {
     const [createAlbum, setCreateAlbum] = useState(false);
@@ -17,10 +18,20 @@ const GalleryNavBar = () => {
         <>
 
             <Button variant="outlined" sx={iconButtonStyle} onClick={() => setCreateAlbum(true)}>
-                <img src={addAlbum} alt="Add Album" style={{ width: '100%', marginTop: '35px' }} />
+                <img src={gallery} alt="Add Album" style={{ width: '100%', marginTop: '20px' }} />
             </Button>
 
-            <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}} onClick={() => setCreateAlbum(true)} style={{ height: '60px',marginTop:'20px' }}>
+            <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}} onClick={() => navigate('/gallery')} style={{ height: '60px',marginTop:'20px' }}>
+                Gallery
+            </Button>
+
+            <div style={{ width: '15vw', height: '25px' }}></div> {/*background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)*/}
+
+            <Button variant="outlined" sx={iconButtonStyle} onClick={() => setCreateAlbum(true)}>
+                <img src={addAlbum} alt="Add Album" style={{ width: '100%'}} />
+            </Button>
+
+            <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}} onClick={() => setCreateAlbum(true)} style={{ height: '60px' }}>
                 create album
             </Button>
 
