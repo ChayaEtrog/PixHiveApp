@@ -186,5 +186,13 @@ namespace Web.Net.Api.Controllers
             var result = await _fileService.RecycleFile(fileId);
             return result.IsSuccess ? Ok(result.Data) : NotFound(result.ErrorMessage);
         }
+
+        [HttpGet("search-in/${parentId}")]
+        public async Task<IActionResult> SearchFiles(int parentId,[FromQuery] string name)
+        {
+            var files = await _fileService.SearchFilesByNameAsync(name, parentId);
+
+            return Ok(files);
+        }
     }
 }

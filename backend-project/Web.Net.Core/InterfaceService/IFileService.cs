@@ -40,5 +40,7 @@ namespace Web.Net.Core.InterfaceService
         Task<Result<List<FileDto>>> GetDeletedFilesAsync();
 
         Task<Result<bool>> RecycleFile(int fileId);
+
+        Task<Result<List<FileDto>>> SearchFilesByNameAsync(string name, int parentId);
     }
 }

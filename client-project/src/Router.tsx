@@ -6,6 +6,7 @@ import UploadImage from "./components/images/UploadImage"
 import GalleryExplorer from "./components/myGallery/GalleryExplorer"
 import DeletedFilesGallery from "./components/myGallery/DeletedFilesGallery"
 import GalleryNavBar from "./components/myGallery/GalleryNavBar"
+import MessageBox from "./components/messages/MessageBox"
 
 
 export const router = createBrowserRouter([
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
                     { path: "recycle-bin", element: <DeletedFilesGallery /> },
                 ],
             },
+            { path: 'messages', element: <MessageBox /> },
             
         ]
     }

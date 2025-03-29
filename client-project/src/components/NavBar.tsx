@@ -38,6 +38,12 @@ function NavBar() {
                         Gallery
                     </NavLink>
 
+                    <NavLink
+                        to="/messages"
+                    >
+                        Mes
+                    </NavLink>
+
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <UserAvatar/>

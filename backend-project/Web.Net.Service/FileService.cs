@@ -10,6 +10,7 @@ using Web.Net.Core.Entity;
 using Web.Net.Core.InterfaceRepository;
 using Web.Net.Core.InterfaceService;
 using Web.Net.Core.Shared;
+using Web.Net.Data.Repositories;
 
 namespace Web.Net.Service
 {
@@ -232,6 +233,13 @@ namespace Web.Net.Service
             file.IsDeleted = false;
             await _repositoryManager.Save();
             return Result<bool>.Success(true);
+        }
+
+        public async Task<Result<List<FileDto>>> SearchFilesByNameAsync(string name, int parentId)
+        {
+            var list= await _repositoryManager.Files.SearchFilesByNameAsync(name, parentId);
+
+            return Result<List<FileDto>>.Success(_mapper.Map<List<FileDto>>(list));
         }
     }
 }

@@ -30,5 +30,7 @@ namespace Web.Net.Core.InterfaceRepository
         Task<List<FileEntity>> GetRootFilesByUserId(int userId);
 
         Task<List<FileEntity>> GetDeletedFilesAsync();
+
+        Task<List<FileEntity>> SearchFilesByNameAsync(string name, int parentId);
     }
 }

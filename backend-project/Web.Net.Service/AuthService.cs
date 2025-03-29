@@ -13,6 +13,7 @@ using Web.Net.Core.Entity;
 using Web.Net.Core.InterfaceRepository;
 using Web.Net.Core.InterfaceService;
 using Web.Net.Core.Shared;
+using Web.Net.Data.Repositories;
 
 namespace Web.Net.Service
 {

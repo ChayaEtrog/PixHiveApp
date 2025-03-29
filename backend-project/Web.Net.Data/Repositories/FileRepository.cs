@@ -181,5 +181,30 @@ namespace Web.Net.Data.Repositories
                 .Where(f => f.IsDeleted)
                 .ToListAsync();
         }
+
+        public async Task<List<FileEntity>> SearchFilesByNameAsync(string name, int parentId)
+        {
+            List<FileEntity> files;
+
+            if (parentId ==-1)
+            {
+                files = await _context.Files
+                    .Where(f => f.Name.Contains(name))
+                    .ToListAsync();
+            }
+            else
+            {
+                var allSubAlbums = await _context.Albums
+                    .Where(a => a.ParentId == parentId || a.ParentId == null)
+                    .ToListAsync();
+
+                files = await _context.Files
+                    .Where(f => f.Name.Contains(name) && f.Albums
+                        .Any(a => allSubAlbums.Contains(a)))
+                    .ToListAsync();
+            }
+
+            return files;
+        }
     }
 }
