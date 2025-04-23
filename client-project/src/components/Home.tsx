@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import pixHive from "../../public/pictures/PixHive.png"
-import pixHiveLogedin from "../../public/pictures/PixHiveLoged.png"
+import pixHiveLogedin from "../../public/pictures/PixHiveLogedCut.png"
 import { useContext, useState } from "react";
 import Login from "./user/UserLogin";
 import Register from "./user/UserRegister";

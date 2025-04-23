@@ -14,7 +14,7 @@ const GalleryBreadcrumbs: React.FC<Props> = ({ pathStack, onNavigateToBreadcrumb
   return (
     <Box sx={{ mb: 2 }}>
       <span
-        style={{ cursor: 'pointer', color: 'blue' }}
+        style={{ cursor: 'pointer', color: '#555' }}
         onClick={() => {
           navigate('/gallery');
           onNavigateToBreadcrumb(-1); // חזרה להתחלה
@@ -26,7 +26,7 @@ const GalleryBreadcrumbs: React.FC<Props> = ({ pathStack, onNavigateToBreadcrumb
         <span key={album.id}>
           {' > '}
           <span
-            style={{ cursor: 'pointer', color: 'blue' }}
+            style={{ cursor: 'pointer', color: '#555' }}
             onClick={() => onNavigateToBreadcrumb(index)}
           >
             {album.albumName}

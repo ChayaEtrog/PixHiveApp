@@ -22,5 +22,9 @@ namespace Web.Net.Core.InterfaceRepository
         Task<List<AlbumEntity>> GetAlbumsByUserIdAsync(int userId);
 
         Task<List<AlbumEntity>> GetChildAlbumsByUserId(int userId,int? parentId = null);
+
+        Task<List<AlbumEntity>> SearchAlbumsByNameAsync(int userId, string name, int parentId);
+        
+        Task<List<AlbumEntity>> GetAlbumsByDateAsync(int userId, DateTime? startDate, DateTime? endDate, int? parentAlbumId = null);
     }
 }

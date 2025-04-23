@@ -15,9 +15,9 @@ namespace Web.Net.Core.InterfaceRepository
 
         Task<FileEntity> UpdateFileNameAsync(int fileId, string newName);
 
-        Task<IEnumerable<FileEntity>> GetFilesByTagAndUserIdAsync(int userId, string tagName);
+        Task<List<FileEntity>> GetFilesByTagAndUserIdAsync(int userId, string tagName, int? parentAlbumId = null);
 
-        Task<IEnumerable<FileEntity>> GetFilesByDateAsync(DateTime? startDate = null, DateTime? endDate = null);
+        Task<List<FileEntity>> GetFilesByDateAsync(int userId, DateTime? startDate, DateTime? endDate, int? parentAlbumId = null);
 
         Task<List<FileEntity>> GetFilesByUserIdAsync(int userId);
 
@@ -31,6 +31,6 @@ namespace Web.Net.Core.InterfaceRepository
 
         Task<List<FileEntity>> GetDeletedFilesAsync();
 
-        Task<List<FileEntity>> SearchFilesByNameAsync(string name, int parentId);
+        Task<List<FileEntity>> SearchFilesByNameAsync(int userId, string name, int parentId);
     }
 }

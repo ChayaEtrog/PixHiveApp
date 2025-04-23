@@ -79,5 +79,36 @@ namespace Web.Net.Api.Controllers
             await _messageService.DeleteMessageAsync(id);
             return NoContent();
         }
+
+        [HttpGet("user/{userId}/messages")]
+        [Authorize]
+        public async Task<IActionResult> GetMessagesForUser(int userId)
+        {
+            var result = await _messageService.GetMessagesForUserAsync(userId);
+            if (!result.IsSuccess)
+                return NotFound(result.ErrorMessage);
+
+            return Ok(result.Data);
+        }
+
+        [HttpPost("user/{userId}/message/{messageId}/read")]
+        [Authorize]
+        public async Task<IActionResult> MarkMessageAsRead(int userId, int messageId)
+        {
+            var result = await _messageService.MarkMessageAsReadAsync(userId, messageId);
+            if (!result.IsSuccess)
+                return BadRequest(result.ErrorMessage);
+
+            return Ok();
+        }
+
+        [HttpGet("user/{userId}")]
+        [Authorize]
+        public async Task<IActionResult> GetMessages(int userId)
+        {
+            var result = await _messageService.GetMessagesAsync(userId);
+
+            return Ok(result);
+        }
     }
 }

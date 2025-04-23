@@ -6,6 +6,7 @@ import { fetchAlbumsByUser } from "../albums/albumSlice";
 import { Box, Button, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { Album } from "../../types/Album";
 import { addFileToAlbum } from "../images/imageSlice";
+import { gradientBorderButton, GradientButton } from "../../styles/buttonsStyle";
 
 const MoveImageToAlbum = ({ fileId, closeForm }: { closeForm: Function, fileId: number }) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -73,8 +74,8 @@ const MoveImageToAlbum = ({ fileId, closeForm }: { closeForm: Function, fileId: 
                     </List>
                 {/* )} */}
     
-                <Button onClick={handleMove}>copy</Button>
-                <Button onClick={() => closeForm(false)}>cancel</Button>
+                <Button onClick={handleMove}  sx={GradientButton} style={{height:40, marginRight:10,marginLeft:10, marginBottom:15,width:'45%'}}>copy</Button>
+                <Button onClick={() => closeForm(false)} sx={gradientBorderButton} style={{height:40, marginBottom:15,width:'45%'}}>cancel</Button>
             </Box>
         </Box>
     );

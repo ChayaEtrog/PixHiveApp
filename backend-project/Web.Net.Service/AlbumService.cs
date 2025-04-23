@@ -50,25 +50,6 @@ namespace Web.Net.Service
             }
         }
 
-        //public async Task<Result<AlbumDto>> DeleteAlbumAsync(int albumId)
-        //{
-        //    try
-        //    {
-        //        var album = await _repositoryManager.Albums.GetByIdAsync(albumId);
-        //        if (album == null)
-        //            return Result<AlbumDto>.NotFound("Album not found");
-
-        //        _repositoryManager.Albums.DeleteAlbumAsync(albumId);
-        //       await _repositoryManager.Save();
-
-        //        return Result<AlbumDto>.Success(null); // Return success with null albumDto, since album was deleted
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Result<AlbumDto>.Failure($"Error deleting album: {ex.Message}");
-        //    }
-        //}
-
         public async Task<Result<AlbumDto>> GetAlbumByIdAsync(int id)
         {
             try
@@ -137,21 +118,18 @@ namespace Web.Net.Service
                     return Result<FileDto>.Failure("File not found");
                 }
 
-                // בדיקה אם השם של הקובץ כבר קיים באלבום
                 bool isFileNameExistInAlbum = await IsFileNameExistInAlbumAsync(albumId, file.DisplayName); 
                 if (isFileNameExistInAlbum)
                 {
                     return Result<FileDto>.Failure("File with the same name already exists in this album.");
                 }
 
-                // הוספת הקובץ לאלבום
                 var response = await _repositoryManager.Albums.AddFileToAlbumAsync(albumId, fileId);
                 if (response == null)
                 {
                     return Result<FileDto>.Failure("File or album not found.");
                 }
 
-                // שמירה ושידור התוצאה
                 await _repositoryManager.Save();
                 return Result<FileDto>.Success(_mapper.Map<FileDto>(response));
             }
@@ -209,10 +187,8 @@ namespace Web.Net.Service
 
         private async Task<bool> IsFileNameExistInAlbumAsync(int albumId, string newName)
         {
-            // שליפת כל הקבצים באלבום הספציפי
             var files = await _repositoryManager.Albums.GetFilesByAlbumIdAsync(albumId);
 
-            // בדיקה אם קיים קובץ עם שם זהה (בהשוואה לא משנה רגישות לרישיות)
             var fileExists = files.Any(f => f.DisplayName.Equals(newName, StringComparison.OrdinalIgnoreCase) || f.Name.Equals(newName, StringComparison.OrdinalIgnoreCase));
 
             return fileExists;
@@ -244,6 +220,19 @@ namespace Web.Net.Service
             await _repositoryManager.Save();
 
             return Result<int>.Success(album.Id);
+        }
+
+        public async Task<Result<List<AlbumDto>>> SearchAlbumsByNameAsync(int userId, string name, int parentId)
+        {
+            var list = await _repositoryManager.Albums.SearchAlbumsByNameAsync(userId, name, parentId);
+
+            return Result<List<AlbumDto>>.Success(_mapper.Map<List<AlbumDto>>(list));
+        }
+
+        public async Task<Result<IEnumerable<AlbumDto>>> GetAlbumsByDateAsync(int userId, DateTime? startDate = null, DateTime? endDate = null, int? parentAlbumId = null)
+        {
+            var files = await _repositoryManager.Albums.GetAlbumsByDateAsync(userId, startDate, endDate, parentAlbumId);
+            return Result<IEnumerable<AlbumDto>>.Success(_mapper.Map<IEnumerable<AlbumDto>>(files));
         }
     }
 }

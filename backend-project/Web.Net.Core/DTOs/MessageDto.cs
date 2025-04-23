@@ -17,5 +17,7 @@ namespace Web.Net.Core.DTOs
         public DateTime CreatedAt { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool IsRead { get; set; }
     }
 }

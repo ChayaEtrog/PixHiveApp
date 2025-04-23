@@ -23,12 +23,18 @@ namespace Web.Net.Data
 
         public DbSet<Role> Roles { get; set; }
 
+        public DbSet<UserMessageReads> UserMessageReads { get; set; }
+
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UserMessageReads>()
+                .HasKey(umr => new { umr.UserId, umr.MessageId }); // הגדרת מפתח משולב
+
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<AlbumEntity>()
@@ -55,17 +61,17 @@ namespace Web.Net.Data
                 .HasForeignKey(m => m.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-           modelBuilder.Entity<MessageEntity>()
-                .HasOne(m => m.User)
-                .WithMany(u => u.Messages)
-                .HasForeignKey(m => m.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<MessageEntity>()
+                 .HasOne(m => m.User)
+                 .WithMany(u => u.Messages)
+                 .HasForeignKey(m => m.UserId)
+                 .OnDelete(DeleteBehavior.Cascade);
 
-           modelBuilder.Entity<FileEntity>()
-               .HasOne(f => f.User)
-               .WithMany(u => u.Files)
-               .HasForeignKey(f => f.UserId)
-               .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<FileEntity>()
+                .HasOne(f => f.User)
+                .WithMany(u => u.Files)
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

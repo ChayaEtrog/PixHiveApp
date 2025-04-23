@@ -80,11 +80,11 @@ namespace Web.Net.Api.Controllers
         }
 
         [HttpGet("by-tag-and-user/{userId}/{tagName}")]
-        public async Task<ActionResult<IEnumerable<FileDto>>> GetFilesByTagAndUserId(int userId, string tagName)
+        public async Task<ActionResult<IEnumerable<FileDto>>> GetFilesByTagAndUserId(int userId, string tagName, [FromQuery] int? parentAlbumId)
         {
-            var result = await _fileService.GetFilesByTagAndUserIdAsync(userId, tagName);
+            var result = await _fileService.GetFilesByTagAndUserIdAsync(userId, tagName, parentAlbumId);
 
-            if (!result.IsSuccess || result.Data == null || !result.Data.Any())
+            if (!result.IsSuccess)
             {
                 return NotFound();
             }
@@ -92,11 +92,12 @@ namespace Web.Net.Api.Controllers
             return Ok(result.Data);
         }
 
-        [HttpGet("by-date")]
-        public async Task<IActionResult> GetFilesByDate([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        [HttpGet("by-date-and-user/{userId}")]
+        public async Task<IActionResult> GetFilesByDateAndUserId(int userId, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] int? parentAlbumId)
         {
-            var result = await _fileService.GetFilesByDateAsync(startDate, endDate);
-            if (!result.IsSuccess || result.Data == null || !result.Data.Any())
+            var result = await _fileService.GetFilesByDateAsync(userId, startDate, endDate, parentAlbumId);
+
+            if (!result.IsSuccess)
             {
                 return NotFound("No files found for the given date range.");
             }
@@ -187,12 +188,15 @@ namespace Web.Net.Api.Controllers
             return result.IsSuccess ? Ok(result.Data) : NotFound(result.ErrorMessage);
         }
 
-        [HttpGet("search-in/${parentId}")]
-        public async Task<IActionResult> SearchFiles(int parentId,[FromQuery] string name)
+        [HttpGet("search-in/{parentId}/of/{userId}")]
+        public async Task<IActionResult> SearchFiles(int userId, int parentId, [FromQuery] string name)
         {
-            var files = await _fileService.SearchFilesByNameAsync(name, parentId);
+            var result = await _fileService.SearchFilesByNameAsync(userId, name, parentId);
 
-            return Ok(files);
+            if (result.IsSuccess)
+                return Ok(result.Data);
+
+            return BadRequest(result.ErrorMessage);
         }
     }
 }

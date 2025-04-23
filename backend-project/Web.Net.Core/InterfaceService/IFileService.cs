@@ -21,9 +21,9 @@ namespace Web.Net.Core.InterfaceService
 
         Task<Result<FileDto>> DeleteFileAsync(int fileId );
 
-        Task<Result<IEnumerable<FileDto>>> GetFilesByTagAndUserIdAsync(int userId, string tagName);
+        Task<Result<IEnumerable<FileDto>>> GetFilesByDateAsync(int userId, DateTime? startDate = null, DateTime? endDate = null, int? parentAlbumId = null);
 
-        Task<Result<IEnumerable<FileDto>>> GetFilesByDateAsync(DateTime? startDate = null, DateTime? endDate = null);
+        Task<Result<IEnumerable<FileDto>>> GetFilesByTagAndUserIdAsync(int userId, string tagName, int? parentAlbumId = null);
 
         Task<Result<List<FileDto>>> GetFilesByUserIdAsync(int userId);
 
@@ -35,12 +35,12 @@ namespace Web.Net.Core.InterfaceService
 
         Task<Result<List<FileDto>>> GetRootFilesByUserIdAsync(int userId);
 
-        Task<Result<int>> RemoveFileFromAlbumAsync(int fileId, int albumId);
+        Task<Result<string>> RemoveFileFromAlbumAsync(int fileId, int albumId);
 
         Task<Result<List<FileDto>>> GetDeletedFilesAsync();
 
         Task<Result<bool>> RecycleFile(int fileId);
 
-        Task<Result<List<FileDto>>> SearchFilesByNameAsync(string name, int parentId);
+        Task<Result<List<FileDto>>> SearchFilesByNameAsync(int userId, string name, int parentId);
     }
 }

@@ -41,7 +41,7 @@ function NavBar() {
                     <NavLink
                         to="/messages"
                     >
-                        Mes
+                        System Messages
                     </NavLink>
 
                 </Box>

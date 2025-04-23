@@ -19,8 +19,6 @@ namespace Web.Net.Core.InterfaceService
 
         Task<Result<AlbumDto>> UpdateAlbumAsync(int userId, int id, string newName);
 
-        //Task<Result<AlbumDto>> DeleteAlbumAsync(int albumId);
-
         Task<Result<FileDto>> AddFileToAlbumAsync(int albumId, int fileId);
 
         Task<Result<List<FileDto>>> GetFilesByAlbumIdAsync(int albumId);
@@ -30,5 +28,9 @@ namespace Web.Net.Core.InterfaceService
         Task<Result<List<AlbumDto>>> GetChildAlbumsAsync(int userId, int? parentId = null);
 
         Task<Result<int>> DeleteAlbumAsync(int albumId);
+
+        Task<Result<IEnumerable<AlbumDto>>> GetAlbumsByDateAsync(int userId, DateTime? startDate = null, DateTime? endDate = null, int? parentAlbumId = null);
+
+        Task<Result<List<AlbumDto>>> SearchAlbumsByNameAsync(int userId, string name, int parentId);
     }
 }

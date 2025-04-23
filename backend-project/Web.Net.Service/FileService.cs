@@ -48,7 +48,6 @@ namespace Web.Net.Service
 
             var file = _mapper.Map<FileEntity>(entity);
 
-            // אם הגיע albumId תקין - קושר אותו
             if (albumId != -1)
             {
                 var album = await _repositoryManager.Albums.GetByIdAsync(albumId);
@@ -95,37 +94,33 @@ namespace Web.Net.Service
 
         public async Task<Result<FileDto>> UpdateFileAsync(int userId, int fileId, string newName)
         {
-            // שליפת כל האלבומים שהקובץ נמצא בהם
             var fileAlbums = await _repositoryManager.Files.GetByIdAsync(fileId);
             var albums = fileAlbums.Albums;
 
-            // בדיקה אם השם קיים באחד מהאלבומים של הקובץ
             foreach (var album in albums)
             {
                 bool isNameExistInAlbum = await IsFileNameExistInAlbumAsync(album.Id, newName);
                 if (isNameExistInAlbum)
                     return Result<FileDto>.BadRequest("File with this name already exists in one of its albums.");
             }
-
-            // עדכון שם הקובץ
             var result = await _repositoryManager.Files.UpdateFileNameAsync(fileId, newName);
             await _repositoryManager.Save();
 
             return Result<FileDto>.Success(_mapper.Map<FileDto>(result));
         }
 
-        public async Task<Result<IEnumerable<FileDto>>> GetFilesByTagAndUserIdAsync(int userId, string tagName)
+        public async Task<Result<IEnumerable<FileDto>>> GetFilesByTagAndUserIdAsync(int userId, string tagName, int? parentAlbumId = null)
         {
-            var files = await _repositoryManager.Files.GetFilesByTagAndUserIdAsync(userId, tagName);
+            var files = await _repositoryManager.Files.GetFilesByTagAndUserIdAsync(userId, tagName, parentAlbumId);
             var fileDtos = _mapper.Map<IEnumerable<FileDto>>(files);
 
             return Result<IEnumerable<FileDto>>.Success(fileDtos);
         }
 
-        public async Task<Result<IEnumerable<FileDto>>> GetFilesByDateAsync(DateTime? startDate = null, DateTime? endDate = null)
+        public async Task<Result<IEnumerable<FileDto>>> GetFilesByDateAsync(int userId, DateTime? startDate = null, DateTime? endDate = null, int? parentAlbumId = null)
         {
-            var files = await _repositoryManager.Files.GetFilesByDateAsync(startDate, endDate);
-            return Result<IEnumerable<FileDto>>.Success(_mapper.Map<IEnumerable<FileDto>>(files)); // Return files wrapped in Result
+            var files = await _repositoryManager.Files.GetFilesByDateAsync(userId, startDate, endDate, parentAlbumId);
+            return Result<IEnumerable<FileDto>>.Success(_mapper.Map<IEnumerable<FileDto>>(files));
         }
 
         public async Task<Result<List<FileDto>>> GetFilesByUserIdAsync(int userId)
@@ -187,34 +182,36 @@ namespace Web.Net.Service
             return fileExists;
         }
 
-        public async Task<Result<int>> RemoveFileFromAlbumAsync(int fileId, int albumId)
+        public async Task<Result<string>> RemoveFileFromAlbumAsync(int fileId, int albumId)
         {
             var files = await _repositoryManager.Files.GetFullAsync();
             var file = files.FirstOrDefault(f => f.Id == fileId);
 
             if (file == null)
-                return Result<int>.Failure("File not found");
+                return Result<string>.Failure("File not found");
 
             if (albumId == -1)
             {
                 file.IsDeleted = true;
                 await _repositoryManager.Save();
-                return Result<int>.Success(file.Id);
+                return Result<string>.Success("The file has been moved to the recycle bin.");
             }
 
             var album = file.Albums.FirstOrDefault(a => a.Id == albumId);
             if (album == null)
-                return Result<int>.Failure("File is not part of this album");
+                return Result<string>.Failure("File is not part of this album");
 
-            file.Albums.Remove(album);
-
-            if (!file.Albums.Any())
+            if (file.Albums.Count == 1)
             {
                 file.IsDeleted = true;
+                await _repositoryManager.Save();
+                return Result<string>.Success("The file has been moved to the recycle bin and remains linked to the album for potential restore.");
             }
 
+            // אחרת – הסרה רגילה מהאלבום
+            file.Albums.Remove(album);
             await _repositoryManager.Save();
-            return Result<int>.Success(file.Id);
+            return Result<string>.Success("The file was removed from the album, but remains in other albums.");
         }
 
         public async Task<Result<List<FileDto>>> GetDeletedFilesAsync()
@@ -235,9 +232,9 @@ namespace Web.Net.Service
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<List<FileDto>>> SearchFilesByNameAsync(string name, int parentId)
+        public async Task<Result<List<FileDto>>> SearchFilesByNameAsync(int userId,string name, int parentId)
         {
-            var list= await _repositoryManager.Files.SearchFilesByNameAsync(name, parentId);
+            var list= await _repositoryManager.Files.SearchFilesByNameAsync(userId, name, parentId);
 
             return Result<List<FileDto>>.Success(_mapper.Map<List<FileDto>>(list));
         }

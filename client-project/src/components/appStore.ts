@@ -2,13 +2,15 @@ import { combineSlices, configureStore } from '@reduxjs/toolkit';
 import imageSlice from './images/imageSlice';
 import albumSlice from './albums/albumSlice';
 import tagSlice from './tags/tagSlice';
+import messagesSlice from './messages/messageSlice';
 
 
 const store = configureStore({
     reducer: combineSlices(
         imageSlice,
         albumSlice,
-        tagSlice
+        tagSlice,
+        messagesSlice
     ),
 });
 

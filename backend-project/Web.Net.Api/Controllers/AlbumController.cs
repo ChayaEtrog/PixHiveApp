@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Web.Net.Api.PostModels;
 using Web.Net.Core.DTOs;
 using Web.Net.Core.InterfaceService;
+using Web.Net.Service;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -62,20 +63,6 @@ namespace Web.Net.Api.Controllers
 
             return result.Data == null ? NotFound() : Ok(result.Data);
         }
-
-        // DELETE api/<AlbumController>/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult> Delete(int id)
-        //{
-        //    var result = await _albumService.GetAlbumByIdAsync(id);
-        //    if (!result.IsSuccess || result.Data == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    await _albumService.DeleteAlbumAsync(id);
-        //    return NoContent();
-        //}
 
         [HttpDelete("{albumId}")]
         public async Task<IActionResult> DeleteAlbum(int albumId)
@@ -137,6 +124,29 @@ namespace Web.Net.Api.Controllers
                 return Ok(result.Data);
 
             return StatusCode(result.StatusCode, result.ErrorMessage);
+        }
+
+        [HttpGet("search-in/{parentId}/of/{userId}")]
+        public async Task<IActionResult> SearchFiles(int userId, int parentId, [FromQuery] string name)
+        {
+            var result = await _albumService.SearchAlbumsByNameAsync(userId, name, parentId);
+
+            if (result.IsSuccess)
+                return Ok(result.Data);
+
+            return BadRequest(result.ErrorMessage);
+        }
+
+        [HttpGet("by-date-and-user/{userId}")]
+        public async Task<IActionResult> GetFilesByDateAndUserId(int userId, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] int? parentAlbumId)
+        {
+            var result = await _albumService.GetAlbumsByDateAsync(userId, startDate, endDate, parentAlbumId);
+
+            if (!result.IsSuccess)
+            {
+                return NotFound("No files found for the given date range.");
+            }
+            return Ok(result.Data);
         }
     }
 }

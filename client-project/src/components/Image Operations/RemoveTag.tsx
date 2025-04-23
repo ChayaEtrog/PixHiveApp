@@ -6,6 +6,7 @@ import { fetchUnassignedTags, addTag, addTagToFile, fetchTagsByFile, removeTagFr
 import { Box, Button, List, ListItem, ListItemButton, ListItemText, TextField, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { Tag } from "../../types/Tag";
+import { gradientBorderButton, GradientButton } from "../../styles/buttonsStyle";
 
 const RemoveTag = ({ fileId, closeForm }: { closeForm: Function; fileId: number }) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -65,8 +66,8 @@ const RemoveTag = ({ fileId, closeForm }: { closeForm: Function; fileId: number 
                     )}
                 </List>
 
-                <Button onClick={handleRemoveTag} disabled={!selectedTagId}>Remove</Button>
-                <Button onClick={() => closeForm(false)}>Cancel</Button>
+                <Button onClick={handleRemoveTag} disabled={!selectedTagId}  sx={GradientButton} style={{height:40, marginRight:10, marginBottom:15,width:'48%'}}>Remove</Button>
+                <Button onClick={() => closeForm(false)} sx={gradientBorderButton} style={{height:40, marginBottom:15,width:'48%'}}>Cancel</Button>
             </Box>
         </Box>
     );

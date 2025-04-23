@@ -9,6 +9,7 @@ using Web.Net.Core.Entity;
 using Web.Net.Core.InterfaceRepository;
 using Web.Net.Core.InterfaceService;
 using Web.Net.Core.Shared;
+using Web.Net.Data.Repositories;
 
 namespace Web.Net.Service
 {
@@ -64,5 +65,54 @@ namespace Web.Net.Service
             await _repositoryManager.Save();
             return Result<MessageDto>.Success(_mapper.Map<MessageDto>(result)); // Return updated message wrapped in Result
         }
+
+        public async Task<Result<List<MessageDto>>> GetMessagesForUserAsync(int userId)
+        {
+            var messages = await _repositoryManager.Messages.GetMessagesWithReadStatusAsync();
+
+            var messageDtos = messages.Select(m => new MessageDto
+            {
+                Id = m.Id,
+                Message = m.Message,
+                CreatedAt = m.CreatedAt,
+                IsRead = m.ReadByUsers.Any(u => u.Id == userId)
+            }).ToList();
+
+            return Result<List<MessageDto>>.Success(messageDtos);
+        }
+
+        public async Task<Result<String>> MarkMessageAsReadAsync(int userId, int messageId)
+        {
+            try
+            {
+                await _repositoryManager.Messages.MarkMessageAsReadAsync(userId, messageId);
+                return Result<string>.Success("marked as read successfuly!");
+            }
+            catch (Exception ex)
+            {
+                return Result<string>.Failure("Failure: " + ex.Message);
+            }
+        }
+
+        public async Task<List<MessageDto>> GetMessagesAsync(int userId)
+        {
+            var messages = await _repositoryManager.Messages.GetMessagesAsync();
+            var readMessageIds = await _repositoryManager.Messages.GetReadMessagesAsync(userId);
+
+            return messages.Select(m => new MessageDto
+            {
+                Id = m.Id,
+                Message = m.Message,
+                CreatedAt = m.CreatedAt,
+                IsRead = readMessageIds.Contains(m.Id), // בודק אם המשתמש קרא
+                UserId=m.UserId
+            }).ToList();
+        }
+
+        //public async Task<Result<bool>> MarkMessageAsReadAsync(int userId, int messageId)
+        //{
+        //    await _repositoryManager.Messages.MarkMessageAsReadAsync(userId, messageId);
+        //     return Result<bool>.Success(true);
+        //}
     }
 }

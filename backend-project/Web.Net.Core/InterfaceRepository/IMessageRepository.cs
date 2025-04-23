@@ -14,5 +14,17 @@ namespace Web.Net.Core.InterfaceRepository
         void DeleteMessage(int messageId);
 
         Task<MessageEntity> ToggleMessageStatusAsync(int messageId);
+
+        Task MarkMessageAsReadAsync(int userId, int messageId);
+
+        Task<List<MessageEntity>> GetMessagesWithReadStatusAsync();
+
+        Task<bool> IsMessageReadAsync(int userId, int messageId);
+
+        Task<HashSet<int>> GetReadMessagesAsync(int userId);
+
+        Task<List<MessageEntity>> GetMessagesAsync();
+
+        
     }
 }

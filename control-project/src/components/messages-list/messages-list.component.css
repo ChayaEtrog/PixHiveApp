@@ -5,7 +5,8 @@
     margin-bottom: 30px;
     margin-top: 20px;
     box-shadow: none !important;
-    border: 0.1px solid #00000033;
+    /* border: 0.1px solid #00000033; */
+    background-color: #f1f1f1af;
     padding: 10px;
     margin-left: 15px;
     line-height: 1.6;

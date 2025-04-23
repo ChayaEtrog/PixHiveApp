@@ -20,5 +20,13 @@ namespace Web.Net.Core.InterfaceService
         Task<Result<MessageDto>> UpdateMessageAsync(int id);
 
         Task<Result<MessageDto>> DeleteMessageAsync(int messageId);
+
+        Task<Result<List<MessageDto>>> GetMessagesForUserAsync(int userId);
+
+        Task<List<MessageDto>> GetMessagesAsync(int userId);
+
+        Task<Result<String>> MarkMessageAsReadAsync(int userId, int messageId);
+
+
     }
 }

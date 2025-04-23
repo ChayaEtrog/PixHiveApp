@@ -68,33 +68,55 @@ namespace Web.Net.Data.Repositories
             return file;
         }
 
-
-        public async Task<IEnumerable<FileEntity>> GetFilesByTagAndUserIdAsync(int userId, string tagName)
+        public async Task<List<int>> GetAlbumHierarchyAsync(int parentId)
         {
-            var files = await _context.Files
-                .Where(f => f.UserId == userId) // מסנן את הקבצים לפי userId
-                .Where(f => f.Tags.Any(t => t.TagName == tagName))
-                .Where(f => f.IsDeleted == false)
-                .Include(f => f.Tags) // טוען את התיוגים של כל קובץ
-                .ToListAsync(); // מחזיר את התוצאות
+            var result = new List<int> { parentId };
 
-            return files;
-        }
+            var children = await _context.Albums
+                .Where(a => a.ParentId == parentId)
+                .Select(a => a.Id)
+                .ToListAsync();
 
-        public async Task<IEnumerable<FileEntity>> GetFilesByDateAsync(DateTime? startDate = null, DateTime? endDate = null)
-        {
-            IQueryable<FileEntity> query = _context.Files;
-
-            if (startDate.HasValue)
+            foreach (var childId in children)
             {
-                var start = startDate.Value.Date;
-                query = query.Where(f => f.UploadedAt.Date >= start.Date).Where(f => f.IsDeleted == false);
+                result.AddRange(await GetAlbumHierarchyAsync(childId));
             }
 
-            if (endDate.HasValue)
+            return result;
+        }
+
+        public async Task<List<FileEntity>> GetFilesByTagAndUserIdAsync(int userId, string tagName, int? parentAlbumId = null)
+        {
+            var query = _context.Files
+                .Include(f => f.Tags)
+                .Include(f => f.Albums)
+                .Where(f => f.UserId == userId && f.IsDeleted == false)
+                .Where(f => f.Tags.Any(t => t.TagName == tagName));
+
+            if (parentAlbumId.HasValue)
             {
-                var end = endDate.Value.Date;
-                query = query.Where(f => f.UploadedAt.Date <= end.Date).Where(f => f.IsDeleted == false);
+                var albumIds = await GetAlbumHierarchyAsync(parentAlbumId.Value);
+                query = query.Where(f => f.Albums.Any(a => albumIds.Contains(a.Id)));
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<FileEntity>> GetFilesByDateAsync(int userId, DateTime? startDate, DateTime? endDate, int? parentAlbumId = null)
+        {
+            var query = _context.Files
+                .Include(f => f.Albums)
+                .Where(f => f.UserId == userId && f.IsDeleted == false);
+
+            if (startDate.HasValue)
+                query = query.Where(f => f.UploadedAt >= startDate.Value);
+            if (endDate.HasValue)
+                query = query.Where(f => f.UploadedAt <= endDate.Value);
+
+            if (parentAlbumId.HasValue)
+            {
+                var albumIds = await GetAlbumHierarchyAsync(parentAlbumId.Value);
+                query = query.Where(f => f.Albums.Any(a => albumIds.Contains(a.Id)));
             }
 
             return await query.ToListAsync();
@@ -182,25 +204,23 @@ namespace Web.Net.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<FileEntity>> SearchFilesByNameAsync(string name, int parentId)
+        public async Task<List<FileEntity>> SearchFilesByNameAsync(int userId, string name, int parentId)
         {
             List<FileEntity> files;
 
-            if (parentId ==-1)
+            if (parentId == -1)
             {
                 files = await _context.Files
-                    .Where(f => f.Name.Contains(name))
+                    .Where(f => f.UserId == userId && f.DisplayName.Contains(name))
                     .ToListAsync();
             }
             else
             {
-                var allSubAlbums = await _context.Albums
-                    .Where(a => a.ParentId == parentId || a.ParentId == null)
-                    .ToListAsync();
+                var albumIds = await GetAlbumHierarchyAsync(parentId);
 
                 files = await _context.Files
-                    .Where(f => f.Name.Contains(name) && f.Albums
-                        .Any(a => allSubAlbums.Contains(a)))
+                    .Where(f => f.DisplayName.Contains(name) &&
+                                f.Albums.Any(a => albumIds.Contains(a.Id)))
                     .ToListAsync();
             }
 

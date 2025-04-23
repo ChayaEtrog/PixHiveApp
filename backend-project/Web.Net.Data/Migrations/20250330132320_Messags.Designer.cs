@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Net.Data;
 
@@ -11,9 +12,11 @@ using Web.Net.Data;
 namespace Web.Net.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250330132320_Messags")]
+    partial class Messags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -284,7 +287,19 @@ namespace Web.Net.Data.Migrations
                     b.Property<int>("MessageId")
                         .HasColumnType("int");
 
+                    b.Property<int>("MessageId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId1")
+                        .HasColumnType("int");
+
                     b.HasKey("UserId", "MessageId");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("MessageId1");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("UserMessageReads");
                 });
@@ -379,6 +394,37 @@ namespace Web.Net.Data.Migrations
                     b.HasOne("Web.Net.Core.Entity.MessageEntity", null)
                         .WithMany("ReadByUsers")
                         .HasForeignKey("MessageEntityId");
+                });
+
+            modelBuilder.Entity("Web.Net.Core.Entity.UserMessageReads", b =>
+                {
+                    b.HasOne("Web.Net.Core.Entity.MessageEntity", null)
+                        .WithMany()
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Web.Net.Core.Entity.MessageEntity", "Message")
+                        .WithMany()
+                        .HasForeignKey("MessageId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Web.Net.Core.Entity.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Web.Net.Core.Entity.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Message");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Web.Net.Core.Entity.MessageEntity", b =>

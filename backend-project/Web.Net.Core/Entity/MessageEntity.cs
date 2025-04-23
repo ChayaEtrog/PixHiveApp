@@ -24,6 +24,8 @@ namespace Web.Net.Core.Entity
 
         public UserEntity User { get; set; }
 
+        public List<UserEntity> ReadByUsers { get; set; } = new List<UserEntity>();
+
         public MessageEntity()
         {
             

@@ -112,5 +112,66 @@ namespace Web.Net.Data.Repositories
                 .Where(a => a.ParentId == parentId && a.UserId == userId)
                 .ToListAsync();
         }
+
+        public async Task<List<int>> GetAlbumHierarchyAsync(int parentId)
+        {
+            var result = new List<int> { parentId };
+
+            var children = await _context.Albums
+                .Where(a => a.ParentId == parentId)
+                .Select(a => a.Id)
+                .ToListAsync();
+
+            foreach (var childId in children)
+            {
+                result.AddRange(await GetAlbumHierarchyAsync(childId));
+            }
+
+            return result;
+        }
+
+        public async Task<List<AlbumEntity>> GetAlbumsByDateAsync(int userId, DateTime? startDate, DateTime? endDate, int? parentAlbumId = null)
+        {
+            var query = _context.Albums
+                .Include(a => a.Files)
+                .Where(a => a.UserId == userId);
+
+            if (startDate.HasValue)
+                query = query.Where(a => a.CreatedAt >= startDate.Value);
+
+            if (endDate.HasValue)
+                query = query.Where(a => a.CreatedAt <= endDate.Value);
+
+            if (parentAlbumId.HasValue)
+            {
+                var albumIds = await GetAlbumHierarchyAsync(parentAlbumId.Value);
+                query = query.Where(a => albumIds.Contains(a.Id));
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<AlbumEntity>> SearchAlbumsByNameAsync(int userId, string name, int parentId)
+        {
+            List<AlbumEntity> albums;
+
+            if (parentId == -1)
+            {
+                albums = await _context.Albums
+                    .Where(a => a.UserId == userId &&
+                                a.AlbumName.Contains(name))
+                    .ToListAsync();
+            }
+            else
+            {
+                var albumIds = await GetAlbumHierarchyAsync(parentId);
+
+                albums = await _context.Albums
+                    .Where(a => albumIds.Contains(a.Id) &&
+                                a.AlbumName.Contains(name)).ToListAsync();
+            }
+
+            return albums;
+        }
     }
 }

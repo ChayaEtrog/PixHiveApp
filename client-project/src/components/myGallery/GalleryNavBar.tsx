@@ -17,7 +17,7 @@ const GalleryNavBar = () => {
     return (
         <>
 
-            <Button variant="outlined" sx={iconButtonStyle} onClick={() => setCreateAlbum(true)}>
+            <Button variant="outlined" sx={iconButtonStyle} onClick={() => navigate('/gallery')}>
                 <img src={gallery} alt="Add Album" style={{ width: '100%', marginTop: '20px' }} />
             </Button>
 

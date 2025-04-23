@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Net.Data;
 
@@ -11,9 +12,11 @@ using Web.Net.Data;
 namespace Web.Net.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250329214835_ReadMessage")]
+    partial class ReadMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,19 +277,6 @@ namespace Web.Net.Data.Migrations
                     b.HasIndex("MessageEntityId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Web.Net.Core.Entity.UserMessageReads", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MessageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "MessageId");
-
-                    b.ToTable("UserMessageReads");
                 });
 
             modelBuilder.Entity("AlbumFile", b =>

@@ -9,7 +9,7 @@ export const fetchTags = createAsyncThunk(
     'tags/fetchTags',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}`, {
+            const response = await axios.get(`${API_BASE_URL}/Tag`, {
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
                 },
@@ -82,7 +82,7 @@ export const updateTag = createAsyncThunk(
     }
 );
 
-// fetch all tags of album
+// fetch all tags of file
 export const fetchTagsByFile = createAsyncThunk(
     'fileTags/fetchTagsByFile',
     async (fileId: number, { rejectWithValue }) => {
