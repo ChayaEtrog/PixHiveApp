@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "./UserReducer";
 import { Avatar, Box, Grid2, IconButton } from "@mui/material";
 
-function UserAvatar() {
+const UserAvatar=()=> {
     const { user } = useContext(UserContext);
     const [anchorEl, setAnchorEl] = useState(false);
     const [avatarColor, setAvatarColor] = useState('rgb(0, 143, 100)');

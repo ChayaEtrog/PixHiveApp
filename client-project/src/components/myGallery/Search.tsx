@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, Typography, Card, CardContent, InputAdornment, IconButton, Menu, DialogTitle, DialogContent, Dialog, DialogActions, Popover } from '@mui/material';
+import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, InputAdornment, IconButton, Popover } from '@mui/material';
 import { AppDispatch, StoreType } from '../appStore';
 import { fetchTags } from '../tags/tagSlice';
 import { getFilesByDateAndUser, getFilesByTagAndUser, searchFiles } from '../images/imageSlice';
@@ -66,21 +66,20 @@ const Search = ({ userId }: { userId: number }) => {
                         backgroundColor: 'white'
                     },
                     '& .MuiOutlinedInput-notchedOutline': {
-                        border: 'none', // כדי לא לקבל מסגרת כפולה
+                        border: 'none', 
                     },
                 }}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
                             <IconButton onClick={handleSearchByName}>
-                                <img src={search} alt="" style={{ width: '30px', height: '30px' }} />
+                                <img src={search} alt="" style={{ width: '30px', height: '30px',cursor:'pointer'}} />
                             </IconButton>
                         </InputAdornment>
                     ),
                 }}
             />
 
-            {/* Tag Search Button */}
             <Button
                 onClick={(e) => setAnchorTagEl(e.currentTarget)}
                 sx={gradientBorderButton}
@@ -90,7 +89,6 @@ const Search = ({ userId }: { userId: number }) => {
                 <KeyboardArrowDownIcon sx={{ marginLeft: ' 3px' }} />
             </Button>
 
-            {/* Date Search Button */}
             <Button
                 onClick={(e) => setAnchorDateEl(e.currentTarget)}
                 sx={gradientBorderButton}
@@ -100,7 +98,6 @@ const Search = ({ userId }: { userId: number }) => {
                 <KeyboardArrowDownIcon sx={{ marginLeft: ' 3px' }} />
             </Button>
 
-            {/* Tag Popover */}
             <Popover
                 open={Boolean(anchorTagEl)}
                 anchorEl={anchorTagEl}

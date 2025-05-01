@@ -12,7 +12,8 @@ export class UserStatisticsDto
     public  userId:number,
     public  username:string,
     public  albumCount:number,
-    public  fileCount:number
+    public  fileCount:number,
+    public  usedMegabytes:number
     ){}
 }
 

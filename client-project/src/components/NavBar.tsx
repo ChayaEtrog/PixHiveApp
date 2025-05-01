@@ -44,6 +44,18 @@ function NavBar() {
                         System Messages
                     </NavLink>
 
+                    <NavLink
+                        to="/dashboard"
+                    >
+                       Dashboard
+                    </NavLink>
+
+                    <NavLink
+                        to="/collage"
+                    >
+                       create a collage
+                    </NavLink>
+
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <UserAvatar/>

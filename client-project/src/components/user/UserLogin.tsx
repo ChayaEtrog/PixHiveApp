@@ -37,11 +37,12 @@ const Login = ({ open, close }: { open: boolean, close: Function}) => {
                         id: data.user.id,
                         userName: data.user.userName,
                         email: data.user.email,
-                        phonNumber: data.user.phonNumber
+                        phoneNumber: data.user.phoneNumber
                     },
                 });
 
-               // setIsLogedIn(true);
+                console.log(data);
+                
                 close(false);
 
             } catch (error:any) {

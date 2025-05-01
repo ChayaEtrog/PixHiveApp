@@ -1,4 +1,6 @@
 import axios from "axios";
+import { UserPostModal } from "../../types/User";
+import { UserStatistics } from "../../types/UserStatistics";
 
 export const loginUser = async (
     email: string,
@@ -28,7 +30,7 @@ export const registerUser = async (
     uri: string
 ) => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/${uri}`, {
+        const response = await axios.post(`${API_BASE_URL}${uri}`, {
             email,
             passwordHash: password,
             userName,
@@ -56,6 +58,34 @@ export const getUserSession = () => {
         token: token || null
     };
 };
+
+export const updateUser = async (id: number, userData: UserPostModal, API_BASE_URL: string) => {
+    try {
+      const response = await axios.put(`${API_BASE_URL}/User/${id}`, userData, {
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+          },
+      });
+
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        console.error( error.response?.data);
+      } else {
+        console.error("unexepted error", error);
+      }
+      throw error;
+    }
+  };
+
+  export const getUserStatisticsById = async (id: number, API_BASE_URL: string): Promise<UserStatistics> => {
+    const response = await axios.get(`${API_BASE_URL}/Statistics/statistics/${id}`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('authToken')}`
+      }
+    });
+    return response.data;
+  };
 
 export const clearUserSession = () => {
     sessionStorage.removeItem("user");

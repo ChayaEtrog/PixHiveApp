@@ -13,5 +13,7 @@ namespace Web.Net.Core.InterfaceService
         Task<Result<SystemStatisticsDto>> GetSystemStatisticsAsync();
 
         Task<Result<IEnumerable<UserStatisticsDto>>> GetUserStatisticsAsync();
+
+        Task<Result<UserStatisticsDto>> GetUserStatisticsByIdAsync(int id);
     }
 }

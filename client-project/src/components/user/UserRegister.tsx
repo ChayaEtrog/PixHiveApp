@@ -28,7 +28,7 @@ const Register = ({ open, close }: { open: boolean, close: Function }) => {
         const isNameValid=userNameRef.current?.checkValidity()??false;
         const isPhoneNumberValid = phonNumberRef.current?.checkValidity()?? false;
 
-        setIsSubmitOk(!(!isEmailValid && isPasswordValid && isNameValid && isPhoneNumberValid));
+        setIsSubmitOk(!(isEmailValid && isPasswordValid && isNameValid && isPhoneNumberValid));
     };
     
     useEffect(() => {
@@ -53,7 +53,7 @@ const Register = ({ open, close }: { open: boolean, close: Function }) => {
                     id: data.user.id,
                     userName: data.user.userName,
                     email: data.user.email,
-                    phonNumber: data.user.phonNumber
+                    phoneNumber: data.user.phoneNumber
                 },
             });
     

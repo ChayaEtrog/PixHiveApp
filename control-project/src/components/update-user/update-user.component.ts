@@ -67,8 +67,7 @@ export class UpdateUserComponent implements OnChanges {
         new UserPostModel(
           this.updateUserForm.value.name,
           this.updateUserForm.value.email,
-          this.updateUserForm.value.phoneNumber,
-          this.user.passwordHash,
+          this.updateUserForm.value.phoneNumber
         )
       ).subscribe(response => {
         this.closeForm.emit();

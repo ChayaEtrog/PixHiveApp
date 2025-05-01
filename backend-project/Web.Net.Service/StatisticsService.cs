@@ -12,7 +12,7 @@ using Web.Net.Data;
 
 namespace Web.Net.Service
 {
-    public class StatisticsService:IStatisticsService
+    public class StatisticsService : IStatisticsService
     {
         private readonly IRepositoryManager _repositoryManager;
 
@@ -33,7 +33,8 @@ namespace Web.Net.Service
                 UserId = user.Id,
                 Username = user.UserName,
                 AlbumCount = albums.Count(a => a.UserId == user.Id),
-                FileCount = files.Count(f => f.UserId == user.Id)
+                FileCount = files.Count(f => f.UserId == user.Id),
+                UsedMegabytes = Math.Round(files.Where(f => f.UserId == user.Id).Sum(f => f.FileSize) / 1024.0 / 1024.0, 2)
             }).ToList();
 
             return Result<IEnumerable<UserStatisticsDto>>.Success(userStats);
@@ -43,9 +44,9 @@ namespace Web.Net.Service
         public async Task<Result<SystemStatisticsDto>> GetSystemStatisticsAsync()
         {
             var users = await _repositoryManager.Users.GetAllAsync();
-            var totalUsers=users.Count();
+            var totalUsers = users.Count();
             var albums = await _repositoryManager.Albums.GetAllAsync();
-            var totalAlbums= albums.Count();
+            var totalAlbums = albums.Count();
             var files = await _repositoryManager.Files.GetAllAsync();
             var totalFiles = files.Count();
 
@@ -57,6 +58,28 @@ namespace Web.Net.Service
             };
 
             return Result<SystemStatisticsDto>.Success(systemStats);
+        }
+
+        public async Task<Result<UserStatisticsDto>> GetUserStatisticsByIdAsync(int id)
+        {
+            var user = await _repositoryManager.Users.GetByIdAsync(id);
+            if (user == null)
+                return Result<UserStatisticsDto>.Failure("User not found", 404);
+
+            var albums = await _repositoryManager.Albums.GetAllAsync();
+            var files = await _repositoryManager.Files.GetAllAsync();
+
+            var stats = new UserStatisticsDto
+            {
+                UserId = user.Id,
+                Username = user.UserName,
+                AlbumCount = albums.Count(a => a.UserId == user.Id),
+                FileCount = files.Count(f => f.UserId == user.Id),
+                UsedMegabytes = Math.Round(
+                    files.Where(f => f.UserId == user.Id).Sum(f => f.FileSize) / 1024.0 / 1024.0, 2)
+            };
+
+            return Result<UserStatisticsDto>.Success(stats);
         }
     }
 

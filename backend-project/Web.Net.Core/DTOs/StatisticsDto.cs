@@ -12,6 +12,8 @@ namespace Web.Net.Core.DTOs
         public string Username { get; set; } = string.Empty;
         public int AlbumCount { get; set; }
         public int FileCount { get; set; }
+        public double UsedMegabytes { get; set; }
+        
     }
 
     public class SystemStatisticsDto

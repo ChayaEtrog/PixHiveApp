@@ -36,7 +36,11 @@ export const getFilesByUser = createAsyncThunk(
   'image/getFilesByUser',
   async (userId: number, thunkAPI) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/File/user/${userId}`);
+      const response = await axios.get(`${API_BASE_URL}/File/user/${userId}`,{
+        headers: {
+          'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`, 
+        },
+      });
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
@@ -68,6 +72,7 @@ export const getRootFilesByUser = createAsyncThunk(
   }
 );
 
+//rename file
 export const updateFileName = createAsyncThunk(
   'file/updateFileName',
   async ({ userId, fileId, newName }: { userId: number; fileId: number; newName: string }, thunkAPI) => {
@@ -182,6 +187,7 @@ export const removeFileFromAlbum = createAsyncThunk(
   }
 );
 
+//get recycle bin files
 export const fetchDeletedFiles = createAsyncThunk(
   'files/fetchDeletedFiles', 
   async (_, thunkAPI) => {
@@ -198,6 +204,7 @@ export const fetchDeletedFiles = createAsyncThunk(
   }
 );
 
+//recycle file
 export const recycleFile = createAsyncThunk(
   'image/recycleFile',
   async (fileId: number, { rejectWithValue }) => {

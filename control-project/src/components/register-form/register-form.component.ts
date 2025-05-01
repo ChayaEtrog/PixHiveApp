@@ -53,7 +53,6 @@ export class RegisterFormComponent {
           this.registerForm.value.name,
           this.registerForm.value.email,
           this.registerForm.value.phoneNumber,
-          this.registerForm.value.password,
         )
       ).subscribe(response => {
         this.router.navigate(['/admin-auth']);

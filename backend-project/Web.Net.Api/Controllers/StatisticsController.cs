@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web.Net.Core.DTOs;
 using Web.Net.Core.InterfaceService;
 using Web.Net.Core.Shared;
@@ -41,6 +42,18 @@ namespace Web.Net.Api.Controllers
             }
 
             return StatusCode(500, result.ErrorMessage); // Or another suitable error status code
+        }
+
+        [HttpGet("statistics/{id}")]
+        [Authorize]
+        public async Task<ActionResult<UserStatisticsDto>> GetUserStatisticsById(int id)
+        {
+            var result = await _statisticsService.GetUserStatisticsByIdAsync(id);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result.ErrorMessage);
+
+            return Ok(result.Data);
         }
     }
 }

@@ -1,35 +1,44 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserMessages, markMessageAsRead } from "./messageSlice"; // יבוא הפונקציות
 import { AppDispatch, StoreType } from "../appStore";
 import { UserContext } from "../user/UserReducer";
 import bell from "../../../public/Icons/bell2.png"
 import notRead from "../../../public/Icons/MessageNotRead.png"
+import { Box, Button } from "@mui/material";
+import { gradientBorderButton } from "../../styles/buttonsStyle";
 
 const MessageBox = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useContext(UserContext);
-
+  
   // Get messages and unread count from the Redux store
   const { messages, loading, error } = useSelector((store:StoreType) => store.messages);
   const unreadCount = messages.filter(msg => !msg.isRead).length;
-
+  
+  // 🟢 תקין – useState תמיד נקרא
+  const [visibleMessages, setVisibleMessages] = useState(6);
+  
+  // פונקציה להגדלת מספר ההודעות
+  const loadMoreMessages = () => {
+    setVisibleMessages((prev) => prev + 6);
+  };
+  
   // Fetch messages when component mounts
   useEffect(() => {
     dispatch(fetchUserMessages(user.id));
   }, [dispatch]);
-
-  // Mark a message as read
+  
   const handleMarkAsRead = (messageId:number) => {
     dispatch(markMessageAsRead({userId: user.id, messageId: messageId }));
   };
 
+  // 🟢 רק אחרי שה-hooks נקראו
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div style={{ display: "flex", flexDirection: "row", height: "90vh", overflowY: "auto",  marginTop: "75px"  }}>
-      {/* Right side: Bell icon for unread messages count */}
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "start", height: "90vh", overflowY: "auto", marginTop: "75px" }}>
       <div
         style={{
           width: "40px",
@@ -66,9 +75,10 @@ const MessageBox = () => {
           </span>
         )}
       </div>
-  
-      <div style={{ padding: "10px",marginTop:'20px',marginBottom:'75px'}}>
-        {messages.map((message) => (
+
+      {/* הודעות */}
+      <div style={{ padding: "10px", marginTop: "20px", marginBottom: "75px" }}>
+        {messages.slice(0, visibleMessages).map((message) => (
           <div
             key={message.id}
             style={{
@@ -79,8 +89,8 @@ const MessageBox = () => {
               flexDirection: "column",
               justifyContent: "space-between",
               padding: "10px",
-              background: message.isRead ?"rgba(241, 241, 241, 0.71)" :"rgba(232, 240, 254, 0.87)", // Different background for unread
-              marginBottom:"30px",
+              background: message.isRead ? "rgba(241, 241, 241, 0.71)" : "rgba(232, 240, 254, 0.87)", // רקע שונה להודעות שלא נקראו
+              marginBottom: "30px",
               borderRadius: "5px",
               cursor: "pointer",
               wordWrap: "break-word",
@@ -90,16 +100,28 @@ const MessageBox = () => {
             onClick={() => handleMarkAsRead(message.id)}
           >
             <div style={{ display: "flex", justifyContent: "end", alignItems: "center" }}>
-              <span style={{ fontSize: "12px", color: "gray",marginRight:"8px" }}>{new Date(message.createdAt).toLocaleDateString("he-IL")}</span>
-              {!message.isRead && <img src={notRead} alt="" style={{ width: "30px", height: "30px", objectFit: "cover" }} /> }
+              <span style={{ fontSize: "12px", color: "gray", marginRight: "8px" }}>
+                {new Date(message.createdAt).toLocaleDateString("he-IL")}
+              </span>
+              {!message.isRead && <img src={notRead} alt="" style={{ width: "30px", height: "30px", objectFit: "cover" }} />}
             </div>
             <p style={{ marginTop: "5px" }}>{message.message}</p>
           </div>
         ))}
-        <div style={{ height: "10px" }}></div>
+
+        {/* כפתור 'טען עוד' */}
+        {visibleMessages < messages.length && (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <Button
+            onClick={loadMoreMessages}
+            sx={gradientBorderButton}
+          >
+            load more
+          </Button>
+          </Box>
+        )}
       </div>
     </div>
   );
 }
-
-export default MessageBox;
+export default MessageBox

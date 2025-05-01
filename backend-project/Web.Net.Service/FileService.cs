@@ -36,7 +36,7 @@ namespace Web.Net.Service
             if (!allowedFileTypes.Contains(entity.Type))
                 return Result<FileDto>.BadRequest("Invalid file type. Allowed types are: jpg, png, gif.");
 
-            var maxSizeInMb = 10;
+            var maxSizeInMb = 8;
             if (entity.FileSize > maxSizeInMb * 1024 * 1024)
                 return Result<FileDto>.BadRequest($"File size exceeds the maximum allowed size of {maxSizeInMb}MB.");
 

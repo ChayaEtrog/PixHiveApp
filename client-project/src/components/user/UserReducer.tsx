@@ -17,7 +17,8 @@ export const emptyUser: User =
   id:0,
   userName: '',
   email: '',
-  password: '',
+  passwordHash: '',
+  phonNumber:''
 };
 
 export const UserContext = createContext<{

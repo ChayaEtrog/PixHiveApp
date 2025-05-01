@@ -53,7 +53,6 @@ export class AddUserComponent {
           this.addUserForm.value.name,
           this.addUserForm.value.email,
           this.addUserForm.value.phoneNumber,
-          this.addUserForm.value.password,
           )
         ).subscribe(response => {
           this.closeForm.emit();

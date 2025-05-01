@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import imageIcon from "../../../public/Icons/imageIcon.png";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ShowImage from './ShowImage';
 import download from "../../../public/Icons/download.png";
 import rename from "../../../public/Icons/rename.png";
@@ -10,8 +10,8 @@ import imagesAndAlbums from "../../../public/Icons/imagesAndAlbums.png";
 import tag from "../../../public/Icons/tag.png"
 import RenameImage from '../Image Operations/renameImage';
 import { Image } from '../../types/Image';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, StoreType } from '../appStore';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../appStore';
 import { DownloadImage } from '../Image Operations/downloadAndPrintImage';
 import MoveImageToAlbum from '../Image Operations/MoveImageToAlbum';
 import { removeFileFromAlbum } from '../images/imageSlice';

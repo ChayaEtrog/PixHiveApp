@@ -80,9 +80,7 @@ namespace Web.Net.Data.Repositories
 
                 existing.UserName = user.UserName;
                 existing.Email = user.Email;
-                existing.PasswordHash = user.PasswordHash;
                 existing.PhoneNumber = user.PhoneNumber;
-                existing.CreatedAt = user.CreatedAt;
 
                 await _context.SaveChangesAsync();
                 return existing;

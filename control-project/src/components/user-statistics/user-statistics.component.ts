@@ -81,7 +81,7 @@ export class UserStatisticsComponent implements OnInit {
   };
 
   // Table
-  displayedColumns: string[] = ['username', 'albumCount', 'fileCount'];
+  displayedColumns: string[] = ['username', 'albumCount', 'fileCount', 'usedMegabytes'];
   dataSource!: MatTableDataSource<UserStatisticsDto>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
