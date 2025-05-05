@@ -7,9 +7,11 @@ import {
     ImageList,
     ImageListItem,
     IconButton,
+    CircularProgress,
 } from '@mui/material';
 import html2canvas from 'html2canvas';
 import DownloadImage from '../../../public/Icons/download.png';
+import ImageIcon from '../../../public/Icons/imageIcon.png';
 
 type CollageProps = {
     images: string[];
@@ -19,7 +21,7 @@ type CollageProps = {
 
 const CollageBlock = ({ images, variant, title }: CollageProps) => {
     const ref = useRef(null);
-
+    const [isLoaded, setIsLoaded] = useState(false);
     const [text, setText] = useState('');
     const [color, setColor] = useState('#000000');
     const [fontSize, setFontSize] = useState(20);
@@ -103,6 +105,15 @@ const CollageBlock = ({ images, variant, title }: CollageProps) => {
                         overflow: 'hidden',
                     }}
                 >
+                    {!isLoaded &&<><svg width={0} height={0}>
+                              <defs>
+                                <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                  <stop offset="0%" stopColor="#e01cd5" />
+                                  <stop offset="100%" stopColor="#1CB5E0" />
+                                </linearGradient>
+                              </defs>
+                            </svg>
+                            <CircularProgress sx={{ 'svg circle': { stroke: 'url(#my_gradient)' } }} /></>}
                     {images.map((src, index) => (
                         <ImageListItem key={index}>
                             <img
@@ -111,6 +122,7 @@ const CollageBlock = ({ images, variant, title }: CollageProps) => {
                                 loading="lazy"
                                 crossOrigin="anonymous"
                                 style={imageStyles}
+                                onLoad={() => setIsLoaded(true)}
                             />
                         </ImageListItem>
                     ))}

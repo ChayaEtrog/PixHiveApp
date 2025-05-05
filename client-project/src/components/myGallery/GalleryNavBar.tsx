@@ -18,7 +18,7 @@ const GalleryNavBar = () => {
         <>
 
             <Button variant="outlined" sx={iconButtonStyle} onClick={() => navigate('/gallery')}>
-                <img src={gallery} alt="Add Album" style={{ width: '100%', marginTop: '20px' }} />
+                <img src={gallery} alt="" style={{ width: '50px',objectFit:'cover', marginTop: '20px' }} />
             </Button>
 
             <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}} onClick={() => navigate('/gallery')} style={{ height: '60px',marginTop:'20px' }}>
@@ -28,7 +28,7 @@ const GalleryNavBar = () => {
             <div style={{ width: '15vw', height: '25px' }}></div> {/*background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)*/}
 
             <Button variant="outlined" sx={iconButtonStyle} onClick={() => setCreateAlbum(true)}>
-                <img src={addAlbum} alt="Add Album" style={{ width: '100%'}} />
+                <img src={addAlbum} alt="Add Album" style={{ width: '50px',objectFit:'cover',}} />
             </Button>
 
             <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}} onClick={() => setCreateAlbum(true)} style={{ height: '60px' }}>
@@ -39,7 +39,7 @@ const GalleryNavBar = () => {
 
 
             <Button variant="outlined" sx={iconButtonStyle} onClick={() =>setUploadImage(true)}>
-                <img src={upload} alt="upload image" style={{ width: '100%', }} />
+                <img src={upload} alt="upload image" style={{ width: '50px',objectFit:'cover', }} />
             </Button>
             <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}} onClick={() => setUploadImage(true)} style={{ height: '60px' }} className="textButton">
                 Upload Image
@@ -48,7 +48,7 @@ const GalleryNavBar = () => {
             <div style={{ width: '15vw', height: '25px' }}></div> {/*background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)*/}
            
             <Button variant="outlined" sx={iconButtonStyle} onClick={() =>navigate('/gallery/recycle-bin')}>
-                <img src={recycleBin} alt="Add Album" style={{ width: '100%', }} />
+                <img src={recycleBin} alt="Add Album" style={{ width: '50px',objectFit:'cover', }} />
             </Button>
 
             <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}}  onClick={() =>navigate('/gallery/recycle-bin') } style={{ height: '60px' }}>

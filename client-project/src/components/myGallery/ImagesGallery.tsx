@@ -58,7 +58,7 @@ const ImageGallery = ({ files }: { files: Image[] }) => {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{boxShadow:'2px 2px 10px rgba(108, 108, 108, 0.13)'}}>
         <Table>
           <TableHead>
             <TableRow>

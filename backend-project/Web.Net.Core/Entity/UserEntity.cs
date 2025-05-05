@@ -25,8 +25,9 @@ namespace Web.Net.Core.Entity
         public string PhoneNumber { get; set; }
 
         public List<FileEntity> Files { get; set; } = new List<FileEntity>(); 
-        public List<AlbumEntity> Albums { get; set; } = new List<AlbumEntity>(); 
-        public List<MessageEntity> Messages { get; set; } = new List<MessageEntity>();
+        public List<AlbumEntity> Albums { get; set; } = new List<AlbumEntity>();
+        public ICollection<MessageEntity> SentMessages { get; set; }
+        public ICollection<UserEntityMessageEntity> UserMessages { get; set; }
         public List<Role> UserRoles { get; set; }= new List<Role>();
         public UserEntity()
         {

@@ -18,43 +18,6 @@ namespace Web.Net.Service
         private readonly IRepositoryManager _repositoryManager=repositoryManager;
         private readonly IMapper _mapper= mapper;
 
-        public async Task<Result<MessageDto>> AddMessageAsync(MessageDto entity)
-        {
-            entity.CreatedAt = DateTime.Now;
-            var message = _mapper.Map<MessageEntity>(entity);
-            await _repositoryManager.Messages.AddAsync(message);
-            await _repositoryManager.Save();
-
-            return Result<MessageDto>.Success(_mapper.Map<MessageDto>(message)); 
-        }
-
-        public async Task<Result<MessageDto>> DeleteMessageAsync(int messageId)
-        {
-            var message = await _repositoryManager.Messages.GetByIdAsync(messageId);
-            if (message == null)
-                return Result<MessageDto>.NotFound("Message not found.");
-
-            _repositoryManager.Messages.DeleteMessage(messageId);
-            await _repositoryManager.Save();
-
-            return Result<MessageDto>.Success(null); 
-        }
-
-        public async Task<Result<MessageDto>> GetMessageByIdAsync(int id)
-        {
-            var message = await _repositoryManager.Messages.GetByIdAsync(id);
-            if (message == null)
-                return Result<MessageDto>.NotFound("Message not found.");
-
-            return Result<MessageDto>.Success(_mapper.Map<MessageDto>(message)); 
-        }
-
-        public async Task<Result<IEnumerable<MessageDto>>> GetMessagesAsync()
-        {
-            var messages = await _repositoryManager.Messages.GetFullAsync();
-            return Result<IEnumerable<MessageDto>>.Success(_mapper.Map<List<MessageDto>>(messages)); // Return messages wrapped in Result
-        }
-
         public async Task<Result<MessageDto>> UpdateMessageAsync(int id)
         {
             var message = await _repositoryManager.Messages.GetByIdAsync(id);
@@ -66,53 +29,98 @@ namespace Web.Net.Service
             return Result<MessageDto>.Success(_mapper.Map<MessageDto>(result)); // Return updated message wrapped in Result
         }
 
+        public async Task<Result<List<MessageDto>>> GetAllMessagesAsync()
+        {
+            var messages = await _repositoryManager.Messages.GetAllMessagesAsync();
+            var dtoList = _mapper.Map<List<MessageDto>>(messages);
+            return Result<List<MessageDto>>.Success(dtoList);
+        }
+
         public async Task<Result<List<MessageDto>>> GetMessagesForUserAsync(int userId)
         {
-            var messages = await _repositoryManager.Messages.GetMessagesWithReadStatusAsync();
+            var messages = await _repositoryManager.Messages.GetMessagesForUserAsync(userId);
 
-            var messageDtos = messages.Select(m => new MessageDto
+            var result = messages.Select(m =>
             {
-                Id = m.Id,
-                Message = m.Message,
-                CreatedAt = m.CreatedAt,
-                IsRead = m.ReadByUsers.Any(u => u.Id == userId)
+                var dto = _mapper.Map<MessageDto>(m);
+                dto.IsRead = m.UserMessages.FirstOrDefault(um => um.UserId == userId)?.IsRead ?? false;
+                return dto;
             }).ToList();
 
-            return Result<List<MessageDto>>.Success(messageDtos);
+            return Result<List<MessageDto>>.Success(result);
         }
 
-        public async Task<Result<String>> MarkMessageAsReadAsync(int userId, int messageId)
+        public async Task<Result<MessageDto>> AddMessageAsync(MessageDto entity)
         {
-            try
+            entity.CreatedAt = DateTime.Now;
+            var message = _mapper.Map<MessageEntity>(entity);
+
+            // הוספת ההודעה
+            await _repositoryManager.Messages.AddAsync(message);
+            await _repositoryManager.Save();
+
+            // אם ההודעה מיועדת לכולם, נוודא שהיא מתווספת לכל המשתמשים בטבלת הקשר
+            if (entity.ReceiverId == null)
             {
-                await _repositoryManager.Messages.MarkMessageAsReadAsync(userId, messageId);
-                return Result<string>.Success("marked as read successfuly!");
+                // חפש את כל המשתמשים
+                var users = await _repositoryManager.Users.GetAllAsync();
+
+                var userMessages = users.Select(user => new UserEntityMessageEntity
+                {
+                    UserId = user.Id,
+                    MessageId = message.Id,
+                    IsRead = false, // התחלה כלא נקראה
+                    ReadAt = null
+                }).ToList();
+
+                // הוספת ההודעות לכל המשתמשים
+                foreach (var userMessage in userMessages)
+                {
+                    await _repositoryManager.UserMessages.AddAsync(userMessage);
+                }
+
+                await _repositoryManager.Save();
             }
-            catch (Exception ex)
+            else
             {
-                return Result<string>.Failure("Failure: " + ex.Message);
+                // אם ההודעה מיועדת למישהו ספציפי, הוסף רק לו בטבלת הקשר
+                var userMessage = new UserEntityMessageEntity
+                {
+                    UserId = entity.ReceiverId.Value,
+                    MessageId = message.Id,
+                    IsRead = false,
+                    ReadAt = null
+                };
+
+                await _repositoryManager.UserMessages.AddAsync(userMessage);
+                await _repositoryManager.Save();
             }
+
+            return Result<MessageDto>.Success(_mapper.Map<MessageDto>(message));
         }
 
-        public async Task<List<MessageDto>> GetMessagesAsync(int userId)
+        public async Task<Result<string>> MarkAsReadAsync(int userId, int messageId)
         {
-            var messages = await _repositoryManager.Messages.GetMessagesAsync();
-            var readMessageIds = await _repositoryManager.Messages.GetReadMessagesAsync(userId);
+            var message = await _repositoryManager.Messages.GetByIdAsync(messageId);
+            if (message == null)
+                return Result<string>.Failure("Message not found");
 
-            return messages.Select(m => new MessageDto
-            {
-                Id = m.Id,
-                Message = m.Message,
-                CreatedAt = m.CreatedAt,
-                IsRead = readMessageIds.Contains(m.Id), // בודק אם המשתמש קרא
-                UserId=m.UserId
-            }).ToList();
+            await _repositoryManager.Messages.MarkAsReadAsync(userId, messageId);
+            await _repositoryManager.Save();
+            return Result<string>.Success("Sucsess");
         }
 
-        //public async Task<Result<bool>> MarkMessageAsReadAsync(int userId, int messageId)
-        //{
-        //    await _repositoryManager.Messages.MarkMessageAsReadAsync(userId, messageId);
-        //     return Result<bool>.Success(true);
-        //}
+        public async Task<Result<string>> DeleteMessageAsync(int messageId)
+        {
+            var msg = await _repositoryManager.Messages.GetByIdAsync(messageId);
+            if (msg == null)
+                return Result<string>.Failure("Message not found");
+
+            await _repositoryManager.Messages.DeleteMessageAsync(msg);
+            await _repositoryManager.Save();
+            return Result<string>.Success("Success");
+        }
+
+
     }
 }

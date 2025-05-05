@@ -8,6 +8,7 @@ export type Image = {
     type: string;
     uploadedAt: Date;
     updateAt: Date
+    isRootFile?:boolean
 }
 
 export const emptyImage:Image={

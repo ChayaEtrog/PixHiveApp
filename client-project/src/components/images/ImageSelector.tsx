@@ -6,6 +6,7 @@ import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle'
 
 import FancyCollage from './FancyCollage';
 import { useState } from 'react';
+import { LazyImage } from './LazyImage';
 
 
 type Props = {
@@ -91,16 +92,7 @@ export const ImageSelector = ({ images, initialSelection }: Props) => {
                                                     mt:4
                                                 }}
                                             >
-                                                <img
-                                                    src={img.url}
-                                                    alt="image preview"
-                                                    style={{
-                                                        width: '100%',
-                                                        height: '100%',
-                                                        objectFit: 'cover',
-                                                        display: 'block',
-                                                    }}
-                                                />
+                                                <LazyImage src={img.url} alt={img.displayName} />
                                             </Box>
                                             <Typography variant="body2" noWrap>
                                                 {img.displayName}

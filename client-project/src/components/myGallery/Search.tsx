@@ -174,7 +174,7 @@ const Search = ({ userId }: { userId: number }) => {
                     <Button
                         onClick={handleSearchByDate}
                         disabled={!selectedTag}
-                        style={{ height: 45, width: 'max-content', padding: '0', textTransform: 'none', fontSize: '16px', marginTop: '15px' }}
+                        style={{cursor:'pointer', height: 45, width: 'max-content', padding: '0', textTransform: 'none', fontSize: '16px', marginTop: '15px' }}
                     >
                         <img src={search} alt="" style={{ width: '38px', height: '38px' }} />
                     </Button>

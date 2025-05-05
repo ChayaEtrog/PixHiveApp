@@ -5,12 +5,13 @@ import ErrorMessage from "../ErrorMessage";
 import CloseIcon from '@mui/icons-material/Close';
 import lock from "../../../public/Icons/lock.png"
 import { loginUser } from "./UserService";
+import { gradientBorderButton } from "../../styles/buttonsStyle";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Login = ({ open, close }: { open: boolean, close: Function}) => {
     const { userDispatch } = useContext(UserContext);
-    const [isSubmitOk, setIsSubmitOk] = useState(false);
+    const [isSubmitOk, setIsSubmitOk] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const uri = 'auth/login';
@@ -20,10 +21,10 @@ const Login = ({ open, close }: { open: boolean, close: Function}) => {
 
     const handleInputChange = () => {
         const emailValue = emailRef.current?.value || '';
-        const isEmailValid = emailRegex.test(emailValue);
+        const isEmailValid = emailRegex.test(emailValue) ?? false;
         const isPasswordValid = passwordRef.current?.checkValidity() ?? false;
 
-        setIsSubmitOk(!(isEmailValid || emailValue) || !isPasswordValid);
+        setIsSubmitOk(!(emailValue!='' &&isPasswordValid));
     };
 
     const handleSubmit = async (e: FormEvent) => {
@@ -87,7 +88,7 @@ const Login = ({ open, close }: { open: boolean, close: Function}) => {
 
                         <TextField label="Password" type='password' inputRef={passwordRef} margin="normal" variant="outlined" fullWidth required onInput={handleInputChange} />
 
-                        <div > <Button onClick={handleSubmit} variant="outlined" disabled={isSubmitOk}>Submit</Button></div>
+                        <Button onClick={handleSubmit} sx={gradientBorderButton} disabled={isSubmitOk} style={{marginTop:'22px'}}>Submit</Button>
                     </Box>
                 </Modal >
             </>

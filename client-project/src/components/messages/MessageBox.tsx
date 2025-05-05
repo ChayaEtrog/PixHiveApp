@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import  { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserMessages, markMessageAsRead } from "./messageSlice"; // יבוא הפונקציות
 import { AppDispatch, StoreType } from "../appStore";
@@ -7,6 +7,7 @@ import bell from "../../../public/Icons/bell2.png"
 import notRead from "../../../public/Icons/MessageNotRead.png"
 import { Box, Button } from "@mui/material";
 import { gradientBorderButton } from "../../styles/buttonsStyle";
+import ChatBubble from "./ChatBubble";
 
 const MessageBox = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -109,7 +110,6 @@ const MessageBox = () => {
           </div>
         ))}
 
-        {/* כפתור 'טען עוד' */}
         {visibleMessages < messages.length && (
             <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
           <Button
@@ -121,6 +121,7 @@ const MessageBox = () => {
           </Box>
         )}
       </div>
+      <ChatBubble/>
     </div>
   );
 }

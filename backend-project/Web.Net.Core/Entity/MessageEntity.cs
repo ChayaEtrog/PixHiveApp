@@ -14,30 +14,34 @@ namespace Web.Net.Core.Entity
         [Key]
         public int Id { get; set; }
 
-        public int UserId { get; set; }
-
         public string Message { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
         public bool IsActive { get; set; }
 
-        public UserEntity User { get; set; }
 
-        public List<UserEntity> ReadByUsers { get; set; } = new List<UserEntity>();
+        public int SenderId { get; set; }
+        public UserEntity Sender { get; set; }
+
+        public int? ReceiverId { get; set; }
+        public UserEntity? Receiver { get; set; } 
+
+        public ICollection<UserEntityMessageEntity> UserMessages { get; set; }
 
         public MessageEntity()
         {
             
         }
 
-        public MessageEntity(int id, int userId, string message, DateTime createdAt, bool isActive)
+        public MessageEntity(int id, int userId, string message, DateTime createdAt, bool isActive,int?reciverId)
         {
             Id = id;
-            UserId = userId;
+            SenderId = userId;
             Message = message;
             CreatedAt = createdAt==null?DateTime.Now:createdAt;
             IsActive = isActive;
+            reciverId = reciverId;
         }
     }
 }

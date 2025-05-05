@@ -11,22 +11,16 @@ namespace Web.Net.Core.InterfaceService
 {
     public interface IMessageService
     {
-        Task<Result<IEnumerable<MessageDto>>> GetMessagesAsync();
-
-        Task<Result<MessageDto>> GetMessageByIdAsync(int id);
-
         Task<Result<MessageDto>> AddMessageAsync(MessageDto entity);
 
         Task<Result<MessageDto>> UpdateMessageAsync(int id);
 
-        Task<Result<MessageDto>> DeleteMessageAsync(int messageId);
-
         Task<Result<List<MessageDto>>> GetMessagesForUserAsync(int userId);
 
-        Task<List<MessageDto>> GetMessagesAsync(int userId);
+        Task<Result<List<MessageDto>>> GetAllMessagesAsync();
 
-        Task<Result<String>> MarkMessageAsReadAsync(int userId, int messageId);
+        Task<Result<string>> MarkAsReadAsync(int userId, int messageId);
 
-
+        Task<Result<string>> DeleteMessageAsync(int messageId);
     }
 }

@@ -69,12 +69,12 @@ namespace Web.Net.Service
                     BucketName = _bucketName,
                     Key = fileName,
                     Verb = HttpVerb.GET,
-                    Expires = DateTime.UtcNow.AddMinutes(30) // תוקף של 30 דקות
+                    Expires = DateTime.UtcNow.AddMinutes(30) 
                 };
 
                 string url = _s3Client.GetPreSignedURL(request);
 
-                return Result<string>.Success(url); // Success response with the URL
+                return Result<string>.Success(url); 
             }
             catch (Exception ex)
             {

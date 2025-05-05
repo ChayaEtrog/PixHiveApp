@@ -321,6 +321,7 @@ const imageSlice = createSlice({
     downloadUrl: '',
     isRootFiles: false,
     isSearch: false,
+    deletedFromRoot:false
   },
   reducers: {
     resetImageState: (state) => {
@@ -472,6 +473,8 @@ const imageSlice = createSlice({
         state.pending = false;
         const fileId = action.payload.fileId;
         state.files = state.files.filter(f => f.id != fileId);
+        state.deletedFromRoot=state.isRootFiles
+
       })
       .addCase(removeFileFromAlbum.rejected, (state, action) => {
         state.pending = false;
@@ -494,10 +497,10 @@ const imageSlice = createSlice({
 
       //recycle file
       .addCase(recycleFile.fulfilled, (state, action) => {
-        if(state.isRootFiles){
-          const item=state.deletedFiles.find(item => item.id === action.payload)
-          state.files.push(item!)
-        }
+        // if(state.deletedFromRoot==true){
+        //   const item=state.deletedFiles.find(item => item.id === action.payload)
+        //   state.files.push(item!)
+        // }
         state.deletedFiles = state.deletedFiles.filter(file => file.id !== action.payload);
       })
       .addCase(recycleFile.pending, (state) => {

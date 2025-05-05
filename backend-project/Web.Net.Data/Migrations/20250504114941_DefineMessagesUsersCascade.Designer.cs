@@ -12,8 +12,8 @@ using Web.Net.Data;
 namespace Web.Net.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250330132320_Messags")]
-    partial class Messags
+    [Migration("20250504114941_DefineMessagesUsersCascade")]
+    partial class DefineMessagesUsersCascade
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,12 +162,22 @@ namespace Web.Net.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserEntityId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("UserEntityId");
 
                     b.ToTable("Messages");
                 });
@@ -257,9 +267,6 @@ namespace Web.Net.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MessageEntityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -274,12 +281,10 @@ namespace Web.Net.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MessageEntityId");
-
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Web.Net.Core.Entity.UserMessageReads", b =>
+            modelBuilder.Entity("Web.Net.Core.Entity.UserEntityMessageEntity", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -287,21 +292,20 @@ namespace Web.Net.Data.Migrations
                     b.Property<int>("MessageId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MessageId1")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId1")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("UserId", "MessageId");
 
                     b.HasIndex("MessageId");
 
-                    b.HasIndex("MessageId1");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("UserMessageReads");
+                    b.ToTable("UserEntityMessageEntity");
                 });
 
             modelBuilder.Entity("AlbumFile", b =>
@@ -373,13 +377,24 @@ namespace Web.Net.Data.Migrations
 
             modelBuilder.Entity("Web.Net.Core.Entity.MessageEntity", b =>
                 {
-                    b.HasOne("Web.Net.Core.Entity.UserEntity", "User")
-                        .WithMany("Messages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("Web.Net.Core.Entity.UserEntity", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Web.Net.Core.Entity.UserEntity", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("Web.Net.Core.Entity.UserEntity", null)
+                        .WithMany("SentMessages")
+                        .HasForeignKey("UserEntityId");
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Web.Net.Core.Entity.Permissions", b =>
@@ -389,36 +404,17 @@ namespace Web.Net.Data.Migrations
                         .HasForeignKey("RoleId");
                 });
 
-            modelBuilder.Entity("Web.Net.Core.Entity.UserEntity", b =>
+            modelBuilder.Entity("Web.Net.Core.Entity.UserEntityMessageEntity", b =>
                 {
-                    b.HasOne("Web.Net.Core.Entity.MessageEntity", null)
-                        .WithMany("ReadByUsers")
-                        .HasForeignKey("MessageEntityId");
-                });
-
-            modelBuilder.Entity("Web.Net.Core.Entity.UserMessageReads", b =>
-                {
-                    b.HasOne("Web.Net.Core.Entity.MessageEntity", null)
-                        .WithMany()
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Web.Net.Core.Entity.MessageEntity", "Message")
-                        .WithMany()
-                        .HasForeignKey("MessageId1")
+                        .WithMany("UserMessages")
+                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Web.Net.Core.Entity.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Web.Net.Core.Entity.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
+                        .WithMany("UserMessages")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -429,7 +425,7 @@ namespace Web.Net.Data.Migrations
 
             modelBuilder.Entity("Web.Net.Core.Entity.MessageEntity", b =>
                 {
-                    b.Navigation("ReadByUsers");
+                    b.Navigation("UserMessages");
                 });
 
             modelBuilder.Entity("Web.Net.Core.Entity.Role", b =>
@@ -443,7 +439,9 @@ namespace Web.Net.Data.Migrations
 
                     b.Navigation("Files");
 
-                    b.Navigation("Messages");
+                    b.Navigation("SentMessages");
+
+                    b.Navigation("UserMessages");
                 });
 #pragma warning restore 612, 618
         }

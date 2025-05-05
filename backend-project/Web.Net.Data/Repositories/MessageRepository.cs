@@ -17,31 +17,31 @@ namespace Web.Net.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<MessageEntity>> GetFullAsync()
-        {
-            return await _context.Messages
-                .Include(f => f.User).ToListAsync();
-        }
+        //public async Task<IEnumerable<MessageEntity>> GetFullAsync()
+        //{
+        //    return await _context.Messages
+        //        .Include(f => f.User).ToListAsync();
+        //}
 
-        public void DeleteMessage(int messageId)
-        {
-            var message =  _context.Messages
-                .FirstOrDefault(m => m.Id == messageId);
+        //public void DeleteMessage(int messageId)
+        //{
+        //    var message =  _context.Messages
+        //        .FirstOrDefault(m => m.Id == messageId);
 
-            if (message != null)
-            {
-                var user =  _context.Users
-                    .Include(u => u.Messages)
-                    .FirstOrDefault(u => u.Id == message.UserId); 
+        //    if (message != null)
+        //    {
+        //        var user =  _context.Users
+        //            .Include(u => u.Messages)
+        //            .FirstOrDefault(u => u.Id == message.UserId); 
 
-                if (user != null)
-                {
-                    user.Messages.Remove(message);
-                }
-                _context.Messages.Remove(message);
-                 _context.SaveChanges();
-            }
-        }
+        //        if (user != null)
+        //        {
+        //            user.Messages.Remove(message);
+        //        }
+        //        _context.Messages.Remove(message);
+        //         _context.SaveChanges();
+        //    }
+        //}
 
         public async Task<MessageEntity> ToggleMessageStatusAsync(int messageId)
         {
@@ -57,91 +57,50 @@ namespace Web.Net.Data.Repositories
             return message; 
         }
 
-        public async Task<List<MessageEntity>> GetMessagesWithReadStatusAsync()
+        public async Task<List<MessageEntity>> GetAllMessagesAsync()
         {
             return await _context.Messages
-                .Include(m => m.ReadByUsers) // טוען גם את המשתמשים שקראו
-                .ToListAsync();
-        }
-
-        public async Task MarkMessageAsReadAsync(int userId, int messageId)
-        {
-            var message = await _context.Messages
-                .Include(m => m.ReadByUsers)
-                .FirstOrDefaultAsync(m => m.Id == messageId);
-
-            if (message == null)
-                throw new Exception("Message not found.");
-
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null)
-                throw new Exception("User not found.");
-
-            if (!message.ReadByUsers.Contains(user))
-            {
-                message.ReadByUsers.Add(user);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task<bool> IsMessageReadAsync(int userId, int messageId)
-        {
-            return await _context.UserMessageReads
-                .AnyAsync(umr => umr.UserId == userId && umr.MessageId == messageId);
-        }
-
-        //public async Task<List<MessageEntity>> GetMessagesAsync()
-        //{
-        //    return await _context.Messages
-        //        .OrderByDescending(m => m.CreatedAt)
-        //        .ToListAsync();
-        //}
-
-        //public async Task MarkMessageAsReadAsync(int userId, int messageId)
-        //{
-        //    if (!await IsMessageReadAsync(userId, messageId))
-        //    {
-        //        _context.UserMessageReads.Add(new UserMessageReads
-        //        {
-        //            UserId = userId,
-        //            MessageId = messageId,
-        //        });
-        //        await _context.SaveChangesAsync();
-        //    }
-        //}
-
-        //public async Task MarkMessageAsReadAsync(int userId, int messageId)
-        //{
-        //    var exists = await _context.UserMessageReads
-        //        .AnyAsync(umr => umr.UserId == userId && umr.MessageId == messageId);
-
-        //    if (!exists)
-        //    {
-        //        var readEntry = new UserMessageReads
-        //        {
-        //            UserId = userId,
-        //            MessageId = messageId
-        //        };
-
-        //        _context.UserMessageReads.Add(readEntry);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //}
-
-        public async Task<List<MessageEntity>> GetMessagesAsync()
-        {
-            return await _context.Messages
-                .Include(m => m.User) // טוען את היוצר של ההודעה
+                .Include(m => m.Sender)
+                .Include(m => m.Receiver)
                 .OrderByDescending(m => m.CreatedAt)
                 .ToListAsync();
         }
 
-        public async Task<HashSet<int>> GetReadMessagesAsync(int userId)
+        public async Task<List<MessageEntity>> GetMessagesForUserAsync(int userId)
         {
-            return await _context.UserMessageReads
-                .Where(umr => umr.UserId == userId)
-                .Select(umr => umr.MessageId)
-                .ToHashSetAsync(); // HashSet לבדיקה מהירה יותר
+            return await _context.Messages
+                .Where(m => m.ReceiverId == null || m.ReceiverId == userId)
+                .Where(m => m.IsActive)
+                .Include(m => m.UserMessages)
+                .OrderByDescending(m => m.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task DeleteMessageAsync(MessageEntity message)
+        {
+            _context.Messages.Remove(message);
+        }
+
+        public async Task MarkAsReadAsync(int userId, int messageId)
+        {
+            var record = await _context.UserMessages
+                .FirstOrDefaultAsync(um => um.UserId == userId && um.MessageId == messageId);
+
+            if (record == null)
+            {
+                _context.UserMessages.Add(new UserEntityMessageEntity
+                {
+                    UserId = userId,
+                    MessageId = messageId,
+                    IsRead = true,
+                    ReadAt = DateTime.UtcNow
+                });
+            }
+            else
+            {
+                record.IsRead = true;
+                record.ReadAt = DateTime.UtcNow;
+            }
         }
     }
 }

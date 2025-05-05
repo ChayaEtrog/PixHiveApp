@@ -27,6 +27,7 @@ namespace Web.Net.Api.Extensions
             services.AddScoped<IAlbumRepository, AlbumRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserMessagesRepository, UserMessagesRepository>();
 
             services.AddScoped<IS3Service, S3Service>();
 

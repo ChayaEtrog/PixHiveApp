@@ -14,7 +14,8 @@ namespace Web.Net.Data.Repositories
                                    IFileRepository fileRepository,
                                    IAlbumRepository albumRepository,
                                    ITagRepository tagRepository,
-                                   IRoleRepository roleRepository) : IRepositoryManager
+                                   IRoleRepository roleRepository,
+                                   IUserMessagesRepository userMessagesRepository) : IRepositoryManager
     {
         private readonly DataContext _context = context;
         public IUserRepository Users => userRepository;
@@ -23,6 +24,7 @@ namespace Web.Net.Data.Repositories
         public IFileRepository Files => fileRepository;
         public ITagRepository Tags => tagRepository;
         public IRoleRepository Roles => roleRepository;
+        public IUserMessagesRepository UserMessages => userMessagesRepository;
 
         public async Task Save()
         {

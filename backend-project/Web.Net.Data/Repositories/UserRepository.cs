@@ -23,7 +23,8 @@ namespace Web.Net.Data.Repositories
             return await _context.Users
                 .Include(u => u.Albums)
                 .Include(u => u.Files)
-                .Include(u => u.Messages)
+                .Include(u => u.UserMessages)
+    .Include(u => u.SentMessages)
                 .ToListAsync();
         }
 
@@ -37,37 +38,49 @@ namespace Web.Net.Data.Repositories
         public void DeleteStudent(int userId)
         {
             var user = _context.Users
-    .Include(u => u.Files)
-    .Include(u => u.Albums)
-    .Include(u => u.Messages)
-    .FirstOrDefault(u => u.Id == userId);
+                .Include(u => u.Files)
+                .Include(u => u.Albums)
+                .Include(u => u.UserMessages)    // הודעות שהוא קיבל
+                .Include(u => u.SentMessages)    // הודעות שהוא שלח
+                .FirstOrDefault(u => u.Id == userId);
 
-            if (user != null)
-            {
-                // 1️⃣ מחיקת כל הרשומות בטבלת AlbumFile עבור הקבצים של המשתמש
-                var fileIds = user.Files.Select(f => f.Id).ToList();
-                var albumIds = user.Albums.Select(a => a.Id).ToList();
+            if (user == null)
+                return;
 
-                var albumFiles = _context.Set<Dictionary<string, object>>("AlbumFile")
-                    .Where(af => fileIds.Contains((int)af["FilesId"]) || albumIds.Contains((int)af["AlbumsId"]))
-                    .ToList();
+            var fileIds = user.Files.Select(f => f.Id).ToList();
+            var albumIds = user.Albums.Select(a => a.Id).ToList();
 
-                _context.RemoveRange(albumFiles);
-                _context.SaveChanges();
+            // 1️⃣ מחיקת רשומות מטבלת האמצע AlbumFile
+            var albumFiles = _context.Set<Dictionary<string, object>>("AlbumFile")
+                .Where(af => fileIds.Contains((int)af["FilesId"]) || albumIds.Contains((int)af["AlbumsId"]))
+                .ToList();
+            _context.RemoveRange(albumFiles);
 
-                // 2️⃣ מחיקת כל הקבצים של המשתמש
-                _context.Files.RemoveRange(user.Files);
-                _context.SaveChanges();
+            // 2️⃣ מחיקת רשומות מטבלת האמצע FileEntityTagEntity
+            var fileTags = _context.Set<Dictionary<string, object>>("FileEntityTagEntity")
+                .Where(ft => fileIds.Contains((int)ft["FilesId"]))
+                .ToList();
+            _context.RemoveRange(fileTags);
 
-                // 3️⃣ מחיקת כל האלבומים של המשתמש
-                _context.Albums.RemoveRange(user.Albums);
-                _context.SaveChanges();
+            // 3️⃣ מחיקת קבצים
+            _context.Files.RemoveRange(user.Files);
 
-                // 4️⃣ מחיקת המשתמש עצמו
-                _context.Users.Remove(user);
-                _context.SaveChanges();
-            }
+            // 4️⃣ מחיקת אלבומים
+            _context.Albums.RemoveRange(user.Albums);
 
+            // 5️⃣ מחיקת הודעות שנשלחו (SenderId - אם הוא Restrict)
+            _context.Messages.RemoveRange(user.SentMessages);
+
+            // 5️⃣.1 מחיקת ההודעות שהמשתמש קיבל (כדי למנוע שגיאת FK על ReceiverId)
+            var receivedMessages = _context.Messages.Where(m => m.ReceiverId == userId).ToList();
+            _context.Messages.RemoveRange(receivedMessages);
+            _context.SaveChanges();
+
+            // 7️⃣ מחיקת המשתמש
+            _context.Users.Remove(user);
+
+            // 💾 שמירת כל השינויים ביחד
+            _context.SaveChanges();
         }
 
         public async Task<UserEntity> UpdateUserAsync(UserEntity user, int index)

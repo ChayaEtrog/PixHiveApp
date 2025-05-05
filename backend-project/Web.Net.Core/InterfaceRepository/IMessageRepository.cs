@@ -9,22 +9,14 @@ namespace Web.Net.Core.InterfaceRepository
 {
     public interface IMessageRepository:IRepository<MessageEntity>
     {
-        Task<IEnumerable<MessageEntity>> GetFullAsync();
-
-        void DeleteMessage(int messageId);
-
         Task<MessageEntity> ToggleMessageStatusAsync(int messageId);
 
-        Task MarkMessageAsReadAsync(int userId, int messageId);
+        Task<List<MessageEntity>> GetAllMessagesAsync();
 
-        Task<List<MessageEntity>> GetMessagesWithReadStatusAsync();
+        Task<List<MessageEntity>> GetMessagesForUserAsync(int userId);
 
-        Task<bool> IsMessageReadAsync(int userId, int messageId);
+        Task DeleteMessageAsync(MessageEntity message);
 
-        Task<HashSet<int>> GetReadMessagesAsync(int userId);
-
-        Task<List<MessageEntity>> GetMessagesAsync();
-
-        
+        Task MarkAsReadAsync(int userId, int messageId);
     }
 }

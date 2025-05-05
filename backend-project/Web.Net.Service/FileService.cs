@@ -161,22 +161,18 @@ namespace Web.Net.Service
         private async Task<bool> IsNameExist(int userId, string newName)
         {
             var files = await _repositoryManager.Files.GetFilesByUserIdAsync(userId);
-            var fileExists = files.Any(f => f.DisplayName.Equals(newName, StringComparison.OrdinalIgnoreCase) || f.Name.Equals(newName, StringComparison.OrdinalIgnoreCase));
+            var fileExists = files.Any(f => f.DisplayName==newName || f.Name==newName);
 
             if (fileExists)
-            {
                return true;
-            }
 
             return false;
         }
 
         private async Task<bool> IsFileNameExistInAlbumAsync(int albumId, string newName)
         {
-            // שליפת כל הקבצים באלבום הספציפי
             var files = await _repositoryManager.Albums.GetFilesByAlbumIdAsync(albumId);
 
-            // בדיקה אם קיים קובץ עם שם זהה (בהשוואה לא משנה רגישות לרישיות)
             var fileExists = files.Any(f => f.DisplayName.Equals(newName, StringComparison.OrdinalIgnoreCase) || f.Name.Equals(newName, StringComparison.OrdinalIgnoreCase));
 
             return fileExists;
@@ -208,7 +204,6 @@ namespace Web.Net.Service
                 return Result<string>.Success("The file has been moved to the recycle bin and remains linked to the album for potential restore.");
             }
 
-            // אחרת – הסרה רגילה מהאלבום
             file.Albums.Remove(album);
             await _repositoryManager.Save();
             return Result<string>.Success("The file was removed from the album, but remains in other albums.");

@@ -5,6 +5,7 @@ import ErrorMessage from "../ErrorMessage";
 import CloseIcon from '@mui/icons-material/Close';
 import { registerUser } from "./UserService";
 import lock from "../../../public/Icons/lock.png"
+import { gradientBorderButton } from "../../styles/buttonsStyle";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -56,8 +57,7 @@ const Register = ({ open, close }: { open: boolean, close: Function }) => {
                     phoneNumber: data.user.phoneNumber
                 },
             });
-    
-            //setIsLogedIn(true);
+
             close(false);
     
         } catch (error:any) {
@@ -106,7 +106,7 @@ const Register = ({ open, close }: { open: boolean, close: Function }) => {
 
                     <TextField label="PhoneNumber" type='text' inputRef={phonNumberRef} margin="normal" variant="outlined" fullWidth required onInput={handleInputChange}/>
 
-                    <div > <Button onClick={handleSubmit} variant="outlined" disabled={isSubmitOk}>Submit</Button></div>
+                    <Button onClick={handleSubmit} sx={gradientBorderButton} disabled={isSubmitOk} style={{marginTop:'22px'}}>Submit</Button>
                 </Box>
             </Modal >
         </>

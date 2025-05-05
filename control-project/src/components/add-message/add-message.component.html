@@ -1,36 +1,45 @@
 <div class="overlay">
     <div class="user-form">
-        <mat-card>
-            <div class="form-header">
-                <img src="assets/pictures/addMessage.png" alt="message Icon" class="login-icon">
-                <h2 class="form-title">Add message</h2>
-            </div>
-            <form [formGroup]="messageForm" >
-                <mat-card-content>
-                    <mat-form-field class="form-field" appearance="outline">
-                        <mat-label>Message</mat-label>
-                        <textarea matInput id="message" formControlName="message" rows="3"></textarea>
-                        @if (messageForm.get('message')?.invalid && messageForm.get('message')?.touched) {
-                            <mat-error>Message is required.</mat-error>
-                            }
-                      </mat-form-field>
-
-                    <mat-slide-toggle formControlName="isActive" color="primary" >isActive</mat-slide-toggle>
-
-                </mat-card-content>
+      <mat-card>
+        <div class="form-header">
+          <img src="assets/pictures/addMessage.png" alt="message Icon" class="login-icon">
+          <h2 class="form-title">Add message</h2>
+        </div>
+        <form [formGroup]="messageForm">
+          <mat-card-content>
+            <!-- שדה של הודעה -->
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Message</mat-label>
+              <textarea matInput id="message" formControlName="message" rows="3"></textarea>
+              <mat-error *ngIf="messageForm.get('message')?.invalid && messageForm.get('message')?.touched">
+                Message is required.
+              </mat-error>
+            </mat-form-field>
   
-                <mat-card-actions>
-                    <button class="gradient-border-button" type="submit" 
-                        (click)="onSubmit()">
-                        save
-                    </button>
-                    <button class="gradient-button" 
-                        (click)="formClosed.emit()">
-                        cancel
-                    </button>
-                </mat-card-actions>
-            </form>
-        </mat-card>
+            <!-- שדה של הבחירה מתוך רשימת משתמשים -->
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Select User</mat-label>
+              <mat-select formControlName="userId">
+                <mat-option value="null">All</mat-option>
+                @for (user of users; track $index){
+                <mat-option [value]="user.id">{{ user.userName }}</mat-option>}
+              </mat-select>
+            </mat-form-field>
+  
+            <!-- slide toggle -->
+            <mat-slide-toggle formControlName="isActive" color="primary">isActive</mat-slide-toggle>
+  
+          </mat-card-content>
+  
+          <mat-card-actions>
+            <button class="gradient-border-button" type="submit" (click)="onSubmit()">
+              Save
+            </button>
+            <button class="gradient-button" (click)="formClosed.emit()">
+              Cancel
+            </button>
+          </mat-card-actions>
+        </form>
+      </mat-card>
     </div>
   </div>
-

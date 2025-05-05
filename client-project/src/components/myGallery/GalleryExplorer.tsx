@@ -5,7 +5,7 @@ import { AppDispatch, StoreType } from '../appStore';
 import { fetchChildAlbums } from '../albums/albumSlice';
 import { UserContext } from '../user/UserReducer';
 import ErrorMessage from '../ErrorMessage';
-import { Box, Button, CircularProgress, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, CircularProgress, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { clearSearch, getFilesByAlbum, getRootFilesByUser, resetFiles } from '../images/imageSlice';
 import AlbumsGallery from './AlbumsGallery';
 import ImageGallery from './ImagesGallery';
@@ -46,6 +46,12 @@ const GalleryExplorer = () => {
     }
   };
 
+  useEffect(() => {
+    // בכל שינוי של הכתובת - נבדוק אם חזרנו מדף סל המחזור
+    if (location.pathname !== '/gallery/recycle-bin') {
+      reloadCurrentAlbum();
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     reloadCurrentAlbum();
@@ -53,19 +59,19 @@ const GalleryExplorer = () => {
 
   const handleFolderClick = (album: Album) => {
     setPathStack(prev => [...prev, album]);
-    navigate(`/gallery/album/${album.id}`); // עדכון הנתיב שיתאים למבנה החדש
+    navigate(`/gallery/album/${album.id}`); 
   };
 
   const navigateToBreadcrumb = (index: number) => {
     if (index === -1) {
       setPathStack([]);
-      navigate('/gallery'); // חזרה לעמוד הראשי של הגלריה
+      navigate('/gallery');
       return;
     }
     const targetAlbum = pathStack[index];
     const newStack = pathStack.slice(0, index + 1);
     setPathStack(newStack);
-    navigate(`/gallery/album/${targetAlbum.id}`); // עדכון הנתיב בהתאם למבנה החדש
+    navigate(`/gallery/album/${targetAlbum.id}`); 
   };
 
   useEffect(() => {
@@ -106,7 +112,6 @@ const GalleryExplorer = () => {
         <GalleryNavBar />
       </Box>
 
-      {/* תוכן ראשי */}
       <Box
         component="main"
         sx={{

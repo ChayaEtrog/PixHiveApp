@@ -20,6 +20,8 @@ namespace Web.Net.Core.InterfaceRepository
 
         IRoleRepository Roles { get; }
 
+        IUserMessagesRepository UserMessages { get; }
+
         Task Save();
     }
 }

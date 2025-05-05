@@ -11,7 +11,7 @@ import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 
 const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Function }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { downloadUrl, error, pending } = useSelector((store: StoreType) => store.image);
+  const { downloadUrl, error } = useSelector((store: StoreType) => store.image);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleImageLoad = () => {
@@ -37,7 +37,7 @@ const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Fun
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 9999, // אפשר גם מספר ולא מחרוזת
+        zIndex: 9999, 
         backgroundColor: 'rgba(0,0,0,0.3)'
       }}>
         <svg width={0} height={0}>

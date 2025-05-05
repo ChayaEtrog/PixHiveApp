@@ -31,7 +31,6 @@ const UploadImage = () => {
 
   const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/S3/`;
 
-  // בדיקת קובץ
   const validateFile = (selectedFile: File) => {
     if (!allowedFileTypes.includes(selectedFile.type)) {
       setError("Unsupported file type. Only images are allowed.");
@@ -64,7 +63,6 @@ const UploadImage = () => {
     }
   };
 
-  // גרירה
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const droppedFile = e.dataTransfer.files[0];
@@ -105,7 +103,6 @@ const UploadImage = () => {
 
       console.log(file.type);
 
-      // העלאה ל-S3
       const uploadResponse = await axios.put(uploadUrl, file, {
         headers: {
           'Content-Type': file.type,
@@ -151,7 +148,7 @@ const UploadImage = () => {
       justifyContent: 'center',
       alignItems: 'center',
       color: 'rgb(86, 86, 86)',
-      overflow: 'hidden', // מונע גלילה
+      overflow: 'hidden', 
     }}>
       <div style={{ textAlign: 'center' }}>
         <div style={{
@@ -161,7 +158,6 @@ const UploadImage = () => {
         }}>
           <h3 style={{ marginBottom: '20px', fontSize: '30px' }}>Upload your image</h3>
 
-          {/* אזור הגרירה עם אנימציה */}
           <div
             className="drag-circle"
             onDrop={handleDrop}

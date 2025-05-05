@@ -23,7 +23,7 @@ namespace Web.Net.Data
 
         public DbSet<Role> Roles { get; set; }
 
-        public DbSet<UserMessageReads> UserMessageReads { get; set; }
+        public DbSet<UserEntityMessageEntity> UserMessages { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -31,10 +31,6 @@ namespace Web.Net.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserMessageReads>()
-                .HasKey(umr => new { umr.UserId, umr.MessageId }); // הגדרת מפתח משולב
-
-
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<AlbumEntity>()
@@ -61,19 +57,44 @@ namespace Web.Net.Data
                 .HasForeignKey(m => m.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<MessageEntity>()
-                 .HasOne(m => m.User)
-                 .WithMany(u => u.Messages)
-                 .HasForeignKey(m => m.UserId)
-                 .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<FileEntity>()
                 .HasOne(f => f.User)
                 .WithMany(u => u.Files)
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+
+            // הגדרת קשר מפתח ראשי משולב עבור UserMessage
+            modelBuilder.Entity<UserEntityMessageEntity>()
+                .HasKey(um => new { um.UserId, um.MessageId });
+
+            // קשר בין User ל-UserMessage
+            modelBuilder.Entity<UserEntityMessageEntity>()
+                .HasOne(um => um.User)
+                .WithMany(u => u.UserMessages)
+                .HasForeignKey(um => um.UserId);
+
+            // קשר בין Message ל-UserMessage
+            modelBuilder.Entity<UserEntityMessageEntity>()
+                .HasOne(um => um.Message)
+                .WithMany(m => m.UserMessages)
+                .HasForeignKey(um => um.MessageId);
+
+            // קשר בין Message לשולח
+            modelBuilder.Entity<MessageEntity>()
+                .HasOne(m => m.Sender)
+                .WithMany()
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // קשר בין Message לנמען (אם יש)
+            modelBuilder.Entity<MessageEntity>()
+                .HasOne(m => m.Receiver)
+                .WithMany()
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
