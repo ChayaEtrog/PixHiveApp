@@ -9,9 +9,10 @@ import AlertMessage from '../alertMessage';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
 import { uploadImage } from './imageSlice';
+import { uploadImageFunction } from './UploadImageFunction';
 
 const allowedFileTypes = ["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/jpg"];
-const maxFileSize = 10 * 1024 * 1024; // 10MB
+const maxFileSize = 8 * 1024 * 1024; // 10MB
 
 const UploadImage = () => {
   const { user } = useContext(UserContext);
@@ -80,65 +81,66 @@ const UploadImage = () => {
   };
 
   const uploadFile = async () => {
-    if (!file) return;
+    // if (!file) return;
 
-    try {
-      setUploading(true);
-      setError(null);
+    // try {
+    //   setUploading(true);
+    //   setError(null);
 
-      const token = sessionStorage.getItem('authToken');
+    //   const token = sessionStorage.getItem('authToken');
 
-      const response = await axios.get(`${API_BASE_URL}upload-url`, {
-        params: {
-          fileName: file.name,
-          contentType: file.type,
-        },
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+    //   const response = await axios.get(`${API_BASE_URL}upload-url`, {
+    //     params: {
+    //       fileName: file.name,
+    //       contentType: file.type,
+    //     },
+    //     headers: {
+    //       'Authorization': `Bearer ${token}`,
+    //       'Content-Type': 'application/json',
+    //     },
+    //   });
 
-      const uploadUrl = response.data.url;
+    //   const uploadUrl = response.data.url;
 
-      console.log(file.type);
+    //   console.log(file.type);
 
-      const uploadResponse = await axios.put(uploadUrl, file, {
-        headers: {
-          'Content-Type': file.type,
-        },
-      });
+    //   const uploadResponse = await axios.put(uploadUrl, file, {
+    //     headers: {
+    //       'Content-Type': file.type,
+    //     },
+    //   });
 
-      if (uploadResponse.status === 200) {
+    //   if (uploadResponse.status === 200) {
 
-        const image = {
-          userId: fileDetails.UserId ?? 0,
-          name: fileDetails.Name,
-          FilePath: uploadUrl,
-          fileSize: fileDetails.FileSize,
-          type: fileDetails.Type
-        };
+    //     const image = {
+    //       userId: fileDetails.UserId ?? 0,
+    //       name: fileDetails.Name,
+    //       FilePath: uploadUrl,
+    //       fileSize: fileDetails.FileSize,
+    //       type: fileDetails.Type
+    //     };
 
-        const resultAction = await dispatch(uploadImage({ image: image, albumId: -1 }));
+    //     const resultAction = await dispatch(uploadImage({ image: image, albumId: -1 }));
 
-        if (uploadImage.fulfilled.match(resultAction)) {
-          setAlert("File uploaded successfully!");
-        } else {
-          console.log(resultAction);
-          const errorMessage = resultAction.payload as string || 'Error saving file information in the database';
-          setError(errorMessage);
-        }
+    //     if (uploadImage.fulfilled.match(resultAction)) {
+    //       setAlert("File uploaded successfully!");
+    //     } else {
+    //       console.log(resultAction);
+    //       const errorMessage = resultAction.payload as string || 'Error saving file information in the database';
+    //       setError(errorMessage);
+    //     }
 
-      } else {
-        setError('Error uploading file');
-      }
-    } catch (err: any) {
-      console.log(err);
+    //   } else {
+    //     setError('Error uploading file');
+    //   }
+    // } catch (err: any) {
+    //   console.log(err);
 
-      setError('Upload failed: ' + err.ErrorMessage);
-    } finally {
-      setUploading(false);
-    }
+    //   setError('Upload failed: ' + err.ErrorMessage);
+    // } finally {
+    //   setUploading(false);
+    // }
+    uploadImageFunction({file,setUploading,setError,setAlert,fileDetails,dispatch})
   };
 
   return (

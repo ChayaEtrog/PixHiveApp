@@ -29,7 +29,7 @@ const ChatBubble = () => {
   }
 
   return (
-    <Box sx={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}>
+    <Box sx={{ position: 'fixed', bottom: 26, right: 30, zIndex: 1000 }}>
       {open && (
         <Paper
         elevation={6}

@@ -113,6 +113,8 @@ const ImageGallery = ({ files }: { files: Image[] }) => {
 
     </>
   );
+
+  
 };
 
 export default ImageGallery;
