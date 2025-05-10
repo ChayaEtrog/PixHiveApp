@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 import { getDownloadUrl } from '../images/imageSlice';
 import { AppDispatch, StoreType } from '../appStore';
 import ErrorMessage from '../ErrorMessage';
-import { CircularProgress, IconButton } from '@mui/material';
+import { CircularProgress, IconButton, Tooltip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { DownloadImage, PrintImage } from '../Image Operations/downloadAndPrintImage';
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import ImageEditor from '../Image Operations/ImageEditor';
-import { set } from 'react-hook-form';
+import { motion } from "framer-motion";
 
 const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Function }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -89,23 +89,77 @@ const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Fun
               <CloseIcon />
             </IconButton>
 
-            <IconButton sx={{ position: 'absolute', top: 8, left: 56, }} onClick={(e) => { e.stopPropagation(); PrintImage(fileName, dispatch) }}>
-              <PrintOutlinedIcon sx={{ color: 'white' }} />
-            </IconButton>
+            <Tooltip title="print" PopperProps={{
+              modifiers: [
+                {
+                  name: 'zIndex', enabled: true, phase: 'write',
+                  fn: ({ state }) => { state.styles.popper.zIndex = '9999' },
+                },
+              ],
+            }}>
+              <IconButton sx={{ position: 'absolute', top: 8, left: 56, }} onClick={(e) => { e.stopPropagation(); PrintImage(fileName, dispatch) }}>
+                <PrintOutlinedIcon sx={{ color: 'white' }} />
+              </IconButton>
+            </Tooltip>
 
-            <IconButton sx={{ position: 'absolute', top: 8, left: 8, }} onClick={(e) => { e.stopPropagation(); DownloadImage(fileName, dispatch) }}>
-              <FileDownloadOutlinedIcon sx={{ color: 'white' }} />
-            </IconButton>
+            <Tooltip title="download" PopperProps={{
+              modifiers: [
+                {
+                  name: 'zIndex', enabled: true, phase: 'write',
+                  fn: ({ state }) => { state.styles.popper.zIndex = '9999' },
+                },
+              ],
+            }}>
+              <IconButton sx={{ position: 'absolute', top: 8, left: 8, }} onClick={(e) => { e.stopPropagation(); DownloadImage(fileName, dispatch) }}>
+                <FileDownloadOutlinedIcon sx={{ color: 'white' }} />
+              </IconButton>
+            </Tooltip>
 
-            <IconButton sx={{ position: 'absolute', top: 8, left: 100, }} onClick={(e) => { e.stopPropagation(); setIsEditing(true) }}>
-              <EditIcon sx={{ color: 'white' }} />
-            </IconButton>
+            <div style={{ position: "relative" }}>
+              {/* תווית "חדש" מונפשת וזוהרת */}
+              <motion.div
+                initial={{ x: 0 }}
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                style={{
+                  position: 'fixed', top: 9, left: 130,
+                  background: "linear-gradient(45deg, #47dcd1 , #dc8dec)",
+                  color: "white",
+                  padding: "2px 8px",
+                  borderRadius: "10px",
+                  fontSize: "11px",
+                  fontWeight: "bold",
+                  textShadow: "0 0 8px rgba(255,255,255,0.8)",
+                  zIndex: 9998,
+                  boxShadow: "0 0 10px #dc8dec",
+                }}
+              >
+                new
+              </motion.div>
+
+              {/* כפתור עריכה */}
+              <Tooltip title="edit" PopperProps={{
+                modifiers: [{
+                  name: 'zIndex',
+                  enabled: true,
+                  phase: 'write',
+                  fn: ({ state }) => { state.styles.popper.zIndex = '9999' },
+                }],
+              }}>
+                <IconButton
+                  sx={{ position: 'fixed', top: 8, left: 105 }}
+                  onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}
+                >
+                  <EditIcon sx={{ color: 'white' }} />
+                </IconButton>
+              </Tooltip>
+            </div>
 
           </div>
         )}
         {error && <ErrorMessage message={error} />}
       </div>
-      {isEditing && <ImageEditor image={downloadUrl} onClose={() => setIsEditing(false)} />}
+      {isEditing && <ImageEditor image={downloadUrl} onClose={() => { setIsEditing(false); closeImage('') }} />}
     </>
   );
 };

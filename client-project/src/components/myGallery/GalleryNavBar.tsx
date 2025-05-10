@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import addAlbum from "../../../public/Icons/addAlbum.png"
 import { gradientBorderButton, iconButtonStyle } from "../../styles/buttonsStyle";
 import { useState } from "react";
@@ -7,59 +7,95 @@ import UploadImagePopup from "../images/UploadImagePopup";
 import upload from "../../../public/Icons/uploadIcon.png"
 import recycleBin from "../../../public/Icons/recycleBin.png"
 import { useNavigate } from "react-router";
-import gallery from"../../../public/Icons/imagesAndAlbums.png"
+import gallery from "../../../public/Icons/imagesAndAlbums.png"
+import { motion } from 'framer-motion';
+import arrowRight from "../../../public/Icons/simpleArrowRight.png"
+import arrowLeft from"../../../public/Icons/arrowLeft.png"
+import Divider from '@mui/material/Divider';
 
 const GalleryNavBar = () => {
     const [createAlbum, setCreateAlbum] = useState(false);
     const [uploadImage, setUploadImage] = useState(false);
+    const [collapsed, setCollapsed] = useState(false);
     const navigate = useNavigate();
-    
+
+    const toggleCollapse = () => setCollapsed((prev) => !prev);
+
     return (
-        <>
+        <motion.div
+            animate={{ width: collapsed ? 75 : 225 }}
+            transition={{ duration: 0.4 }}
+            style={{
+                marginTop: "80px",
+                height: "88vh",
+                position: "fixed",
+                top: 0,
+                left: 0,
+                backgroundColor: "#fff",
+                boxShadow: "2px 0 10px rgba(0,0,0,0.1)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "end",
+                paddingTop: "10px",
+                overflowX: "hidden",
+                zIndex: 1000,
+            }}
+        >
+            <IconButton onClick={toggleCollapse} sx={{ mb: 1,mr:1}}>
+                {collapsed ? <img src={arrowRight} style={{width:'30px',objectFit:'cover'}}  /> : <img src={arrowLeft} style={{width:'30px',objectFit:'cover'}} /> }
+            </IconButton>
+            <Divider flexItem sx={{mb:2}}/>
+            <Box sx={{ height: "30px" }} />
 
-            <Button variant="outlined" sx={iconButtonStyle} onClick={() => navigate('/gallery')}>
-                <img src={gallery} alt="" style={{ width: '50px',objectFit:'cover', marginTop: '20px' }} />
-            </Button>
+            <Box sx={{ display: "flex", gap: '2px' }}>
+                <Button variant="outlined" sx={iconButtonStyle} onClick={() => navigate("/gallery")}>
+                    <img src={gallery} alt="" style={{ width: "50px", objectFit: "cover" }} />
+                </Button>
+                {!collapsed && (
+                    <Button sx={{ ...gradientBorderButton, height: "60px", mt: 1 }} style={{ width: '155px' }} onClick={() => navigate("/gallery")}>
+                        Gallery
+                    </Button>
+                )}</Box>
 
-            <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}} onClick={() => navigate('/gallery')} style={{ height: '60px',marginTop:'20px' }}>
-                Gallery
-            </Button>
+            <Box sx={{ height: "40px" }} />
 
-            <div style={{ width: '15vw', height: '25px' }}></div> {/*background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)*/}
+            <Box sx={{ display: "flex" }}>
+                <Button variant="outlined" sx={iconButtonStyle} onClick={() => setCreateAlbum(true)}>
+                    <img src={addAlbum} alt="Add Album" style={{ width: "50px", objectFit: "cover" }} />
+                </Button>
+                {!collapsed && (
+                    <Button sx={{ ...gradientBorderButton, height: "60px", mt: 1 }}  style={{ width: '155px' }} onClick={() => setCreateAlbum(true)}>
+                        Create Album
+                    </Button>
+                )}</Box>
 
-            <Button variant="outlined" sx={iconButtonStyle} onClick={() => setCreateAlbum(true)}>
-                <img src={addAlbum} alt="Add Album" style={{ width: '50px',objectFit:'cover',}} />
-            </Button>
+            <Box sx={{ height: "40px" }} />
 
-            <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}} onClick={() => setCreateAlbum(true)} style={{ height: '60px' }}>
-                create album
-            </Button>
+            <Box sx={{ display: "flex" }}>
+                <Button variant="outlined" sx={iconButtonStyle} onClick={() => setUploadImage(true)}>
+                    <img src={upload} alt="upload image" style={{ width: "50px", objectFit: "cover" }} />
+                </Button>
+                {!collapsed && (
+                    <Button sx={{ ...gradientBorderButton, height: "60px", mt: 1 }}  style={{ width: '155px' }} onClick={() => setUploadImage(true)}>
+                        Upload Image
+                    </Button>
+                )}</Box>
 
-            <div style={{ width: '15vw', height: '25px' }}></div> {/*background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)*/}
+            <Box sx={{ height: "40px" }} />
 
+            <Box sx={{ display: "flex" }}>
+                <Button variant="outlined" sx={iconButtonStyle} onClick={() => navigate("/gallery/recycle-bin")}>
+                    <img src={recycleBin} alt="recycle bin" style={{ width: "50px", objectFit: "cover" }} />
+                </Button>
+                {!collapsed && (
+                    <Button sx={{ ...gradientBorderButton, height: "60px", mt: 1 }}  style={{ width: '155px' }} onClick={() => navigate("/gallery/recycle-bin")}>
+                        Recycle Bin
+                    </Button>
+                )}</Box>
 
-            <Button variant="outlined" sx={iconButtonStyle} onClick={() =>setUploadImage(true)}>
-                <img src={upload} alt="upload image" style={{ width: '50px',objectFit:'cover', }} />
-            </Button>
-            <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}} onClick={() => setUploadImage(true)} style={{ height: '60px' }} className="textButton">
-                Upload Image
-            </Button>
-
-            <div style={{ width: '15vw', height: '25px' }}></div> {/*background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)*/}
-           
-            <Button variant="outlined" sx={iconButtonStyle} onClick={() =>navigate('/gallery/recycle-bin')}>
-                <img src={recycleBin} alt="Add Album" style={{ width: '50px',objectFit:'cover', }} />
-            </Button>
-
-            <Button sx={{display: {xs: 'none',lg:'inline'} ,...gradientBorderButton}}  onClick={() =>navigate('/gallery/recycle-bin') } style={{ height: '60px' }}>
-                Recycle Bin
-            </Button>
-
-            <div style={{ width: '15vw', height: '25px' }}></div> {/*background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)*/}
-            {/* <Outlet />  */}
             {createAlbum && <CreateAlbum closeForm={setCreateAlbum} />}
             {uploadImage && <UploadImagePopup onClose={setUploadImage} />}
-        </>
+        </motion.div>
     );
 };
 

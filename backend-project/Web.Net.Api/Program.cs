@@ -3,8 +3,10 @@ using Amazon.S3;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using System;
 using Web.Net.Api.Extensions;
 using Web.Net.Data;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,7 @@ builder.Configuration["AWS:BucketName"] = Env.GetString("AWS_BUCKET_NAME");
 builder.Configuration["AWS:Region"] = Env.GetString("AWS_REGION");
 builder.Configuration["AWS:AccessKey"] = Env.GetString("AWS_ACCESS_KEY_ID");
 builder.Configuration["AWS:SecretKey"] = Env.GetString("AWS_SECRET_ACCESS_KEY");
+builder.Configuration["ConnectionStrings:DefaultConnection"] = Env.GetString("ConnectionStrings_DefaultConnection");
 
 var credentials = new BasicAWSCredentials(
     builder.Configuration["AWS:AccessKey"],
@@ -40,8 +43,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(@"Data Source = DESKTOP-SSNMLFD; Initial Catalog = PicHive; Integrated Security = True; TrustServerCertificate=True"));
-
+       options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 33))
+    )
+);
 
 var app = builder.Build();
 

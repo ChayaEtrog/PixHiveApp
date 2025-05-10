@@ -49,36 +49,40 @@ const Search = ({ userId }: { userId: number }) => {
 
     return (
         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 4 }}>
-            {/* Search by Name */}
-            <TextField
-                variant="outlined"
-                placeholder="Search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                sx={{
-                    minWidth: 500,
-                    '& .MuiOutlinedInput-root': {
-                        height: 47,
-                        border: '2px solid',
-                        borderImageSlice: 1,
-                        borderImageSource: 'linear-gradient(to right, #47dcd1, #dc8dec)',
-                        paddingRight: '10px',
-                        backgroundColor: 'white'
-                    },
-                    '& .MuiOutlinedInput-notchedOutline': {
-                        border: 'none', 
-                    },
-                }}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <IconButton onClick={handleSearchByName}>
-                                <img src={search} alt="" style={{ width: '30px', height: '30px',cursor:'pointer'}} />
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                }}
-            />
+          <TextField
+  variant="outlined"
+  placeholder="Search"
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  sx={{
+    minWidth: 500,
+    '& .MuiOutlinedInput-root': {
+      height: 47,
+      backgroundColor: 'white',
+    },
+  }}
+  InputProps={{
+    startAdornment: (
+      <InputAdornment position="start">
+        <IconButton
+          onClick={handleSearchByName}
+          disabled={!searchTerm.trim()} // הכפתור יושבת אם אין טקסט
+        >
+          <img
+            src={search}
+            alt=""
+            style={{
+              width: '30px',
+              height: '30px',
+              cursor: searchTerm.trim() ? 'pointer' : 'not-allowed',
+              opacity: searchTerm.trim() ? 1 : 0.5,
+            }}
+          />
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
 
             <Button
                 onClick={(e) => setAnchorTagEl(e.currentTarget)}
@@ -136,7 +140,6 @@ const Search = ({ userId }: { userId: number }) => {
                 </Box>
             </Popover>
 
-            {/* Date Popover */}
             <Popover
                 open={Boolean(anchorDateEl)}
                 anchorEl={anchorDateEl}
@@ -174,7 +177,7 @@ const Search = ({ userId }: { userId: number }) => {
                     <Button
                         onClick={handleSearchByDate}
                         disabled={!selectedTag}
-                        style={{cursor:'pointer', height: 45, width: 'max-content', padding: '0', textTransform: 'none', fontSize: '16px', marginTop: '15px' }}
+                        style={{ height: 45, width: 'max-content', padding: '0', textTransform: 'none', fontSize: '16px', marginTop: '15px' }}
                     >
                         <img src={search} alt="" style={{ width: '38px', height: '38px' }} />
                     </Button>

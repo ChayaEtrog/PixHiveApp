@@ -13,11 +13,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../services/user.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { log } from 'node:console';
 
 @Component({
   selector: 'app-messages-list',
   standalone: true,
-  imports: [MatTooltipModule,MatButtonModule,CommonModule, MatCardModule, FormsModule, MatSlideToggleModule, AddMessageComponent, MatIconModule],
+  imports: [MatTooltipModule, MatButtonModule, CommonModule, MatCardModule, FormsModule, MatSlideToggleModule, AddMessageComponent, MatIconModule],
   templateUrl: './messages-list.component.html',
   styleUrl: './messages-list.component.css'
 })
@@ -27,7 +28,7 @@ export class MessagesListComponent {
   private router = inject(Router)
   public isFilterActive = false;
   messages: Message[] = [];
-  adminMessages:Message[]=[];
+  adminMessages: Message[] = [];
   addMessage: boolean = false;
   color: ThemePalette = 'primary';
   private notyf = new Notyf({
@@ -89,24 +90,23 @@ export class MessagesListComponent {
   }
 
   toggleFilterByEmail() {
-    const targetEmail = 'xxx@gmail.com';
+    const targetEmail = 'xxxx@gmail.com';
     console.log(this.isFilterActive);
-  
+
     if (this.isFilterActive) {
       this.messages = [...this.adminMessages];
     } else {
-      this.adminMessages=this.messages
-      this.messages = this.messages.filter(message => {
+      this.adminMessages = this.messages
+      this.messages = this.adminMessages.filter(message => {
         const receiverId = message.receiverId;
-        if (!receiverId) return false; // התעלמות מהודעות לכלל המשתמשים
+        if (!receiverId) return false;
         const email = this.userEmails[receiverId];
         return email === targetEmail;
       });
     }
-  
+    console.log(this.messages);
+
     this.isFilterActive = !this.isFilterActive;
   }
-
-
 }
 

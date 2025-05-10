@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../appStore";
-import { uploadImageFunction } from "../images/UploadImageFunction";
-import { Box, TextField, Button, IconButton, CircularProgress, Typography, Backdrop } from "@mui/material";
+import { useState } from "react";
+import { Button, IconButton, CircularProgress, Tooltip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import SaveIcon from "@mui/icons-material/CloudUpload";
+import ErrorMessage from "../ErrorMessage";
+import { GradientButton } from "../../styles/buttonsStyle";
+import PromptInput from "./PromptInput";
+import { DownloadEditedImage } from "./downloadAndPrintImage";
+
+interface Props {
+  image: string;
+  onClose: () => void;
+}
 
 interface Props {
   image: string;
@@ -12,16 +17,11 @@ interface Props {
 }
 
 export default function ImageEditor({ image, onClose }: Props) {
+  const [isDownloading, setIsDownloading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const [resultUrl, setResultUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [alert, setAlert] = useState<string | null>(null);
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    console.log(image);
-  }, []);
 
   const handleSubmit = async () => {
     if (!prompt) return;
@@ -32,8 +32,6 @@ export default function ImageEditor({ image, onClose }: Props) {
     formData.append("prompt", prompt);
 
     try {
-      console.log(formData);
-      
       const res = await fetch("http://localhost:5000/process-image", {
         method: "POST",
         body: formData,
@@ -42,116 +40,116 @@ export default function ImageEditor({ image, onClose }: Props) {
       setResultUrl(data.output_url);
     } catch (err) {
       console.error("❌ Error processing image", err);
+      setError("שגיאה בעיבוד התמונה");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSave = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(resultUrl);
-      const blob = await response.blob();
-      const processedFile = new File([blob], image, { type: blob.type });
+  const renderLoading = () => (
+    <div style={{
+      position: "fixed",
+      top: -85,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 9998,
+      backgroundColor: "rgba(0,0,0,0.3)"
+    }}>
+      <svg width={0} height={0}>
+        <defs>
+          <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#e01cd5" />
+            <stop offset="100%" stopColor="#1CB5E0" />
+          </linearGradient>
+        </defs>
+      </svg>
 
-      const fileDetails = {
-        UserId: 123,
-        Name: processedFile.name,
-        FilePath: "",
-        FileSize: processedFile.size,
-        Type: processedFile.type,
-      };
-
-      await uploadImageFunction({
-        file: processedFile,
-        setUploading: setLoading,
-        setError,
-        setAlert,
-        fileDetails,
-        dispatch,
-      });
-    } catch (err) {
-      console.error("❌ Error saving processed image", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+      <CircularProgress
+        sx={{
+          marginBottom: "120px", // תעלה את המעגל כלפי מעלה
+          'svg circle': { stroke: 'url(#my_gradient)' }
+        }}
+      />
+    </div>
+  );
 
   return (
-    <Backdrop open sx={{ zIndex: 9999, backgroundColor: "rgba(0,0,0,0.9)" }}>
-      <Box
-        sx={{
-          position: "relative",
-          width: "90vw",
-          height: "90vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-        }}
-      >
-        <IconButton
+    <div className="fullscreen-container">
+      {loading && renderLoading()}
+
+      {image && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.9)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9997,
+            padding: 16,
+          }}
           onClick={onClose}
-          sx={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            color: "#fff",
-            zIndex: 10000,
-          }}
         >
-          <CloseIcon fontSize="large" />
-        </IconButton>
+          <img
+            src={resultUrl || image}
+            alt="Edited"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: loading ? "none" : "block",
+              width: "45%",
+              maxHeight: "60%",
+              objectFit: "contain",
+              marginBottom: 16,
+            }}
+          />
 
-        {loading && <CircularProgress sx={{ color: "#1CB5E0", mb: 2 }} />}
-
-        <Box
-          component="img"
-          src={resultUrl || image}
-          alt="preview"
-          sx={{
-            maxWidth: "80%",
-            maxHeight: "70%",
-            objectFit: "contain",
-            borderRadius: 2,
-            boxShadow: 3,
-            mb: 2,
-          }}
-        />
-
-        <TextField
-          fullWidth
-          placeholder="מה תרצי לשנות בתמונה?"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          sx={{ backgroundColor: "#fff", borderRadius: 1, mb: 2 }}
-        />
-
-        {!resultUrl ? (
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            color="primary"
-            disabled={loading || !prompt}
+          <IconButton
+            sx={{ position: "absolute", top: 8, right: 34, color: "red" }}
+            onClick={(e) => { e.stopPropagation(); onClose(); }}
           >
-            שלחי לעיבוד
-          </Button>
-        ) : (
-          <Button
-            onClick={handleSave}
-            variant="contained"
-            startIcon={<SaveIcon />}
-            disabled={loading}
-            sx={{ backgroundColor: "green", ":hover": { backgroundColor: "#2e7d32" } }}
-          >
-            שמרי בענן
-          </Button>
-        )}
+            <CloseIcon />
+          </IconButton>
 
-        {alert && <Typography color="success.main" mt={2}>{alert}</Typography>}
-        {error && <Typography color="error.main" mt={2}>{error}</Typography>}
-      </Box>
-    </Backdrop>
+          {resultUrl && <Tooltip
+            title="save"
+            PopperProps={{
+              modifiers: [{
+                name: "zIndex", enabled: true, phase: "write",
+                fn: ({ state }) => { state.styles.popper.zIndex = "9999"; },
+              }],
+            }}
+          >
+            <Button sx={GradientButton}
+              style={{ position: "absolute", top: 30, left: 38 }}
+              onClick={(e) => { e.stopPropagation(); DownloadEditedImage(resultUrl, "myimage.png", setIsDownloading); }}>{isDownloading ? "Downloading..." : "Download Edited Image"}</Button>
+          </Tooltip>}
+
+          {!resultUrl && (
+            <>
+              <PromptInput value={prompt} onChange={setPrompt} />
+              <Button
+                onClick={(e) => { handleSubmit(); e.stopPropagation() }}
+                sx={GradientButton}
+                disabled={loading || !prompt}
+              >
+                send
+              </Button>
+            </>
+          )}
+        </div>
+      )}
+
+      {error && <ErrorMessage message={error} />}
+    </div>
   );
 }
+

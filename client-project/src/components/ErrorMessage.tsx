@@ -13,7 +13,7 @@ function ErrorMessage({ message, setError }: { message: string, setError?:Functi
         vertical: 'top',
         horizontal: 'center',
       }}
-      sx={{ zIndex: 1500 }}
+      sx={{ zIndex: 9999 }}
     >
       <Alert
         onClose={() => setOpen(false)}

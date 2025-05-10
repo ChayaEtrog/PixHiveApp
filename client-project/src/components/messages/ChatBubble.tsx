@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import { Box, Fab, Paper, TextField, IconButton } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import ChatIcon from '@mui/icons-material/Chat';
-import { useDispatch } from 'react-redux';// עדכן בהתאם למיקום שלך
+import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
 import { postMessage } from './messageSlice';
 import { MessagePostModel } from '../../types/MessagePostModel';
 import messages from'../../../public/Icons/messages.png'
 import send from '../../../public/Icons/send.png'
-import { red } from '@mui/material/colors';
 const ChatBubble = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<MessagePostModel>({message:'',senderId:-1,receiverId:-1,isActive:true});
@@ -48,7 +45,6 @@ const ChatBubble = () => {
           backgroundColor: '#fdfdfd',
         }}
       >
-        {/* כפתור סגירה */}
         <IconButton
           onClick={() => setOpen(false)}
           size="small"

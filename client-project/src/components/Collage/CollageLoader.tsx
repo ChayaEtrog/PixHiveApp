@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { CircularProgress } from '@mui/material';
 import { AppDispatch } from '../appStore';
-import { getDownloadUrl, getFilesByUser } from './imageSlice';
+import { getDownloadUrl, getFilesByUser } from '../images/imageSlice';
 import { ImageSelector } from './ImageSelector';
 import { UserContext } from '../user/UserReducer';
 

@@ -47,7 +47,6 @@ const GalleryExplorer = () => {
   };
 
   useEffect(() => {
-    // בכל שינוי של הכתובת - נבדוק אם חזרנו מדף סל המחזור
     if (location.pathname !== '/gallery/recycle-bin') {
       reloadCurrentAlbum();
     }
@@ -59,7 +58,7 @@ const GalleryExplorer = () => {
 
   const handleFolderClick = (album: Album) => {
     setPathStack(prev => [...prev, album]);
-    navigate(`/gallery/album/${album.id}`); 
+    navigate(`/gallery/album/${album.id}`);
   };
 
   const navigateToBreadcrumb = (index: number) => {
@@ -71,7 +70,7 @@ const GalleryExplorer = () => {
     const targetAlbum = pathStack[index];
     const newStack = pathStack.slice(0, index + 1);
     setPathStack(newStack);
-    navigate(`/gallery/album/${targetAlbum.id}`); 
+    navigate(`/gallery/album/${targetAlbum.id}`);
   };
 
   useEffect(() => {
@@ -167,7 +166,9 @@ const GalleryExplorer = () => {
               ) : (
                 albumId && <GalleryBreadcrumbs pathStack={pathStack} onNavigateToBreadcrumb={navigateToBreadcrumb} />
               )}
-              {(images.length == 0 && albums.length == 0) && <h3>no files or albums found to this album</h3>}
+              {(images.length == 0 && albums.length == 0) && <Typography variant="body1" mb={5} mt={3} textAlign="center" color="text.secondary">
+                                                              No images available. Please upload some pictures to get started.
+                                                             </Typography>}
 
               {albums.length > 0 && <AlbumsGallery folders={albums} onFolderClick={handleFolderClick} />}
               <div style={{ height: '5vh', width: '9px' }}></div>

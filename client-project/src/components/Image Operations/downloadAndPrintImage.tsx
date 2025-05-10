@@ -87,5 +87,32 @@ export const PrintImage = async (
   }
 };
 
+export const DownloadEditedImage = async (
+  imageUrl: string,
+  originalFileName: string,
+  setIsDownloading?: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setIsDownloading?.(true);
+
+  try {
+    const response = await fetch(imageUrl);
+    if (!response.ok) throw new Error('Failed to fetch image');
+
+    const blob = await response.blob();
+    const fileExtension = originalFileName.split('.').pop() || 'jpg';
+    const baseName = originalFileName.replace(/\.[^/.]+$/, '');
+    const editedName = `${baseName}_edited.${fileExtension}`;
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = editedName;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  } catch (error) {
+    console.error('Error downloading image:', error);
+  } finally {
+    setIsDownloading?.(false);
+  }
+};
 
  

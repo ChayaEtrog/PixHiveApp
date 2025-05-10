@@ -8,8 +8,8 @@ import DeletedFilesGallery from "./components/myGallery/DeletedFilesGallery"
 import GalleryNavBar from "./components/myGallery/GalleryNavBar"
 import MessageBox from "./components/messages/MessageBox"
 import Dashboard from "./Dashboard/Dashboard"
-import { ImageSelector } from "./components/images/ImageSelector"
-import CollageLoader from "./components/images/CollageLoader"
+import { ImageSelector } from "./components/Collage/ImageSelector"
+import CollageLoader from "./components/Collage/CollageLoader"
 
 
 export const router = createBrowserRouter([

@@ -6,7 +6,7 @@ import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle'
 
 import FancyCollage from './FancyCollage';
 import { useState } from 'react';
-import { LazyImage } from './LazyImage';
+import { LazyImage } from '../images/LazyImage';
 
 
 type Props = {
@@ -33,13 +33,19 @@ export const ImageSelector = ({ images, initialSelection }: Props) => {
 
     return (
 
-        <Box p={2} sx={{ height: '85vh', overflowY: 'auto', marginTop: '80px'}}>
+        <Box p={2} sx={{ height: '85vh', overflowY: 'auto', marginTop: '80px' }}>
 
             {!createCollage && (
                 <>
-                    <Typography variant="h6" mb={5} mt={3} textAlign="center">
-                        Select pictures for your collage
-                    </Typography>
+                    {images.length > 0 ? (
+                        <Typography variant="h6" mb={5} mt={3} textAlign="center">
+                            Select pictures for your collage
+                        </Typography>
+                    ) : (
+                        <Typography variant="body1" mb={5} mt={3} textAlign="center" color="text.secondary">
+                            No images available. Please upload some pictures to get started.
+                        </Typography>
+                    )}
                     <Box>
                         <Grid container spacing={4} pb={5}>
                             {images.map((img) => (
@@ -54,7 +60,7 @@ export const ImageSelector = ({ images, initialSelection }: Props) => {
                                             cursor: 'pointer',
                                             border: '0.004px solid rgba(172, 172, 172, 0.43)',
                                             boxShadow: '2px 1px 10px rgba(108, 108, 108, 0.13)',
-                                            overflow: 'hidden', 
+                                            overflow: 'hidden',
                                         }}
                                     >
                                         <IconButton
@@ -83,13 +89,13 @@ export const ImageSelector = ({ images, initialSelection }: Props) => {
                                             <Box
                                                 sx={{
                                                     width: '100%',
-                                                    height: 140, 
+                                                    height: 140,
                                                     overflow: 'hidden',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
                                                     mb: 1,
-                                                    mt:4
+                                                    mt: 4
                                                 }}
                                             >
                                                 <LazyImage src={img.url} alt={img.displayName} />

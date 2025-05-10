@@ -52,6 +52,8 @@ export class AdminAuthComponent implements OnInit {
   }
 
   upgradeToAdmin() {
+    console.log(this.adminForm.value.password);
+    
     if (this.userId) {
       this.authService.upgradeToAdmin(this.userId, this.adminForm.value.password).subscribe({
         next: response => {

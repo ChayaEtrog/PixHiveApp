@@ -11,19 +11,15 @@
     margin-left: 15px;
     line-height: 1.6;
     word-wrap: break-word;
-    /* מאפשר לפרוץ מילים ארוכות לשורות */
     overflow-wrap: break-word;
-    /* מאפשר לפרוץ מילים ארוכות לשורות (חלופה) */
 }
 
 .card-header {
     width: 100%;
     display: flex;
     justify-content: end;
-    /* מיישר את שניהם לימין */
     align-items: center;
     gap: 10px;
-    /* רווח ביניהם */
     margin-bottom: 10px;
 }
 
@@ -74,12 +70,12 @@
     top: 85px;
     right: 30px;
     z-index: 1000;
-    border-radius: 50%; /* זה ייתן עיגול לכפתור */
-    padding: 10px; /* רווחים פנימיים בכפתור */
+    border-radius: 50%; 
+    padding: 10px; 
   }
   
   .message-icon {
     width: 50px;
     height: 50px;
-    object-fit: cover; /* מוודא שהתמונה מתמלאת בכפתור */
+    object-fit: cover; 
   }

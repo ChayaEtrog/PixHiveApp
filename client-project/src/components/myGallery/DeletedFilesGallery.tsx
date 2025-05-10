@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, StoreType } from '../appStore';
 import { deleteFile, fetchDeletedFiles, recycleFile } from '../images/imageSlice';
-import { Box, CircularProgress, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, CircularProgress, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ShowImage from './ShowImage';
 import imageIcon from "../../../public/Icons/imageIcon.png";
 import delete1 from "../../../public/Icons/delete.png";
 import recycle from "../../../public/Icons/recycle.png";
+import recycleBin from "../../../public/Icons/recycleBin.png"
 import { Image } from '../../types/Image';
 
 const DeletedFilesGallery = () => {
@@ -45,9 +46,16 @@ const DeletedFilesGallery = () => {
 
   return (
     <div>
-      <h2>Recycle Bin</h2>
+      <Box textAlign="center" mt={2}>
+        <img src={recycleBin} alt="Recycle Bin" style={{ width: "50px", marginBottom: "2px" }} />
+        <Typography variant="h4" color="text.secondary">
+          Recycle Bin
+        </Typography>
+      </Box>
       {deletedFiles.length === 0 ? (
-        <p>No deleted files.</p>
+         <Typography variant="h6" mb={5} mt={3} textAlign="center" color="text.secondary">
+         no deleted files.
+       </Typography>
       ) : (
         <>
           <TableContainer component={Paper}>
@@ -98,25 +106,25 @@ const DeletedFilesGallery = () => {
           </Menu>
 
           {openImage !== '' && <ShowImage fileName={openImage} closeImage={setOpenImage} />}
-          {pending&&(<><svg width={0} height={0}>
-                            <defs>
-                                <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stopColor="#e01cd5" />
-                                    <stop offset="100%" stopColor="#1CB5E0" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                height: '40vh',
-                            }}
-                        >
-                            <CircularProgress
-                                sx={{ width: '100px !important', height: '100px !important', 'svg circle': { stroke: 'url(#my_gradient)' } }} />
-                        </Box></>)}
+          {pending && (<><svg width={0} height={0}>
+            <defs>
+              <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#e01cd5" />
+                <stop offset="100%" stopColor="#1CB5E0" />
+              </linearGradient>
+            </defs>
+          </svg>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '40vh',
+              }}
+            >
+              <CircularProgress
+                sx={{ width: '100px !important', height: '100px !important', 'svg circle': { stroke: 'url(#my_gradient)' } }} />
+            </Box></>)}
         </>
       )}
     </div>

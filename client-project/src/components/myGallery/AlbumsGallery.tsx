@@ -43,7 +43,7 @@ const AlbumGallery = ({ folders, onFolderClick }: FolderListProps) => {
             <TableRow>
               <TableCell>Folder Name</TableCell>
               <TableCell>Created</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
