@@ -13,7 +13,7 @@ interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7091/api/Auth';
+  private apiUrl = 'https://pixhiveapp-production.up.railway.app/api/Auth';
   private currentUserSubject = new BehaviorSubject<any | null>(null);
   public currentUser$: Observable<any | null> = this.currentUserSubject.asObservable();
 

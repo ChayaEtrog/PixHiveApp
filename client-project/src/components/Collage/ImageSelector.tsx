@@ -33,7 +33,7 @@ export const ImageSelector = ({ images, initialSelection }: Props) => {
 
     return (
 
-        <Box p={2} sx={{ height: '85vh', overflowY: 'auto', marginTop: '80px' }}>
+        <Box p={2} sx={{ height: '85vh', overflowY: 'auto', marginTop: '75px' }}>
 
             {!createCollage && (
                 <>

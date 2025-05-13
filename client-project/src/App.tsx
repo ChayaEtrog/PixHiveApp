@@ -21,15 +21,12 @@ function App() {
               borderImageSlice: 1,
               borderImageSource: 'linear-gradient(to right, #47dcd1, #dc8dec)',
             },
-            // מסיר צבע רקע תכלת בעת פוקוס
             '&.Mui-focused fieldset': {
-              backgroundColor: 'none', // או רקע אחר שתרצי
+              backgroundColor: 'none',
               borderImageSource: 'linear-gradient(to right, #47dcd1, #dc8dec)',
             },
           },
-          input: {
-            backgroundColor: 'white', 
-          },
+      
         },
       },
       MuiInputLabel: {

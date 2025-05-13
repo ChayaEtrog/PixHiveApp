@@ -49,40 +49,44 @@ const Search = ({ userId }: { userId: number }) => {
 
     return (
         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 4 }}>
-          <TextField
-  variant="outlined"
-  placeholder="Search"
-  value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-  sx={{
-    minWidth: 500,
-    '& .MuiOutlinedInput-root': {
-      height: 47,
-      backgroundColor: 'white',
-    },
-  }}
-  InputProps={{
-    startAdornment: (
-      <InputAdornment position="start">
-        <IconButton
-          onClick={handleSearchByName}
-          disabled={!searchTerm.trim()} // הכפתור יושבת אם אין טקסט
-        >
-          <img
-            src={search}
-            alt=""
-            style={{
-              width: '30px',
-              height: '30px',
-              cursor: searchTerm.trim() ? 'pointer' : 'not-allowed',
-              opacity: searchTerm.trim() ? 1 : 0.5,
-            }}
-          />
-        </IconButton>
-      </InputAdornment>
-    ),
-  }}
-/>
+            <TextField
+                variant="outlined"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                sx={{
+                    minWidth: 500,
+                    '& .MuiOutlinedInput-root': {
+                        height: 47,
+                        backgroundColor: 'white',
+                        boxSizing: 'border-box',
+                    },
+                    '& input': {
+                        height:15, // Ensure the input field inside takes up full height
+                      },
+                }}
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <IconButton
+                                onClick={handleSearchByName}
+                                disabled={!searchTerm.trim()} // The button will be disabled if there's no text
+                            >
+                                <img
+                                    src={search}
+                                    alt=""
+                                    style={{
+                                        width: '30px',
+                                        height: '30px',
+                                        cursor: searchTerm.trim() ? 'pointer' : 'not-allowed',
+                                        opacity: searchTerm.trim() ? 1 : 0.5,
+                                    }}
+                                />
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
+            />
 
             <Button
                 onClick={(e) => setAnchorTagEl(e.currentTarget)}

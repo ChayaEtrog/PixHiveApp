@@ -13,19 +13,15 @@ const MessageBox = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useContext(UserContext);
   
-  // Get messages and unread count from the Redux store
   const { messages, loading, error } = useSelector((store:StoreType) => store.messages);
   const unreadCount = messages.filter(msg => !msg.isRead).length;
-  
-  // 🟢 תקין – useState תמיד נקרא
+
   const [visibleMessages, setVisibleMessages] = useState(6);
   
-  // פונקציה להגדלת מספר ההודעות
   const loadMoreMessages = () => {
     setVisibleMessages((prev) => prev + 6);
   };
   
-  // Fetch messages when component mounts
   useEffect(() => {
     dispatch(fetchUserMessages(user.id));
   }, [dispatch]);
@@ -34,7 +30,6 @@ const MessageBox = () => {
     dispatch(markMessageAsRead({userId: user.id, messageId: messageId }));
   };
 
-  // 🟢 רק אחרי שה-hooks נקראו
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -78,7 +73,7 @@ const MessageBox = () => {
       </div>
 
       {/* הודעות */}
-      <div style={{ padding: "10px", marginTop: "20px", marginBottom: "75px" }}>
+      <div style={{ padding: "10px", marginTop: "10px", marginBottom: "75px" }}>
         {messages.slice(0, visibleMessages).map((message) => (
           <div
             key={message.id}

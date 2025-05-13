@@ -31,7 +31,7 @@ const UserAvatar=()=> {
     return <>
         <Grid2 >
             <IconButton onClick={() => setAnchorEl(!anchorEl)}>
-                <Avatar sx={{ bgcolor: avatarColor, width: 48, height: 48, fontSize: 25, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Avatar sx={{ bgcolor: avatarColor, width: 38, height: 38, fontSize: 20, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     {user.email[0]}
                 </Avatar>
             </IconButton>

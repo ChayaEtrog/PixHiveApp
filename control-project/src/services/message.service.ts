@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MessageService {
 
-  private apiUrl = 'https://localhost:7091/api/Message'; // כתובת ה-API
+  private apiUrl = 'https://pixhiveapp-production.up.railway.app/api/Message'; // כתובת ה-API
 
   // Subject לניהול רשימת ההודעות
   private messagesSubject = new BehaviorSubject<Message[]>([]);

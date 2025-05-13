@@ -9,7 +9,7 @@ import { SystemStatisticsDto, UserStatisticsDto } from '../types/UserGrowth';
 export class StatisticsService {
 
   
-  private apiUrl = 'https://localhost:7091/api/Statistics';
+  private apiUrl = 'https://pixhiveapp-production.up.railway.app/api/Statistics';
 
   constructor(private http: HttpClient) { }
 

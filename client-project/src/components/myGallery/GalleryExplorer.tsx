@@ -16,6 +16,8 @@ import DeletedFilesGallery from './DeletedFilesGallery';
 import Search from './Search';
 import { buildBreadcrumbsPath, fetchAlbumById } from '../albums/albumService';
 import clear from '../../../public/Icons/clear.png'
+import { motion } from "framer-motion";
+
 const GalleryExplorer = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -74,13 +76,13 @@ const GalleryExplorer = () => {
   };
 
   useEffect(() => {
-    console.log("album");
-
-    const getAlbum = async () => {
-      const result = await fetchAlbumById(Number(albumId));
-      setAlbum(result);
-    };
-    getAlbum();
+    if (albumId) {
+      const getAlbum = async () => {
+        const result = await fetchAlbumById(Number(albumId));
+        setAlbum(result);
+      };
+      getAlbum();
+    }
   }, [albumId]);
 
   useEffect(() => {
@@ -106,8 +108,8 @@ const GalleryExplorer = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, width: '100%', marginTop: '80px', height: '100vh', overflow: 'hidden' }}>
-      <Box sx={{ width: '15vw', }}>
+    <Box sx={{ display: 'flex', bgcolor: 'rgba(244, 244, 244, 0.41)', flexDirection: { xs: 'column', md: 'row' }, width: '100%', marginTop: '75px', height: '100vh', overflow: 'hidden' }}>
+      <Box>
         <GalleryNavBar />
       </Box>
 
@@ -116,13 +118,13 @@ const GalleryExplorer = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          width: { sm: `calc(100% - ${250}px)` },
           mt: { xs: 7, sm: 0 },
+          ml: { xs: 0, sm: '75px', md: '225px' },
           overflowY: 'auto',
-          bgcolor: 'rgba(244, 244, 244, 0.41)'
-          , marginBottom: '60px'
+          marginBottom: '60px'
         }}
       >
+
         {albumError && <ErrorMessage message={albumError} />}
         {imageError && <ErrorMessage message={imageError} />}
 
@@ -150,35 +152,41 @@ const GalleryExplorer = () => {
           </>
         ) : (
           <>
-            {location.pathname !== "/gallery/recycle-bin" && <>
-              <Search userId={user.id} />
-              {isSearch ? (
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Typography sx={{ color: '#555', fontStyle: 'italic', fontSize: '16px' }}>
-                    Search results in - {album ? album.albumName : 'root directory'}
-                  </Typography>
-                  <Tooltip title="Clear search">
-                    <IconButton onClick={() => setIsClearSearch(true)} size="small" sx={{ color: '#888' }}>
-                      <img src={clear} alt="" style={{ width: '24px' }} />
-                    </IconButton>
-                  </Tooltip>
-                </Stack>
-              ) : (
-                albumId && <GalleryBreadcrumbs pathStack={pathStack} onNavigateToBreadcrumb={navigateToBreadcrumb} />
-              )}
-              {(images.length == 0 && albums.length == 0) && <Typography variant="body1" mb={5} mt={3} textAlign="center" color="text.secondary">
-                                                              No images available. Please upload some pictures to get started.
-                                                             </Typography>}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease:'easeOut' }}
+            >
+              {location.pathname !== "/gallery/recycle-bin" && <>
+                <Search userId={user.id} />
+                {isSearch ? (
+                  <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+                    <Typography sx={{ color: '#555', fontStyle: 'italic', fontSize: '16px' }}>
+                      Search results in - {album ? album.albumName : 'root directory'}
+                    </Typography>
+                    <Tooltip title="Clear search">
+                      <IconButton onClick={() => setIsClearSearch(true)} size="small" sx={{ color: '#888' }}>
+                        <img src={clear} alt="" style={{ width: '24px' }} />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
+                ) : (
+                  albumId && <GalleryBreadcrumbs pathStack={pathStack} onNavigateToBreadcrumb={navigateToBreadcrumb} />
+                )}
+                {(images.length == 0 && albums.length == 0) && <Typography variant="body1" mb={5} mt={3} textAlign="center" color="text.secondary">
+                  No images available. Please upload some pictures to get started.
+                </Typography>}
 
-              {albums.length > 0 && <AlbumsGallery folders={albums} onFolderClick={handleFolderClick} />}
-              <div style={{ height: '5vh', width: '9px' }}></div>
+                {albums.length > 0 && <AlbumsGallery folders={albums} onFolderClick={handleFolderClick} />}
+                <div style={{ height: '5vh', width: '9px' }}></div>
 
-              {images.length > 0 && <ImageGallery files={images} />
+                {images.length > 0 && <ImageGallery files={images} />
 
-              }
-            </>}
-            {location.pathname === "/gallery/recycle-bin" && <DeletedFilesGallery />}
+                }
+              </>}
+              {location.pathname === "/gallery/recycle-bin" && <DeletedFilesGallery />}
 
+            </motion.div>
           </>
         )}
       </Box>

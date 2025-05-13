@@ -10,7 +10,7 @@ import { UserGrowth } from '../types/UserGrowth';
 })
 export class UserService {
 
-  private readonly apiUrl = 'https://localhost:7091/api/User';
+  private readonly apiUrl = 'https://pixhiveapp-production.up.railway.app/api/User';
 
   private usersSubject = new BehaviorSubject<User[]>([]); // משתנה פנימי מסוג BehaviorSubject
   public users$ = this.usersSubject.asObservable(); // Observable שמחזיר את הרשימה
