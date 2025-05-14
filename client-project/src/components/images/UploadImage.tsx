@@ -8,7 +8,7 @@ import AlertMessage from '../alertMessage';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
 import { uploadImageFunction } from './UploadImageFunction';
-
+import './rippleEffect.css'
 const allowedFileTypes = ["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/jpg"];
 const maxFileSize = 8 * 1024 * 1024;
 
@@ -79,72 +79,77 @@ const UploadImage = () => {
   const uploadFile = async () => {
     uploadImageFunction({file,setUploading,setError,setAlert,fileDetails,dispatch})
   };
-
   return (
-    <div style={{
-      height: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      color: 'rgb(86, 86, 86)',
-      overflow: 'hidden', 
-    }}>
-      <div style={{ textAlign: 'center' }}>
-        <div style={{
-          width: 'max-content',
-          padding: '30px',
-          textAlign: 'center',
-        }}>
-          <h3 style={{ marginBottom: '20px', fontSize: '30px' }}>Upload your image</h3>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "rgb(86, 86, 86)",
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ textAlign: "center" }}>
+        <div
+          style={{
+            width: "max-content",
+            padding: "30px",
+            textAlign: "center",
+          }}
+        >
+          <h3 style={{ marginBottom: "20px", fontSize: "30px" }}>Upload your image</h3>
 
-          <div
-            className="drag-circle"
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-          >
-            <div style={{
-              backgroundImage: `url(${uploadIcon})`,
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-              width: '215px',
-              height: '215px',
-            }}>
-              <p style={{ fontSize: '18px', marginBottom: '25px', marginTop: '37px' }}>Drag or Drop your image here</p>
+          <div className="drag-circle ripple-container" onDrop={handleDrop} onDragOver={handleDragOver}>
+            {/* Ripple circles - added here */}
+            <div className="ripple-circle ripple-1"></div>
+            <div className="ripple-circle ripple-2"></div>
+            <div className="ripple-circle ripple-3"></div>
+
+            <div
+              style={{
+                backgroundImage: `url(${uploadIcon})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                width: "215px",
+                height: "215px",
+                position: "relative",
+                zIndex: 2,
+              }}
+            >
+              <p style={{ fontSize: "18px", marginBottom: "25px", marginTop: "37px" }}>Drag or Drop your image here</p>
               <Button
                 variant="outlined"
                 component="label"
                 style={{
-                  color: 'rgb(86, 86, 86)',
-                  borderColor: 'rgb(86, 86, 86)',
+                  color: "rgb(86, 86, 86)",
+                  borderColor: "rgb(86, 86, 86)",
                 }}
               >
                 Choose File
-                <input
-                  type="file"
-                  accept={allowedFileTypes.join(",")}
-                  onChange={handleFileChange}
-                  hidden
-                />
+                <input type="file" accept={allowedFileTypes.join(",")} onChange={handleFileChange} hidden />
               </Button>
             </div>
           </div>
         </div>
 
         {file && (
-          <div style={{ marginTop: '20px' }}>
-            <p>Selected File: <strong>{file.name}</strong></p>
+          <div style={{ marginTop: "20px" }}>
+            <p>
+              Selected File: <strong>{file.name}</strong>
+            </p>
             <Button
               variant="outlined"
               style={{
-                color: 'rgb(86, 86, 86)',
-                borderColor: 'rgb(86, 86, 86)',
+                color: "rgb(86, 86, 86)",
+                borderColor: "rgb(86, 86, 86)",
               }}
               onClick={uploadFile}
               disabled={uploading}
               fullWidth
             >
-              {uploading ? 'Uploading...' : 'Upload'}
+              {uploading ? "Uploading..." : "Upload"}
             </Button>
           </div>
         )}

@@ -1,0 +1,56 @@
+.ripple-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+  }
+  
+  .ripple-circle {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(200, 200, 200, 0.3);
+    animation: ripple 2.5s infinite ease-out;
+    z-index: 1;
+  }
+  
+  .ripple-1 {
+    animation-delay: 0s;
+  }
+  
+  .ripple-2 {
+    animation-delay: 0.8s;
+  }
+  
+  .ripple-3 {
+    animation-delay: 1.6s;
+  }
+  
+  @keyframes ripple {
+    0% {
+      width: 215px;
+      height: 215px;
+      opacity: 0.5;
+    }
+    100% {
+      width: 350px;
+      height: 350px;
+      opacity: 0;
+    }
+  }
+  
+  /* Make sure the drag-circle has a proper style if not already defined */
+  .drag-circle {
+    width: 215px;
+    height: 215px;
+    border-radius: 50%;
+    margin: 0 auto;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: visible;
+  }
+  
