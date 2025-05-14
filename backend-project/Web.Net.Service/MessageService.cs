@@ -55,25 +55,21 @@ namespace Web.Net.Service
             entity.CreatedAt = DateTime.Now;
             var message = _mapper.Map<MessageEntity>(entity);
 
-            // הוספת ההודעה
             await _repositoryManager.Messages.AddAsync(message);
             await _repositoryManager.Save();
 
-            // אם ההודעה מיועדת לכולם, נוודא שהיא מתווספת לכל המשתמשים בטבלת הקשר
             if (entity.ReceiverId == null)
             {
-                // חפש את כל המשתמשים
                 var users = await _repositoryManager.Users.GetAllAsync();
 
                 var userMessages = users.Select(user => new UserEntityMessageEntity
                 {
                     UserId = user.Id,
                     MessageId = message.Id,
-                    IsRead = false, // התחלה כלא נקראה
+                    IsRead = false,
                     ReadAt = null
                 }).ToList();
 
-                // הוספת ההודעות לכל המשתמשים
                 foreach (var userMessage in userMessages)
                 {
                     await _repositoryManager.UserMessages.AddAsync(userMessage);
@@ -83,7 +79,6 @@ namespace Web.Net.Service
             }
             else
             {
-                // אם ההודעה מיועדת למישהו ספציפי, הוסף רק לו בטבלת הקשר
                 var userMessage = new UserEntityMessageEntity
                 {
                     UserId = entity.ReceiverId.Value,

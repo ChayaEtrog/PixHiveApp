@@ -116,7 +116,6 @@ const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Fun
             </Tooltip>
 
             <div style={{ position: "relative" }}>
-              {/* תווית "חדש" מונפשת וזוהרת */}
               <motion.div
                 initial={{ x: 0 }}
                 animate={{ x: [0, 5, 0] }}
@@ -137,7 +136,6 @@ const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Fun
                 new
               </motion.div>
 
-              {/* כפתור עריכה */}
               <Tooltip title="edit" PopperProps={{
                 modifiers: [{
                   name: 'zIndex',

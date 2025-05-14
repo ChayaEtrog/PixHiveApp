@@ -22,7 +22,7 @@ const ChatBubble = () => {
   const handleChangeMessage=(e:any)=>{
     const storedUser = sessionStorage.getItem('user');
     const parsedUser = storedUser?JSON.parse(storedUser):null
-    setMessage({message:e, senderId:parsedUser?.id,receiverId:12,isActive:true})
+    setMessage({message:e, senderId:parsedUser?.id,receiverId:1,isActive:true})
   }
 
   return (

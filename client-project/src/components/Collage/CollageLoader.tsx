@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { CircularProgress } from '@mui/material';
 import { AppDispatch } from '../appStore';
 import { getDownloadUrl, getFilesByUser } from '../images/imageSlice';
 import { ImageSelector } from './ImageSelector';
@@ -15,7 +14,6 @@ type FileWithUrl = {
 const CollageLoader = ({ initialSelection }: { initialSelection?: string[] }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [files, setFiles] = useState<FileWithUrl[]>([]);
-  const [loading, setLoading] = useState(true);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -35,17 +33,15 @@ const CollageLoader = ({ initialSelection }: { initialSelection?: string[] }) =>
 
           setFiles(urls);
         }
-      } finally {
-        setLoading(false);
+      } catch {
+        
       }
     };
 
     loadAll();
     console.log(files);
-    
-  }, [dispatch]);
 
-  if (loading) return <CircularProgress />;
+  }, [dispatch]);
 
   return <ImageSelector images={files} initialSelection={initialSelection ?? []} />;
 };

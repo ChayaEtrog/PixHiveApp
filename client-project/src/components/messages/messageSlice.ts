@@ -108,7 +108,7 @@ const messagesSlice = createSlice({
         );
       })
       .addCase(postMessage.pending, (state) => {
-        state.loading = true;
+        state.loading = false;
         state.error = '';
       })
       .addCase(postMessage.fulfilled, (state) => {
