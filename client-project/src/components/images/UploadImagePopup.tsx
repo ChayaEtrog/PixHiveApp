@@ -10,19 +10,20 @@ import AlertMessage from '../alertMessage';
 import { Button, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useParams } from 'react-router';
+import { motion } from 'framer-motion';
 
 const allowedFileTypes = ["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/jpg"];
-const maxFileSize = 10 * 1024 * 1024; // 10MB
+const maxFileSize = 10 * 1024 * 1024; 
 
 const UploadImagePopup = ({ onClose }: { onClose: Function }) => {
-    const { albumId } = useParams();  // קריאת ה-id מה-URL
+    const { albumId } = useParams();  
     const { user } = useContext(UserContext);
     const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [alert, setAlert] = useState<string | null>(null);
     const dispatch = useDispatch<AppDispatch>();
-    
+
     const [fileDetails, setFileDetails] = useState({
         UserId: user.id,
         Name: '',
@@ -116,6 +117,40 @@ const UploadImagePopup = ({ onClose }: { onClose: Function }) => {
         }
     };
 
+    const RippleCircle = ({ delay = 0, color = "rgba(200, 200, 200, 0.3)" }) => (
+        <motion.div
+            initial={{
+                width: 200,
+                height: 200,
+                opacity: 0.5,
+                x: "-50%",
+                y: "-50%",
+            }}
+            animate={{
+                width: 270,
+                height: 270,
+                opacity: 0,
+                x: "-50%",
+                y: "-50%",
+            }}
+            transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeOut",
+                delay,
+            }}
+            style={{
+                position: "absolute",
+                top: file?"48%":"63.5%",
+                left: "50%",
+                borderRadius: "50%",
+                backgroundColor: color,
+                zIndex: 1,
+            }}
+        />
+    );
+
+
     return (
         <div style={{
             position: 'fixed',
@@ -145,34 +180,49 @@ const UploadImagePopup = ({ onClose }: { onClose: Function }) => {
                 </IconButton>
 
                 <h3 style={{ marginBottom: '20px', fontSize: '30px', textAlign: 'center' }}>Upload your image</h3>
+                <div>
+                    <RippleCircle delay={0} color="rgba(150, 201, 255, 0.24)" />
+                    <RippleCircle delay={0.8} color="rgba(255, 1, 247, 0.3)" />
+                    <RippleCircle delay={1.6} color="rgba(145, 21, 173, 0.3)" />
+                </div>
 
-                {/* אזור הגרירה עם אנימציה */}
                 <div
-                    className="drag-circle"
-                    onDrop={handleDrop}
-                    onDragOver={(e) => e.preventDefault()}
+                     className="drag-circle"
+                     onDrop={handleDrop}
+                     onDragOver={(e) => e.preventDefault()}
                     style={{
-                        width: '200px',
-                        height: '200px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        position: 'relative',  // לאפשר מיקום של הכיתוב וכפתור בתוך
+                        width: 200,
+                        height: 200,
+                        borderRadius: "50%",
+                        margin: "0 auto",
+                        cursor: "pointer",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "relative",
+                        overflow: "visible",
+                        backgroundColor: "#e0e0e0",
+                        zIndex: 200,
                     }}
                 >
-                    <div style={{
-                        backgroundImage: `url(${uploadIcon})`,
-                        backgroundSize: 'contain',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center',
-                        width: '150px',
-                        height: '150px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                    }}>
+                    <div
+                        style={{
+                            backgroundImage: `url(${uploadIcon})`,
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                            width: 180,
+                            height: 180,
+                            position: "relative",
+                            zIndex: 2,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#e0e0e0",
+                            borderRadius: "50%",
+                        }}
+                    >
                         <p style={{
                             fontSize: '16px',
                             marginBottom: '25px',

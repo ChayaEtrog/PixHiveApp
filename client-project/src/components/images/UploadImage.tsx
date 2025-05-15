@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
 import { uploadImageFunction } from './UploadImageFunction';
 import './rippleEffect.css'
+import { motion } from 'framer-motion';
 const allowedFileTypes = ["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/jpg"];
 const maxFileSize = 8 * 1024 * 1024;
 
@@ -77,8 +78,41 @@ const UploadImage = () => {
   };
 
   const uploadFile = async () => {
-    uploadImageFunction({file,setUploading,setError,setAlert,fileDetails,dispatch})
+    uploadImageFunction({ file, setUploading, setError, setAlert, fileDetails, dispatch })
   };
+  const RippleCircle = ({ delay = 0, color = "rgba(200, 200, 200, 0.3)" }) => (
+    <motion.div
+      initial={{
+        width: 260,
+        height: 260,
+        opacity: 0.5,
+        x: "-50%",
+        y: "-50%",
+      }}
+      animate={{
+        width: 360,
+        height: 360,
+        opacity: 0,
+        x: "-50%",
+        y: "-50%",
+      }}
+      transition={{
+        duration: 2.5,
+        repeat: Infinity,
+        ease: "easeOut",
+        delay,
+      }}
+      style={{
+        position: "absolute",
+        top: file?"51%":"58%",
+        left: "50%",
+        borderRadius: "50%",
+        backgroundColor: color,
+        zIndex: 1,
+      }}
+    />
+  );
+
   return (
     <div
       style={{
@@ -91,34 +125,55 @@ const UploadImage = () => {
       }}
     >
       <div style={{ textAlign: "center" }}>
-        <div
-          style={{
-            width: "max-content",
-            padding: "30px",
-            textAlign: "center",
-          }}
-        >
-          <h3 style={{ marginBottom: "20px", fontSize: "30px" }}>Upload your image</h3>
+        <div style={{ width: "max-content", padding: "30px", textAlign: "center" }}>
+          <h3 style={{ marginBottom: "40px", fontSize: "30px" }}>Upload your image</h3>
 
-          <div className="drag-circle ripple-container" onDrop={handleDrop} onDragOver={handleDragOver}>
-            {/* Ripple circles - added here */}
-            <div className="ripple-circle ripple-1"></div>
-            <div className="ripple-circle ripple-2"></div>
-            <div className="ripple-circle ripple-3"></div>
+          <div>
+            <RippleCircle delay={0} color="rgba(150, 201, 255, 0.24)" />
+            <RippleCircle delay={0.8} color="rgba(255, 1, 247, 0.3)" />
+            <RippleCircle delay={1.6} color="rgba(145, 21, 173, 0.3)" />
+          </div>
 
+          <div
+            className="drag-circle"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            style={{
+              width: 260,
+              height: 260,
+              borderRadius: "50%",
+              margin: "0 auto",
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "relative",
+              overflow: "visible",
+              backgroundColor: "#e0e0e0",
+              zIndex: 200,
+            }}
+          >
             <div
               style={{
                 backgroundImage: `url(${uploadIcon})`,
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
-                width: "215px",
-                height: "215px",
+                width: 215,
+                height: 215,
                 position: "relative",
                 zIndex: 2,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#e0e0e0",
+                borderRadius: "50%",
               }}
             >
-              <p style={{ fontSize: "18px", marginBottom: "25px", marginTop: "37px" }}>Drag or Drop your image here</p>
+              <p style={{ fontSize: "18px", marginBottom: "25px", marginTop: "37px" }}>
+                Drag or Drop your image here
+              </p>
               <Button
                 variant="outlined"
                 component="label"
@@ -156,8 +211,60 @@ const UploadImage = () => {
       </div>
       {error && <ErrorMessage message={error} setError={setError}></ErrorMessage>}
       {alert && <AlertMessage message={alert} setMessage={setAlert}></AlertMessage>}
-    </div>
+    </div >
   );
 };
 
 export default UploadImage;
+
+// <div
+//   className="drag-circle"
+//   onDrop={handleDrop}
+//   onDragOver={handleDragOver}
+//   style={{
+//     width: 260,
+//     height: 260,
+//     borderRadius: "50%",
+//     margin: "0 auto",
+//     cursor: "pointer",
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     position: "relative",
+//     overflow: "visible",
+//     backgroundColor: "#e0e0e0",
+//     zIndex: 200,
+//   }}
+// >
+//   {/* Ripple Effects – מאחורי העיגול */}
+//   <div
+//     style={{
+//       position: "absolute",
+//       top: "50%",
+//       left: "50%",
+//       transform: "translate(-50%, -50%)",
+//       zIndex: 1, // נמוך יותר מהתמונה
+//     }}
+//   >
+//     <RippleCircle delay={0} color="rgba(150, 200, 255, 0.3)" />
+//     <RippleCircle delay={0.8} color="rgba(255, 1, 247, 0.78)" />
+//     <RippleCircle delay={1.6} color="rgba(145, 21, 173, 0.4)" />
+//   </div>
+
+//   {/* Upload Icon Area – קדמי יותר */}
+//   <div
+//     style={{
+//       backgroundImage: `url(${uploadIcon})`,
+//       backgroundSize: "contain",
+//       backgroundRepeat: "no-repeat",
+//       backgroundPosition: "center",
+//       width: 215,
+//       height: 215,
+//       position: "relative",
+//       zIndex: 2,
+//       display: "flex",
+//       flexDirection: "column",
+//       justifyContent: "center",
+//       alignItems: "center",
+//     }}
+//   ></div>

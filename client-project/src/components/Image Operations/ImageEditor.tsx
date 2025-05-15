@@ -16,6 +16,8 @@ interface Props {
   onClose: () => void;
 }
 
+const url=import.meta.env.VITE_PYTHON_API_URL
+
 export default function ImageEditor({ image, onClose }: Props) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [prompt, setPrompt] = useState("");
@@ -32,15 +34,15 @@ export default function ImageEditor({ image, onClose }: Props) {
     formData.append("prompt", prompt);
 
     try {
-      const res = await fetch("http://localhost:5000/process-image", {
+      const res = await fetch(`${url}/process-image`, {
         method: "POST",
         body: formData,
       });
       const data = await res.json();
       setResultUrl(data.output_url);
     } catch (err) {
-      console.error("❌ Error processing image", err);
-      setError("שגיאה בעיבוד התמונה");
+      console.error("❌ Error processing image", url);
+      setError("Error processing image");
     } finally {
       setLoading(false);
     }
