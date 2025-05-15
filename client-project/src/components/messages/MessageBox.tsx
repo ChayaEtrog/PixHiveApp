@@ -44,7 +44,7 @@ const MessageBox = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'rgba(255,255,255,0.6)', // אפשר להוריד אם לא רוצים רקע שקוף
+            backgroundColor: 'rgba(255,255,255,0.6)', 
             zIndex: 9999,
           }}
         >
@@ -120,7 +120,6 @@ const MessageBox = () => {
                   background: message.isRead ? "rgba(241, 241, 241, 0.71)" : "rgba(232, 240, 254, 0.87)",
                   marginBottom: "30px",
                   borderRadius: "5px",
-                  cursor: "pointer",
                   wordWrap: "break-word",
                   overflowWrap: "break-word",
                   whiteSpace: "pre-wrap",
@@ -131,7 +130,7 @@ const MessageBox = () => {
                   <span style={{ fontSize: "12px", color: "gray", marginRight: "8px" }}>
                     {new Date(message.createdAt).toLocaleDateString("he-IL")}
                   </span>
-                  {!message.isRead && <img src={notRead} alt="" style={{ width: "30px", height: "30px", objectFit: "cover" }} />}
+                  {!message.isRead && <img src={notRead} alt="" style={{ width: "30px", height: "30px", objectFit: "cover",cursor:'pointer' }} />}
                 </div>
                 <p style={{ marginTop: "5px" }}>{message.message}</p>
               </div>

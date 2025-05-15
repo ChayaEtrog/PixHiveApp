@@ -62,7 +62,7 @@ const Search = ({ userId }: { userId: number }) => {
                         boxSizing: 'border-box',
                     },
                     '& input': {
-                        height:15, // Ensure the input field inside takes up full height
+                        height:15, 
                       },
                 }}
                 InputProps={{
@@ -70,7 +70,7 @@ const Search = ({ userId }: { userId: number }) => {
                         <InputAdornment position="start">
                             <IconButton
                                 onClick={handleSearchByName}
-                                disabled={!searchTerm.trim()} // The button will be disabled if there's no text
+                                disabled={!searchTerm.trim()} 
                             >
                                 <img
                                     src={search}
@@ -180,7 +180,7 @@ const Search = ({ userId }: { userId: number }) => {
                     </Button>
                     <Button
                         onClick={handleSearchByDate}
-                        disabled={!selectedTag}
+                        disabled={!startDate || !endDate}
                         style={{ height: 45, width: 'max-content', padding: '0', textTransform: 'none', fontSize: '16px', marginTop: '15px' }}
                     >
                         <img src={search} alt="" style={{ width: '38px', height: '38px' }} />
