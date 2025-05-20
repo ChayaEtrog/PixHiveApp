@@ -48,7 +48,7 @@ const DeletedFilesGallery = () => {
     <div>
       <Box textAlign="center" mt={2}>
         <img src={recycleBin} alt="Recycle Bin" style={{ width: "50px", marginBottom: "2px" }} />
-        <Typography variant="h4" color="text.secondary">
+        <Typography variant="h4" color="text.secondary" mb={3}>
           Recycle Bin
         </Typography>
       </Box>

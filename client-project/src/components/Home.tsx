@@ -4,7 +4,6 @@ import pixHiveLogedin from "../../public/pictures/PixHiveLogedCut.png"
 import { UserContext } from "./user/UserReducer";
 import AuthModalManager from "./user/AuthModelManager";
 import { useContext } from "react";
-import HomePage from "./homePage";
 function Home() {
   const { user } = useContext(UserContext);
   return (
@@ -36,7 +35,7 @@ function Home() {
           height: "100%",
           overflow: "hidden"
         }}>   </Box>
-      <HomePage/>
+      {/* <HomePage/> */}
         </Box>
       }
 

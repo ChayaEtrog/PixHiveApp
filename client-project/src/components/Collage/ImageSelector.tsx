@@ -1,11 +1,11 @@
 import ShowImage from '../myGallery/ShowImage';
 import arrow from '../../../public/Icons/arrow.png'
-import { Box, Button, CircularProgress, Grid, IconButton, Paper, Typography } from '@mui/material';
+import { Box, Button, Grid, IconButton, Paper, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle';
 
 import FancyCollage from './FancyCollage';
-import { useState } from 'react';
+import {  useState } from 'react';
 import { LazyImage } from '../images/LazyImage';
 
 
@@ -30,7 +30,6 @@ export const ImageSelector = ({ images, initialSelection }: Props) => {
         );
     };
 
-
     return (
 
         <Box p={2} sx={{ height: '85vh', overflowY: 'auto', marginTop: '75px' }}>
@@ -38,33 +37,14 @@ export const ImageSelector = ({ images, initialSelection }: Props) => {
             {!createCollage && (
                 <>
                     {images.length > 0 ? (
-                        <Typography variant="h6" mb={5} mt={3} textAlign="center">
-                            Select pictures for your collage
-                        </Typography>
-                    ) : (
-                            <>
-                              <svg width={0} height={0}>
-                                <defs>
-                                  <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stopColor="#e01cd5" />
-                                    <stop offset="100%" stopColor="#1CB5E0" />
-                                  </linearGradient>
-                                </defs>
-                              </svg>
-                              <Box
-                                sx={{
-                                  display: 'flex',
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  height: '76vh',
-                                }}
-                              >
-                                <CircularProgress
-                                  sx={{ width: '100px !important', height: '100px !important', 'svg circle': { stroke: 'url(#my_gradient)' } }} />
-                              </Box>
-                            </>
-                          
-                    )}
+                            <Typography variant="h6" mb={5} mt={3} textAlign="center">
+                                Select pictures for your collage
+                            </Typography>
+                        ) : (
+                        <Typography variant="body1" mb={5} mt={3} textAlign="center" color="text.secondary">
+                            No images available. Please upload some pictures to get started.
+                        </Typography>)
+                    }
                     <Box>
                         <Grid container spacing={4} pb={5}>
                             {images.map((img) => (

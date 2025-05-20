@@ -3,6 +3,8 @@ import NavBar from "./NavBar";
 import { useContext } from "react";
 import { UserContext } from "./user/UserReducer";
 import Home from "./Home";
+import HomePage from "./HomePages/HomePage";
+import Manager from "./HomePages/Manager";
 
 
 function AppLayout() {
@@ -11,8 +13,10 @@ function AppLayout() {
         <>
         {
             (user.email != '') && <>
-                <NavBar />
-                <Outlet /></>
+                {/* <NavBar />
+                <Outlet /> */}
+                <Manager/>
+                </>
                 
         }
         {
