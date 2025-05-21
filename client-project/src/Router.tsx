@@ -7,9 +7,9 @@ import GalleryExplorer from "./components/myGallery/GalleryExplorer"
 import DeletedFilesGallery from "./components/myGallery/DeletedFilesGallery"
 import GalleryNavBar from "./components/myGallery/GalleryNavBar"
 import MessageBox from "./components/messages/MessageBox"
-import Dashboard from "./Dashboard/Dashboard"
-import { ImageSelector } from "./components/Collage/ImageSelector"
-import CollageLoader from "./components/Collage/CollageLoader"
+import Dashboard from "./dashboard/Dashboard"
+import CollageLoader from "./components/collage/CollageLoader"
+import ImageEditor from "./components/image Operations/ImageEditor"
 
 
 export const router = createBrowserRouter([
@@ -32,7 +32,8 @@ export const router = createBrowserRouter([
             },
             { path: 'messages', element: <MessageBox /> },
             { path: 'dashboard', element: <Dashboard/> },
-            { path: 'collage', element: <CollageLoader/> }
+            { path: 'collage', element: <CollageLoader/> },
+            { path:"/edit", element: <ImageEditor />}
             
         ]
     }

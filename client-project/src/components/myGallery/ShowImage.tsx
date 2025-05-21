@@ -6,17 +6,17 @@ import ErrorMessage from '../ErrorMessage';
 import { CircularProgress, IconButton, Tooltip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import { DownloadImage, PrintImage } from '../Image Operations/downloadAndPrintImage';
+import { DownloadImage, PrintImage } from '../image Operations/downloadAndPrintImage';
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import EditIcon from '@mui/icons-material/Edit';
-import ImageEditor from '../Image Operations/ImageEditor';
 import { motion } from "framer-motion";
+import { useNavigate } from 'react-router';
 
 const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Function }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { downloadUrl, error } = useSelector((store: StoreType) => store.image);
   const [isLoading, setIsLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
 
   const handleImageLoad = () => {
     setIsLoading(false);
@@ -29,6 +29,8 @@ const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Fun
   useEffect(() => {
     fetchImageUrl();
   }, [fileName]);
+
+  
 
   return (
     <>
@@ -146,7 +148,11 @@ const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Fun
               }}>
                 <IconButton
                   sx={{ position: 'fixed', top: 8, left: 105 }}
-                  onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}
+                  onClick={(e) => { e.stopPropagation();  navigate("/edit", {
+                    state: {
+                      image: downloadUrl,
+                    },
+                  }); }}
                 >
                   <EditIcon sx={{ color: 'white' }} />
                 </IconButton>
@@ -157,7 +163,6 @@ const ShowImage = ({ fileName, closeImage }: { fileName: string, closeImage: Fun
         )}
         {error && <ErrorMessage message={error} />}
       </div>
-      {isEditing && <ImageEditor image={downloadUrl} onClose={() => { setIsEditing(false); closeImage('') }} />}
     </>
   );
 };

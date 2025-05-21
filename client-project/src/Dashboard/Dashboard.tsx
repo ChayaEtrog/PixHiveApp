@@ -1,9 +1,9 @@
 import { Box, Button, Typography } from "@mui/material"
-import UpdateFormModal from "./UpdateFormModal"
-import UserStatesPage from "./UserStatesPage"
 import { useContext, useState } from "react"
 import { UserContext } from "../components/user/UserReducer"
-import { gradientBorderButton,GradientButton } from "../styles/buttonsStyle"
+import {GradientButton } from "../styles/buttonsStyle"
+import UpdateFormModal from "./UpdateFormModal"
+import UserStatesPage from "./UserStatesPage"
 
 const Dhashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)

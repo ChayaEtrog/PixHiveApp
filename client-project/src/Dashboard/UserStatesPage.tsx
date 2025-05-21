@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-
 import { Card, CardContent, Typography, Box, Grid2 } from '@mui/material';
 import { UserStatistics } from '../types/UserStatistics';
 import { getUserStatisticsById } from '../components/user/UserService';

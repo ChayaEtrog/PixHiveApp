@@ -5,26 +5,19 @@ import ErrorMessage from "../ErrorMessage";
 import { GradientButton } from "../../styles/buttonsStyle";
 import PromptInput from "./PromptInput";
 import { DownloadEditedImage } from "./downloadAndPrintImage";
-
-interface Props {
-  image: string;
-  onClose: () => void;
-}
-
-interface Props {
-  image: string;
-  onClose: () => void;
-}
+import { useLocation } from "react-router";
 
 const url=import.meta.env.VITE_PYTHON_API_URL
 
-export default function ImageEditor({ image, onClose }: Props) {
+export default function ImageEditor() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const [resultUrl, setResultUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
-
+  const location = useLocation();
+  const image = location.state?.image;
+  
   const handleSubmit = async () => {
     if (!prompt) return;
     setLoading(true);
@@ -72,7 +65,7 @@ export default function ImageEditor({ image, onClose }: Props) {
 
       <CircularProgress
         sx={{
-          marginBottom: "120px", // תעלה את המעגל כלפי מעלה
+          marginBottom: "120px",
           'svg circle': { stroke: 'url(#my_gradient)' }
         }}
       />
@@ -99,7 +92,6 @@ export default function ImageEditor({ image, onClose }: Props) {
             zIndex: 9997,
             padding: 16,
           }}
-          onClick={onClose}
         >
           <img
             src={resultUrl || image}
@@ -116,7 +108,7 @@ export default function ImageEditor({ image, onClose }: Props) {
 
           <IconButton
             sx={{ position: "absolute", top: 8, right: 34, color: "red" }}
-            onClick={(e) => { e.stopPropagation(); onClose(); }}
+            onClick={(e) => { e.stopPropagation();}}
           >
             <CloseIcon />
           </IconButton>

@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import html2canvas from 'html2canvas';
 import DownloadImage from '../../../public/Icons/download.png';
-import ImageIcon from '../../../public/Icons/imageIcon.png';
 
 type CollageProps = {
     images: string[];

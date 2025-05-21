@@ -3,10 +3,9 @@ import arrow from '../../../public/Icons/arrow.png'
 import { Box, Button, Grid, IconButton, Paper, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle';
-
-import FancyCollage from './FancyCollage';
 import {  useState } from 'react';
 import { LazyImage } from '../images/LazyImage';
+import FancyCollage from './FancyCollage';
 
 
 type Props = {

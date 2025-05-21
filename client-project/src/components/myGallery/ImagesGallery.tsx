@@ -8,17 +8,17 @@ import rename from "../../../public/Icons/rename.png";
 import delete1 from "../../../public/Icons/delete.png";
 import imagesAndAlbums from "../../../public/Icons/imagesAndAlbums.png";
 import tag from "../../../public/Icons/tag.png"
-import RenameImage from '../Image Operations/renameImage';
+import RenameImage from '../image Operations/renameImage';
 import { Image } from '../../types/Image';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
-import { DownloadImage } from '../Image Operations/downloadAndPrintImage';
-import MoveImageToAlbum from '../Image Operations/MoveImageToAlbum';
+import { DownloadImage } from '../image Operations/downloadAndPrintImage';
+import MoveImageToAlbum from '../image Operations/MoveImageToAlbum';
 import { removeFileFromAlbum } from '../images/imageSlice';
 import { useParams } from 'react-router';
-import AddTag from '../Image Operations/AddTag';
+import AddTag from '../image Operations/AddTag';
 import remove from "../../../public/Icons/x.png";
-import RemoveTag from '../Image Operations/RemoveTag';
+import RemoveTag from '../image Operations/RemoveTag';
 import AlertMessage from '../alertMessage';
 
 const ImageGallery = ({ files }: { files: Image[] }) => {
