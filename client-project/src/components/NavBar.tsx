@@ -32,20 +32,18 @@ const NavBar=()=> {
                     left: 0,
                     right: 0,
                     height: '0.3px', 
-                    background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)', // תוכלי לשנות את הצבעים
+                    background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)', 
                 }
             }}
         >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "100%" }}>
 
-                {/* Left - Home */}
                 <NavLink to="/home" style={{ textAlign: "center", textDecoration: "none", color: 'inherit' }}>
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <img src={home} alt="" style={{ width: '45px', objectFit: 'cover' }} />
                     </Box>
                 </NavLink>
 
-                {/* Center - Nav Links */}
                 <Box sx={{ display: "flex", gap: 7, justifyContent: "center", alignItems: "center" }}>
 
 

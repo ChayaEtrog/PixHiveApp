@@ -67,7 +67,7 @@ const animatedGradientStyle = {
 };
 
 export default function FeaturesPage() {
-    const exampleImages = [
+    const exampleCollageImages = [
         "../../../public/HomePagePictures/26e76ab82d8372e069827ec68299ca34.jpg",
         "../../../public/HomePagePictures/9066555d20cff721dfff5a43b9b8e3fb.jpg",
         "../../../public/HomePagePictures/b92183db6b2707cd94a72b7afdc6342d.jpg",
@@ -75,6 +75,11 @@ export default function FeaturesPage() {
         "../../../public/HomePagePictures/ea43e88b6abccb38da2469a99d482dd4.jpg",
         "../../../public/HomePagePictures/d7289b35fb4b55f433f32d76533b898a.jpg",
     ];
+
+    const exampleEditedImages=[
+        "../../../public/HomePagePictures/oil picture1.png",
+         "../../../public/HomePagePictures/turn child eyes1.png"
+    ]
     const navigate = useNavigate();
 
     const handleCollageNavigate = () => {
@@ -125,7 +130,7 @@ export default function FeaturesPage() {
                                 </Button>
                             </Box>
 
-                            <ImageCarousel images={exampleImages} />
+                            <ImageCarousel images={exampleEditedImages} />
                         </Box>
                     </motion.div>
 
@@ -142,7 +147,7 @@ export default function FeaturesPage() {
                                 alignItems: "center",
                             }}
                         >
-                            <ImageCarousel images={exampleImages} />
+                            <ImageCarousel images={exampleCollageImages} />
 
                             <Box sx={{ flex: 1, p: 4 }}>
                                 <Typography variant="h4" gutterBottom sx={animatedGradientStyle}>

@@ -6,6 +6,7 @@ import AuthModalManager from "./user/AuthModelManager";
 import { useContext } from "react";
 function Home() {
   const { user } = useContext(UserContext);
+
   return (
     <>
       {(user.email == '') &&

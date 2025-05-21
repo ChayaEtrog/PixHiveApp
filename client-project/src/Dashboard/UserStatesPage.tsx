@@ -80,7 +80,7 @@ const UserStatsPage = () => {
         <Grid2>
           <StatCard
             label="Usage (MB)"
-            value={stats.usedMegabytes.toFixed(2)}
+            value={stats.usedMegabytes.toFixed(2)+"/20"}
             gradient='linear-gradient(45deg, #47dcd1 , #dc8dec)'
           />
         </Grid2>

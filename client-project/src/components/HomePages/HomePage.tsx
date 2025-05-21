@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
 import pixHiveLogedin from "../../../public/pictures/PixHiveLogedCut.png"
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
+import { Box, Link } from "@mui/material"; 
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -11,7 +11,6 @@ const HomePage = () => {
   };
 
   return (
-
     <Box
       sx={{
         position: "relative",
@@ -24,6 +23,33 @@ const HomePage = () => {
         overflow: "hidden",
       }}
     >
+      {/* קישורים בצד ימין למעלה */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 16,
+          right: 24,
+          display: "flex",
+          gap: 3,
+        }}
+      >
+        <Link href="/collage" color="white" underline="hover">
+        Collage
+        </Link>
+        <Link href="/gallery" color="white" underline="hover">
+          Gallery
+        </Link>
+        <Link href="/upload-image" color="white" underline="hover">
+          Upload Image
+        </Link>
+        <Link href="/messages" color="white" underline="hover">
+          Messages
+        </Link>
+        <Link href="/dashboard" color="white" underline="hover">
+          Dashboard
+        </Link>
+      </Box>
+
       {[...Array(40)].map((_, index) => (
         <motion.div
           key={index}
@@ -46,15 +72,13 @@ const HomePage = () => {
             height: "3px",
             borderRadius: "50%",
             background: "white",
-            boxShadow: "0 0 6px 3px rgba(255,255,255,0.4)",
+            boxShadow: "0 0 6px 3px rgba(255,255,255,0.4)"
           }}
         />
       ))}
 
       <motion.button
-        animate={{
-          x: [-30, 30]
-        }}
+        animate={{ x: [-30, 30] }}
         transition={{
           duration: 3,
           repeat: Infinity,

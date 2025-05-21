@@ -1,18 +1,20 @@
 import { Box } from "@mui/material"
-
-import HomePage from "./HomePage"
 import FeaturesPage from "./FeaturesPage"
 import TestimonialsPage from "./TestimonialsPage"
 import { motion } from "framer-motion"
 import FAQPage from "./FAQPage "
+import TargetAudience from "./TargetAudience"
+import Footer from "./Footer"
+import GetStartedManager from "./GetStartedManager"
 
 
-const Manager = () => {
+const HomeContainer  = () => {
     return (
-        <Box sx={{ height: '100vh', overflowY: 'auto',overflowX:'hidden' }}>
-            <HomePage />
+        <Box sx={{ height: '100vh', overflowY: 'auto', overflowX: 'hidden' }}>
+            <GetStartedManager/>
             <FeaturesPage />
-            <TestimonialsPage/>
+            <TestimonialsPage />
+            <TargetAudience />
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -21,8 +23,9 @@ const Manager = () => {
             >
                 <FAQPage />
             </motion.div>
+            <Footer/>
         </Box>
     )
 }
 
-export default Manager
+export default HomeContainer 

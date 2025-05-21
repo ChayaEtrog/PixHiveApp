@@ -13,7 +13,7 @@ const AuthModalManager = () => {
               sx={{
                 position: "absolute",
                 right: "20%",
-                top: "50%",
+                top: "55%",
                 transform: "translateY(-50%)",
                 display: "flex",
                 flexDirection: "column",
