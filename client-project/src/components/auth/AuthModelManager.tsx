@@ -1,7 +1,8 @@
 import  { useState } from 'react';
 import UserLogin from './UserLogin';
-import UserRegister from './UserRegister';
+
 import { Box, Button } from '@mui/material';
+import UserRegister from './UserRegister';
 
 const AuthModalManager = () => {
     const [isLoginOpen, setIsLoginOpen] = useState(false);

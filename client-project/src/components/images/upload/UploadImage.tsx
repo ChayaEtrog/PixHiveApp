@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { UserContext } from '../user/UserReducer';
+import { UserContext } from '../../user/UserReducer';
 import { useContext } from "react";
-import uploadIcon from '../../../public/Icons/uploadIcon.png'
+import uploadIcon from '../../../../public/Icons/uploadIcon.png'
 import { Button } from '@mui/material';
-import ErrorMessage from '../ErrorMessage';
-import AlertMessage from '../alertMessage';
+import ErrorMessage from '../../ErrorMessage';
+import AlertMessage from '../../alertMessage';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../appStore';
-import { uploadImageFunction } from './UploadImageFunction';
+import { AppDispatch } from '../../appStore';
+
 import './rippleEffect.css'
 import { motion } from 'framer-motion';
+import { uploadImageFunction } from './UploadImageFunction';
 const allowedFileTypes = ["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/jpg"];
 const maxFileSize = 8 * 1024 * 1024;
 

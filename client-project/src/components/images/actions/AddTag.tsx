@@ -1,16 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, StoreType } from "../appStore";
-import { UserContext } from "../user/UserReducer";
-import { useContext, useEffect, useRef, useState } from "react";
-import { fetchUnassignedTags, addTag, addTagToFile } from "../tags/tagSlice";
+import { AppDispatch, StoreType } from "../../appStore";
+import { useEffect, useRef, useState } from "react";
+import { fetchUnassignedTags, addTag, addTagToFile } from "../../tags/tagSlice";
 import { Box, Button, List, ListItem, ListItemButton, ListItemText, TextField, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { Tag } from "../../types/Tag";
-import { gradientBorderButton, GradientButton } from "../../styles/buttonsStyle";
+import { Tag } from "../../../types/Tag";
+import { gradientBorderButton, GradientButton } from "../../../styles/buttonsStyle";
 
 const AddTag = ({ fileId, closeForm }: { closeForm: Function; fileId: number }) => {
     const dispatch = useDispatch<AppDispatch>();
-    const { user } = useContext(UserContext);
     const tagInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {

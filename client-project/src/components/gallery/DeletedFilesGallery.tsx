@@ -4,7 +4,7 @@ import { AppDispatch, StoreType } from '../appStore';
 import { deleteFile, fetchDeletedFiles, recycleFile } from '../images/imageSlice';
 import { Box, CircularProgress, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import ShowImage from './ShowImage';
+import ShowImage from '../images/ShowImage';
 import imageIcon from "../../../public/Icons/imageIcon.png";
 import delete1 from "../../../public/Icons/delete.png";
 import recycle from "../../../public/Icons/recycle.png";

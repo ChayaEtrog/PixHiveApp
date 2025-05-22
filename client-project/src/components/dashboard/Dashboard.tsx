@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material"
 import { useContext, useState } from "react"
-import { UserContext } from "../components/user/UserReducer"
-import {GradientButton } from "../styles/buttonsStyle"
+import { UserContext } from "../user/UserReducer"
+import {GradientButton } from "../../styles/buttonsStyle"
 import UpdateFormModal from "./UpdateFormModal"
 import UserStatesPage from "./UserStatesPage"
 

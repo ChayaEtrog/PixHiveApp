@@ -5,10 +5,11 @@ import { Album } from '../../types/Album';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import rename from "../../../public/Icons/rename.png";
 import delete1 from "../../../public/Icons/delete.png";
-import RenameAlbum from '../album operations/RenameAlbum';
+
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
 import { deleteAlbum } from '../albums/albumSlice';
+import RenameAlbum from '../albums/RenameAlbum';
 
 interface FolderListProps {
   folders: any[];

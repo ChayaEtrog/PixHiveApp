@@ -3,7 +3,7 @@ import addAlbum from "../../../public/Icons/addAlbum.png"
 import { gradientBorderButton, iconButtonStyle } from "../../styles/buttonsStyle";
 import { useState } from "react";
 import CreateAlbum from "../albums/CreateAlbum";
-import UploadImagePopup from "../images/UploadImagePopup";
+import UploadImagePopup from "../images/upload/UploadImagePopup";
 import upload from "../../../public/Icons/uploadIcon.png"
 import recycleBin from "../../../public/Icons/recycleBin.png"
 import { useNavigate } from "react-router";

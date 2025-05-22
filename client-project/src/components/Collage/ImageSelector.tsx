@@ -1,4 +1,4 @@
-import ShowImage from '../myGallery/ShowImage';
+import ShowImage from '../images/ShowImage';
 import arrow from '../../../public/Icons/arrow.png'
 import { Box, Button, Grid, IconButton, Paper, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';

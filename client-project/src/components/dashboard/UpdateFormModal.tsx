@@ -1,12 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Box, Button, IconButton, Modal, TextField, Typography } from "@mui/material";
-import ErrorMessage from "../components/ErrorMessage";
-import { UserContext } from "../components/user/UserReducer";
-import { UserPostModal } from "../types/User";
-import { updateUser } from "../components/user/UserService";
+import ErrorMessage from "../ErrorMessage";
+import { UserContext } from "../user/UserReducer";
+import { UserPostModal } from "../../types/User";
+import { updateUser } from "../user/UserService";
 import CloseIcon from '@mui/icons-material/Close';
-import { gradientBorderButton } from "../styles/buttonsStyle";
-import editUser from'../../public/Icons/edit.png'
+import { gradientBorderButton } from "../../styles/buttonsStyle";
+import editUser from'../../../public/Icons/edit.png'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function FormModel({ setIsOpen }: { setIsOpen: Function }) {

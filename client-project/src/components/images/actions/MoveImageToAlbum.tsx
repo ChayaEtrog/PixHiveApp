@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, StoreType } from "../appStore";
-import { UserContext } from "../user/UserReducer";
+import { AppDispatch, StoreType } from "../../appStore";
+import { UserContext } from "../../user/UserReducer";
 import { useContext, useEffect, useState } from "react";
-import { fetchAlbumsByUser } from "../albums/albumSlice";
+import { fetchAlbumsByUser } from "../../albums/albumSlice";
 import { Box, Button, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
-import { Album } from "../../types/Album";
-import { addFileToAlbum } from "../images/imageSlice";
-import { gradientBorderButton, GradientButton } from "../../styles/buttonsStyle";
+import { Album } from "../../../types/Album";
+import { addFileToAlbum } from "../imageSlice";
+import { gradientBorderButton, GradientButton } from "../../../styles/buttonsStyle";
 
 const MoveImageToAlbum = ({ fileId, closeForm }: { closeForm: Function, fileId: number }) => {
     const dispatch = useDispatch<AppDispatch>();

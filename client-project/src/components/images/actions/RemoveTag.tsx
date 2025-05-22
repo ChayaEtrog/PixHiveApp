@@ -1,16 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, StoreType } from "../appStore";
-import { UserContext } from "../user/UserReducer";
-import { useContext, useEffect, useRef, useState } from "react";
-import { fetchUnassignedTags, addTag, addTagToFile, fetchTagsByFile, removeTagFromFile } from "../tags/tagSlice";
-import { Box, Button, List, ListItem, ListItemButton, ListItemText, TextField, IconButton } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { Tag } from "../../types/Tag";
-import { gradientBorderButton, GradientButton } from "../../styles/buttonsStyle";
+import { AppDispatch, StoreType } from "../../appStore";
+import {useEffect, useState } from "react";
+import { fetchTagsByFile, removeTagFromFile } from "../../tags/tagSlice";
+import { Box, Button, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { Tag } from "../../../types/Tag";
+import { gradientBorderButton, GradientButton } from "../../../styles/buttonsStyle";
 
 const RemoveTag = ({ fileId, closeForm }: { closeForm: Function; fileId: number }) => {
     const dispatch = useDispatch<AppDispatch>();
-    const { user } = useContext(UserContext);
 
     useEffect(() => {
         dispatch(fetchTagsByFile(fileId));

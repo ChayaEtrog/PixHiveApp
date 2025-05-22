@@ -1,7 +1,7 @@
 import axios from "axios";
-import { uploadImage } from "./imageSlice";
-import { AppDispatch } from "../appStore";
-import { getUserStatisticsById } from "../user/UserService";
+import { uploadImage } from "../imageSlice";
+import { AppDispatch } from "../../appStore";
+import { getUserStatisticsById } from "../../user/UserService";
 
 const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/S3/`;
 const API_STAISTICS=import.meta.env.VITE_API_BASE_URL;

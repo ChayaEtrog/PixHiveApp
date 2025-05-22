@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router"
 import AppLayout from "./components/AppLayout"
 import ErrorPage from "./components/ErrorPage"
-import UploadImage from "./components/images/UploadImage"
-import GalleryExplorer from "./components/myGallery/GalleryExplorer"
-import DeletedFilesGallery from "./components/myGallery/DeletedFilesGallery"
-import GalleryNavBar from "./components/myGallery/GalleryNavBar"
+import UploadImage from "./components/images/upload/UploadImage"
+import GalleryExplorer from "./components/gallery/GalleryExplorer"
+import DeletedFilesGallery from "./components/gallery/DeletedFilesGallery"
+import GalleryNavBar from "./components/gallery/GalleryNavBar"
 import MessageBox from "./components/messages/MessageBox"
-import Dashboard from "./dashboard/Dashboard"
+import Dashboard from "./components/dashboard/Dashboard"
 import CollageLoader from "./components/collage/CollageLoader"
-import ImageEditor from "./components/image Operations/ImageEditor"
-import HomeContainer from "./components/homePages/HomeContainer"
+import ImageEditor from "./components/images/actions/ImageEditor"
+import HomeContainer from "./components/home/HomeContainer"
 
 
 export const router = createBrowserRouter([

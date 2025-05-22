@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getDownloadUrl } from '../images/imageSlice';
+import { getDownloadUrl } from './imageSlice';
 import { AppDispatch, StoreType } from '../appStore';
 import ErrorMessage from '../ErrorMessage';
 import { CircularProgress, IconButton, Tooltip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import { DownloadImage, PrintImage } from '../image Operations/downloadAndPrintImage';
+import { DownloadImage, PrintImage } from './actions/downloadAndPrintImage';
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import { motion } from "framer-motion";

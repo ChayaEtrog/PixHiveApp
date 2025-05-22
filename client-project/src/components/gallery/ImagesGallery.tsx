@@ -2,23 +2,23 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import imageIcon from "../../../public/Icons/imageIcon.png";
 import { useState } from 'react';
-import ShowImage from './ShowImage';
+import ShowImage from '../images/ShowImage';
 import download from "../../../public/Icons/download.png";
 import rename from "../../../public/Icons/rename.png";
 import delete1 from "../../../public/Icons/delete.png";
 import imagesAndAlbums from "../../../public/Icons/imagesAndAlbums.png";
 import tag from "../../../public/Icons/tag.png"
-import RenameImage from '../image Operations/renameImage';
+import RenameImage from '../images/actions/renameImage';
 import { Image } from '../../types/Image';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
-import { DownloadImage } from '../image Operations/downloadAndPrintImage';
-import MoveImageToAlbum from '../image Operations/MoveImageToAlbum';
+import { DownloadImage } from '../images/actions/downloadAndPrintImage';
+import MoveImageToAlbum from '../images/actions/MoveImageToAlbum';
 import { removeFileFromAlbum } from '../images/imageSlice';
 import { useParams } from 'react-router';
-import AddTag from '../image Operations/AddTag';
+import AddTag from '../images/actions/AddTag';
 import remove from "../../../public/Icons/x.png";
-import RemoveTag from '../image Operations/RemoveTag';
+import RemoveTag from '../images/actions/RemoveTag';
 import AlertMessage from '../alertMessage';
 
 const ImageGallery = ({ files }: { files: Image[] }) => {

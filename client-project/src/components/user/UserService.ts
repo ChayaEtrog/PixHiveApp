@@ -15,9 +15,9 @@ export const loginUser = async (
         });
         saveUserSession(response.data.user, response.data.token);
 
-        return response.data; // מחזיר את הנתונים במקרה של הצלחה
+        return response.data; 
     } catch (e: any) {
-        throw e.response.data; // זורק שגיאה כדי לטפל בה בקומפוננטה
+        throw e.response.data; 
     }
 };
 
@@ -37,9 +37,9 @@ export const registerUser = async (
             phoneNumber
         });
         saveUserSession(response.data.user,response.data.token)
-        return response.data; // מחזיר את הנתונים לקומפוננטה
+        return response.data; 
     } catch (e: any) {
-        throw e.response.data; // זורק את השגיאה לטיפול חיצוני
+        throw e.response.data; 
     }
 };
 

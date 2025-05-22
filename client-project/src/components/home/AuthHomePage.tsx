@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import pixHive from "../../../public/pictures/PixHive.png"
 import { motion } from "framer-motion";
-import AuthModalManager from "../user/AuthModelManager";
+import AuthModalManager from "../auth/AuthModelManager";
 import { useEffect } from "react";
 
 const AuthHomePage = () => {

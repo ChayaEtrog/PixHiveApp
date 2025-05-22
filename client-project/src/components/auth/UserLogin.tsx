@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import { UserContext } from "./UserReducer";
+import { UserContext } from "../user/UserReducer";
 import { Box, Button, CircularProgress, IconButton, Modal, TextField, Typography } from "@mui/material";
 import ErrorMessage from "../ErrorMessage";
 import CloseIcon from '@mui/icons-material/Close';
 import lock from "../../../public/Icons/lock.png"
-import { loginUser } from "./UserService";
+import { loginUser } from "../user/UserService";
 import { gradientBorderButton } from "../../styles/buttonsStyle";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { UserContext } from '../user/UserReducer';
+import { UserContext } from '../../user/UserReducer';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../appStore';
-import { uploadImage } from './imageSlice';
-import uploadIcon from '../../../public/Icons/uploadIcon.png';
-import ErrorMessage from '../ErrorMessage';
-import AlertMessage from '../alertMessage';
+import { AppDispatch } from '../../appStore';
+import { uploadImage } from '../imageSlice';
+import uploadIcon from '../../../../public/Icons/uploadIcon.png';
+import ErrorMessage from '../../ErrorMessage';
+import AlertMessage from '../../alertMessage';
 import { Button, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useParams } from 'react-router';

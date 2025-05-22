@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { Card, CardContent, Typography, Box, Grid2 } from '@mui/material';
-import { UserStatistics } from '../types/UserStatistics';
-import { getUserStatisticsById } from '../components/user/UserService';
-import { UserContext } from '../components/user/UserReducer';
+import { UserStatistics } from '../../types/UserStatistics';
+import { getUserStatisticsById } from '../user/UserService';
+import { UserContext } from '../user/UserReducer';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const StatCard = ({
   label,

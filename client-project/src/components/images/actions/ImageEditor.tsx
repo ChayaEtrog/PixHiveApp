@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button, IconButton, CircularProgress, Tooltip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import ErrorMessage from "../ErrorMessage";
-import { GradientButton } from "../../styles/buttonsStyle";
+import ErrorMessage from "../../ErrorMessage";
+import { GradientButton } from "../../../styles/buttonsStyle";
 import PromptInput from "./PromptInput";
 import { DownloadEditedImage } from "./downloadAndPrintImage";
 import { useLocation } from "react-router";

@@ -1,5 +1,5 @@
-import { AppDispatch } from "../appStore";
-import { getDownloadUrl } from "../images/imageSlice";
+import { AppDispatch } from "../../appStore";
+import { getDownloadUrl } from "../imageSlice";
 
 export const DownloadImage = async (fileName: string, dispatch: AppDispatch, setIsDownloading?: React.Dispatch<React.SetStateAction<boolean>>) => {
   setIsDownloading?.(true);

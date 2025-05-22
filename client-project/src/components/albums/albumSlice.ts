@@ -1,18 +1,9 @@
-import { createSlice, createAsyncThunk, createAction, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { AlbumPostModel } from '../../types/AlbumPostModel';
-import { Image } from '../../types/Image';
 import { Album } from '../../types/Album';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const token = sessionStorage.getItem('authToken');
-
-const authHeader = {
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`,
-  },
-};
 
 // create an album
 export const createAlbum = createAsyncThunk(
@@ -243,7 +234,7 @@ const albumSlice = createSlice({
         state.error = action.payload as string;
       })
       //get all albums 
-      .addCase(fetchAlbumsByUser.pending, (state) => {
+      .addCase(fetchAlbumsByUser.pending, (_state) => {
         // state.loading = true;
         // state.error = null;
       })
@@ -251,7 +242,7 @@ const albumSlice = createSlice({
         // state.loading = false;
         state.allAlbums = action.payload;
       })
-      .addCase(fetchAlbumsByUser.rejected, (state, action) => {
+      .addCase(fetchAlbumsByUser.rejected, (_state, _action) => {
         // state.loading = false;
         // state.error = action.payload as string;
       })

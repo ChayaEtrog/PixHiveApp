@@ -2,12 +2,12 @@ import { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
-import { UserContext } from '../user/UserReducer';
-import { AppDispatch } from '../appStore';
+import { UserContext } from '../../user/UserReducer';
+import { AppDispatch } from '../../appStore';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle';
-import { updateFileName } from '../images/imageSlice';
+import { gradientBorderButton, GradientButton } from '../../../styles/buttonsStyle';
+import { updateFileName } from '../imageSlice';
 
 // הגדרת הסכימה של yup
 const schema = yup.object().shape({

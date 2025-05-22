@@ -65,7 +65,7 @@ export const updateTag = createAsyncThunk(
     'tags/updateTag',
     async ({ id, newName }: { id: number; newName: string }, { rejectWithValue }) => {
         try {
-            const response = await axios.put(
+             await axios.put(
                 `${API_BASE_URL}/${id}`,
                 newName,
                 {
