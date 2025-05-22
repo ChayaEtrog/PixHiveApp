@@ -1,16 +1,16 @@
 import { Box, Button, IconButton, useMediaQuery } from "@mui/material";
-import addAlbum from "../../../public/Icons/addAlbum.png"
+import addAlbum from "../../assets/Icons/addAlbum.png"
 import { gradientBorderButton, iconButtonStyle } from "../../styles/buttonsStyle";
 import { useState } from "react";
 import CreateAlbum from "../albums/CreateAlbum";
 import UploadImagePopup from "../images/upload/UploadImagePopup";
-import upload from "../../../public/Icons/uploadIcon.png"
-import recycleBin from "../../../public/Icons/recycleBin.png"
+import upload from "../../assets/Icons/uploadIcon.png"
+import recycleBin from "../../assets/Icons/recycleBin.png"
 import { useNavigate } from "react-router";
-import gallery from "../../../public/Icons/imagesAndAlbums.png"
+import gallery from "../../assets/Icons/imagesAndAlbums.png"
 import { motion } from 'framer-motion';
-import arrowRight from "../../../public/Icons/simpleArrowRight.png"
-import arrowLeft from"../../../public/Icons/arrowLeft.png"
+import arrowRight from "../../assets/Icons/simpleArrowRight.png"
+import arrowLeft from"../../assets/Icons/arrowLeft.png"
 import Divider from '@mui/material/Divider';
 import { useEffect } from "react";
 

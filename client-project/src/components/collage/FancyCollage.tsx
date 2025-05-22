@@ -10,7 +10,7 @@ import {
     CircularProgress,
 } from '@mui/material';
 import html2canvas from 'html2canvas';
-import DownloadImage from '../../../public/Icons/download.png';
+import DownloadImage from '../../assets/Icons/download.png';
 
 type CollageProps = {
     images: string[];

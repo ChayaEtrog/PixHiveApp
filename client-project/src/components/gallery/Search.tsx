@@ -7,7 +7,7 @@ import { getFilesByDateAndUser, getFilesByTagAndUser, searchFiles } from '../ima
 import { useParams } from 'react-router';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { gradientBorderButton } from '../../styles/buttonsStyle';
-import search from '../../../public/Icons/search.png'
+import search from '../../assets/Icons/search.png'
 import { resetAlbums, searchAlbumsByDate, searchAlbumsByName } from '../albums/albumSlice';
 const Search = ({ userId }: { userId: number }) => {
     const dispatch = useDispatch<AppDispatch>();

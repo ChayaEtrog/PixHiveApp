@@ -5,10 +5,10 @@ import { deleteFile, fetchDeletedFiles, recycleFile } from '../images/imageSlice
 import { Box, CircularProgress, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ShowImage from '../images/ShowImage';
-import imageIcon from "../../../public/Icons/imageIcon.png";
-import delete1 from "../../../public/Icons/delete.png";
-import recycle from "../../../public/Icons/recycle.png";
-import recycleBin from "../../../public/Icons/recycleBin.png"
+import imageIcon from "../../assets/Icons/imageIcon.png";
+import delete1 from "../../assets/Icons/delete.png";
+import recycle from "../../assets/Icons/recycle.png";
+import recycleBin from "../../assets/Icons/recycleBin.png"
 import { Image } from '../../types/Image';
 
 const DeletedFilesGallery = () => {

@@ -68,17 +68,17 @@ const animatedGradientStyle = {
 
 export default function FeaturesPage() {
     const exampleCollageImages = [
-        "../../../public/HomePagePictures/26e76ab82d8372e069827ec68299ca34.jpg",
-        "../../../public/HomePagePictures/9066555d20cff721dfff5a43b9b8e3fb.jpg",
-        "../../../public/HomePagePictures/b92183db6b2707cd94a72b7afdc6342d.jpg",
-        "../../../public/HomePagePictures/be494e569d56436ad6aa7d0ec522a07d.jpg",
-        "../../../public/HomePagePictures/ea43e88b6abccb38da2469a99d482dd4.jpg",
-        "../../../public/HomePagePictures/d7289b35fb4b55f433f32d76533b898a.jpg",
+        "../../assets/HomePagePictures/26e76ab82d8372e069827ec68299ca34.jpg",
+        "../../assets/HomePagePictures/9066555d20cff721dfff5a43b9b8e3fb.jpg",
+        "../../assets/HomePagePictures/b92183db6b2707cd94a72b7afdc6342d.jpg",
+        "../../assets/HomePagePictures/be494e569d56436ad6aa7d0ec522a07d.jpg",
+        "../../assets/HomePagePictures/ea43e88b6abccb38da2469a99d482dd4.jpg",
+        "../../assets/HomePagePictures/d7289b35fb4b55f433f32d76533b898a.jpg",
     ];
 
     const exampleEditedImages=[
-        "../../../public/HomePagePictures/oil picture1.png",
-         "../../../public/HomePagePictures/turn child eyes1.png"
+        "../../assets/HomePagePictures/oil picture1.png",
+         "../../assets/HomePagePictures/turn child eyes1.png"
     ]
     const navigate = useNavigate();
 

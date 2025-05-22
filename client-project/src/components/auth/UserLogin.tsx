@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import lockIcon from "../../assets/Icons/Lock.png";
 
 const schema = yup.object().shape({
     emailOrUserName: yup.string().required('Required'),
@@ -72,7 +73,7 @@ const[loading, setLoading]=useState(false)
                         <CloseIcon />
                     </IconButton>
 
-                    <img src="Icons/Lock.png" alt="" style={{ width: '80px' }} />
+                    <img src={lockIcon } alt="" style={{ width: '80px' }} />
 
                     <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center' }}>
                         Log In

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import pixHive from "../../../public/pictures/PixHive.png"
+import pixHive from "../../assets/pictures/PixHive.png"
 import { motion } from "framer-motion";
 import AuthModalManager from "../auth/AuthModelManager";
 import { useEffect } from "react";

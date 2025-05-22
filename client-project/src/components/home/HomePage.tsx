@@ -1,4 +1,4 @@
-import pixHiveLogedin from "../../../public/pictures/PixHiveLogedCut.png"
+import pixHiveLogedin from "../../assets/pictures/PixHiveLogedCut.png"
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 import { Box, Link } from "@mui/material"; 

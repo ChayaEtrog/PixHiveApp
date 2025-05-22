@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { UserContext } from '../../user/UserReducer';
 import { useContext } from "react";
-import uploadIcon from '../../../../public/Icons/uploadIcon.png'
+import uploadIcon from '../../../assets/Icons/uploadIcon.png'
 import { Button } from '@mui/material';
 import ErrorMessage from '../../ErrorMessage';
 import AlertMessage from '../../alertMessage';

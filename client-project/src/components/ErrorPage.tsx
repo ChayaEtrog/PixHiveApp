@@ -1,4 +1,4 @@
-import imageUrl from '../../public/pictures/error404.jpg'
+import imageUrl from '../assets/pictures/error404.jpg'
 function ErrorPage(){
 
 return (

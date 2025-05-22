@@ -1,13 +1,13 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import imageIcon from "../../../public/Icons/imageIcon.png";
+import imageIcon from "../../assets/Icons/imageIcon.png";
 import { useState } from 'react';
 import ShowImage from '../images/ShowImage';
-import download from "../../../public/Icons/download.png";
-import rename from "../../../public/Icons/rename.png";
-import delete1 from "../../../public/Icons/delete.png";
-import imagesAndAlbums from "../../../public/Icons/imagesAndAlbums.png";
-import tag from "../../../public/Icons/tag.png"
+import download from "../../assets/Icons/download.png";
+import rename from "../../assets/Icons/rename.png";
+import delete1 from "../../assets/Icons/delete.png";
+import imagesAndAlbums from "../../assets/Icons/imagesAndAlbums.png";
+import tag from "../../assets/Icons/tag.png"
 import RenameImage from '../images/actions/renameImage';
 import { Image } from '../../types/Image';
 import { useDispatch } from 'react-redux';
@@ -17,7 +17,7 @@ import MoveImageToAlbum from '../images/actions/MoveImageToAlbum';
 import { removeFileFromAlbum } from '../images/imageSlice';
 import { useParams } from 'react-router';
 import AddTag from '../images/actions/AddTag';
-import remove from "../../../public/Icons/x.png";
+import remove from "../../assets/Icons/x.png";
 import RemoveTag from '../images/actions/RemoveTag';
 import AlertMessage from '../alertMessage';
 

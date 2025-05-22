@@ -6,7 +6,7 @@ import { UserPostModal } from "../../types/User";
 import { updateUser } from "../user/UserService";
 import CloseIcon from '@mui/icons-material/Close';
 import { gradientBorderButton } from "../../styles/buttonsStyle";
-import editUser from'../../../public/Icons/edit.png'
+import editUser from'../../assets/Icons/edit.png'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function FormModel({ setIsOpen }: { setIsOpen: Function }) {

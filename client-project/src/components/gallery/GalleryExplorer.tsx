@@ -15,7 +15,7 @@ import GalleryNavBar from './GalleryNavBar';
 import DeletedFilesGallery from './DeletedFilesGallery';
 import Search from './Search';
 import { buildBreadcrumbsPath, fetchAlbumById } from '../albums/albumService';
-import clear from '../../../public/Icons/clear.png'
+import clear from '../../assets/Icons/clear.png'
 import { motion } from "framer-motion";
 
 const GalleryExplorer = () => {

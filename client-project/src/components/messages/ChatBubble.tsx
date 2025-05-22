@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
 import { postMessage } from './messageSlice';
 import { MessagePostModel } from '../../types/MessagePostModel';
-import messages from'../../../public/Icons/messages.png'
-import send from '../../../public/Icons/send.png'
+import messages from'../../assets/Icons/messages.png'
+import send from '../../assets/Icons/send.png'
 const ChatBubble = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<MessagePostModel>({message:'',senderId:-1,receiverId:-1,isActive:true});

@@ -1,11 +1,10 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, MenuItem, Menu, IconButton } from '@mui/material';
-import albumIcon from "../../../public/Icons/albumIcon.png"
+import albumIcon from "../../assets/Icons/albumIcon.png"
 import { useState } from 'react';
 import { Album } from '../../types/Album';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import rename from "../../../public/Icons/rename.png";
-import delete1 from "../../../public/Icons/delete.png";
-
+import rename from "../../assets/Icons/rename.png";
+import delete1 from "../../assets/Icons/delete.png";
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../appStore';
 import { deleteAlbum } from '../albums/albumSlice';

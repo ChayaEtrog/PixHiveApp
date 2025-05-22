@@ -4,7 +4,7 @@ import { Box, Button, CircularProgress, IconButton, Link, Modal, TextField, Typo
 import ErrorMessage from "../ErrorMessage";
 import CloseIcon from '@mui/icons-material/Close';
 import { registerUser } from "../user/UserService";
-import lock from "../../../public/Icons/lock.png"
+import lock from "../../assets/Icons/Lock.png"
 import { gradientBorderButton } from "../../styles/buttonsStyle";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

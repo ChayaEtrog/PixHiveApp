@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserMessages, markMessageAsRead } from "./messageSlice"; 
 import { AppDispatch, StoreType } from "../appStore";
 import { UserContext } from "../user/UserReducer";
-import bell from "../../../public/Icons/bell2.png"
-import notRead from "../../../public/Icons/MessageNotRead.png"
+import bell from "../../assets/Icons/bell2.png"
+import notRead from "../../assets/Icons/MessageNotRead.png"
 import { Box, Button, CircularProgress } from "@mui/material";
 import { gradientBorderButton } from "../../styles/buttonsStyle";
 import ChatBubble from "./ChatBubble";

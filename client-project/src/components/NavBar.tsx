@@ -2,12 +2,12 @@ import { NavLink } from "react-router";
 import UserAvatar from "./user/UserAvatar";
 
 import { AppBar, Toolbar, Box, Typography } from "@mui/material";
-import gallery from "../../public/Icons/imagesAndAlbums.png"
-import mesages from "../../public/Icons/messages.png"
-import dashboard from "../../public/Icons/userSettings.png"
-import collage from "../../public/Icons/collage.png"
-import home from "../../public/Icons/home.png"
-import upload from "../../public/Icons/uploadIcon.png"
+import gallery from "../assets/Icons/imagesAndAlbums.png"
+import mesages from "../assets/Icons/messages.png"
+import dashboard from "../assets/Icons/userSettings.png"
+import collage from "../assets/Icons/collage.png"
+import home from "../assets/Icons/home.png"
+import upload from "../assets/Icons/uploadIcon.png"
 import { motion } from "framer-motion";
 
 const NavBar=()=> {

@@ -1,5 +1,5 @@
 import ShowImage from '../images/ShowImage';
-import arrow from '../../../public/Icons/arrow.png'
+import arrow from '../../assets/Icons/arrow.png'
 import { Box, Button, Grid, IconButton, Paper, Skeleton, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle';

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import ImageIcon from '../../../public/Icons/imageIcon.png';
+import ImageIcon from '../../assets/Icons/imageIcon.png';
 
 export const LazyImage = ({ src, alt }: { src: string; alt?: string }) => {
     const [isVisible, setIsVisible] = useState(false);
