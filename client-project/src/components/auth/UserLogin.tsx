@@ -3,7 +3,6 @@ import { UserContext } from "../user/UserReducer";
 import { Box, Button, CircularProgress, IconButton, Modal, TextField, Typography } from "@mui/material";
 import ErrorMessage from "../ErrorMessage";
 import CloseIcon from '@mui/icons-material/Close';
-import lock from "../../../public/Icons/Lock.png"
 import { loginUser } from "../user/UserService";
 import { gradientBorderButton } from "../../styles/buttonsStyle";
 import { useForm } from 'react-hook-form';
@@ -73,7 +72,7 @@ const[loading, setLoading]=useState(false)
                         <CloseIcon />
                     </IconButton>
 
-                    <img src={lock} alt="" style={{ width: '80px' }} />
+                    <img src="Icons/Lock.png" alt="" style={{ width: '80px' }} />
 
                     <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center' }}>
                         Log In
