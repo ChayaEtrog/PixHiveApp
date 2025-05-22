@@ -6,8 +6,11 @@ import { GradientButton } from "../../../styles/buttonsStyle";
 import PromptInput from "./PromptInput";
 import { DownloadEditedImage } from "./downloadAndPrintImage";
 import { useLocation, useNavigate } from "react-router";
+import axios from "axios";
 
-const url=import.meta.env.VITE_PYTHON_API_URL
+const url = import.meta.env.VITE_PYTHON_API_URL
+
+const baseUrl = import.meta.env.VITE_API_BASE_URL
 
 export default function ImageEditor() {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -17,25 +20,39 @@ export default function ImageEditor() {
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
   const image = location.state?.image;
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     if (!prompt) return;
-    setLoading(true);
 
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("prompt", prompt);
+    setLoading(true);
+    setError(null);
+    const storedUser = sessionStorage.getItem('user');
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null
 
     try {
-      const res = await fetch(`${url}/process-image`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      setResultUrl(data.output_url);
+      const countRes = await axios.get(`${baseUrl}/UserImageEditCount/${parsedUser?.id}/count`);
+      const result = countRes.data;
+
+      if (result >= 2) {
+        setError("You have reached the maximum number of edits (2).");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("prompt", prompt);
+
+      const processRes = await axios.post(`${url}/process-image`, formData);
+      setResultUrl(processRes.data.output_url);
+
+      // 3. עדכון הספירה
+      const updateRes = await axios.post(`${baseUrl}/UserImageEditCount/${parsedUser?.id}/increment`);
+      if (!updateRes.data.isSuccess) {
+        console.warn("Could not update edit count:", updateRes.data.errorMessage);
+      }
     } catch (err) {
-      console.error("Error processing image", url);
+      console.error("Error processing image", err);
       setError("Error processing image");
     } finally {
       setLoading(false);
@@ -109,7 +126,7 @@ export default function ImageEditor() {
 
           <IconButton
             sx={{ position: "absolute", top: 8, right: 34, color: "red" }}
-            onClick={(e) => { e.stopPropagation(); navigate("/gallery");}}
+            onClick={(e) => { e.stopPropagation(); navigate("/gallery"); }}
           >
             <CloseIcon />
           </IconButton>
