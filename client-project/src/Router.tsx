@@ -7,9 +7,9 @@ import DeletedFilesGallery from "./components/gallery/DeletedFilesGallery"
 import GalleryNavBar from "./components/gallery/GalleryNavBar"
 import MessageBox from "./components/messages/MessageBox"
 import Dashboard from "./components/dashboard/Dashboard"
-import CollageLoader from "./components/collage/CollageLoader"
 import ImageEditor from "./components/images/actions/ImageEditor"
 import HomeContainer from "./components/home/HomeContainer"
+import CollageLoader from "./components/collage/CollageLoader"
 
 
 export const router = createBrowserRouter([
@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
             { path: 'gallery', element: <GalleryExplorer /> },
             {
                 path: "gallery",
-                element: <GalleryExplorer />, // קומפוננטת האב
+                element: <GalleryExplorer />, 
                 children: [
                     { path: "album/:albumId", element: <GalleryExplorer /> },
                     { path: "recycle-bin", element: <DeletedFilesGallery /> },
