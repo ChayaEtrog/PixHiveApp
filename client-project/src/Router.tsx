@@ -9,7 +9,7 @@ import MessageBox from "./components/messages/MessageBox"
 import Dashboard from "./components/dashboard/Dashboard"
 import ImageEditor from "./components/images/actions/ImageEditor"
 import HomeContainer from "./components/home/HomeContainer"
-import CollageLoader from "./components/bla/CollageLoader"
+import CollageLoader from "./components/collage/CollageLoader"
 
 
 export const router = createBrowserRouter([
