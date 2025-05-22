@@ -8,19 +8,14 @@ using System.Threading.Tasks;
 
 namespace Web.Net.Core.Entity
 {
-    [Table("UserEntityMessageEntity")]
-    public class UserEntityMessageEntity
+    [Table("UserImageEdit")]
+    public class UserImageEditEntity
     {
-
+        [Key]
         public int Id { get; set; }
 
         public int UserId { get; set; }
-        public UserEntity User { get; set; }
 
-        public int MessageId { get; set; }
-        public MessageEntity Message { get; set; }
-
-        public bool IsRead { get; set; }
-        public DateTime? ReadAt { get; set; }
+        public int EditCount { get; set; } = 0;
     }
 }

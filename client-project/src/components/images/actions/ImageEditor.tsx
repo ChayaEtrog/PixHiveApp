@@ -5,7 +5,7 @@ import ErrorMessage from "../../ErrorMessage";
 import { GradientButton } from "../../../styles/buttonsStyle";
 import PromptInput from "./PromptInput";
 import { DownloadEditedImage } from "./downloadAndPrintImage";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const url=import.meta.env.VITE_PYTHON_API_URL
 
@@ -17,7 +17,8 @@ export default function ImageEditor() {
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
   const image = location.state?.image;
-  
+  const navigate= useNavigate();
+
   const handleSubmit = async () => {
     if (!prompt) return;
     setLoading(true);
@@ -34,7 +35,7 @@ export default function ImageEditor() {
       const data = await res.json();
       setResultUrl(data.output_url);
     } catch (err) {
-      console.error("❌ Error processing image", url);
+      console.error("Error processing image", url);
       setError("Error processing image");
     } finally {
       setLoading(false);
@@ -108,7 +109,7 @@ export default function ImageEditor() {
 
           <IconButton
             sx={{ position: "absolute", top: 8, right: 34, color: "red" }}
-            onClick={(e) => { e.stopPropagation();}}
+            onClick={(e) => { e.stopPropagation(); navigate("/gallery");}}
           >
             <CloseIcon />
           </IconButton>

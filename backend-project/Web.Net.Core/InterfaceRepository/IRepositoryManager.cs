@@ -22,6 +22,8 @@ namespace Web.Net.Core.InterfaceRepository
 
         IUserMessagesRepository UserMessages { get; }
 
+         IUserImageEditCountRepository UserImageEditCount { get; }
+
         Task Save();
     }
 }

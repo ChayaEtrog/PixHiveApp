@@ -15,7 +15,8 @@ namespace Web.Net.Data.Repositories
                                    IAlbumRepository albumRepository,
                                    ITagRepository tagRepository,
                                    IRoleRepository roleRepository,
-                                   IUserMessagesRepository userMessagesRepository) : IRepositoryManager
+                                   IUserMessagesRepository userMessagesRepository,
+                                   IUserImageEditCountRepository userImageEditCountRepository) : IRepositoryManager
     {
         private readonly DataContext _context = context;
         public IUserRepository Users => userRepository;
@@ -25,6 +26,7 @@ namespace Web.Net.Data.Repositories
         public ITagRepository Tags => tagRepository;
         public IRoleRepository Roles => roleRepository;
         public IUserMessagesRepository UserMessages => userMessagesRepository;
+        public IUserImageEditCountRepository UserImageEditCount => userImageEditCountRepository;
 
         public async Task Save()
         {

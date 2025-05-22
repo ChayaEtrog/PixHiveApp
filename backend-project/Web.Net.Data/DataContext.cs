@@ -23,6 +23,8 @@ namespace Web.Net.Data
 
         public DbSet<Role> Roles { get; set; }
 
+        public DbSet<UserImageEditEntity> UserImageEditCounts { get; set; }
+
         public DbSet<UserEntityMessageEntity> UserMessages { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)

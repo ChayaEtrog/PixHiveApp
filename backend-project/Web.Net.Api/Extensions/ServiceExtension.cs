@@ -18,6 +18,7 @@ namespace Web.Net.Api.Extensions
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserImageEditCountService, UserImageEditCountService>();
 
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -28,6 +29,7 @@ namespace Web.Net.Api.Extensions
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserMessagesRepository, UserMessagesRepository>();
+            services.AddScoped<IUserImageEditCountRepository, UserImageEditCountRepository>();
 
             services.AddScoped<IS3Service, S3Service>();
 
