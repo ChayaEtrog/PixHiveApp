@@ -1,6 +1,0 @@
-{
-  "build": {
-    "dockerfilePath": "Web.Net.Api/Dockerfile",
-    "context": "."
-  }
-}
