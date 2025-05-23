@@ -2,6 +2,7 @@ import pixHiveLogedin from "../../assets/pictures/PixHiveLogedCut.png"
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 import { Box, Link } from "@mui/material"; 
+import { Link as RouterLink } from 'react-router';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -23,7 +24,6 @@ const HomePage = () => {
         overflow: "hidden",
       }}
     >
-      {/* קישורים בצד ימין למעלה */}
       <Box
         sx={{
           position: "absolute",
@@ -33,19 +33,19 @@ const HomePage = () => {
           gap: 3,
         }}
       >
-        <Link href="/collage" color="white" underline="hover">
+        <Link component={RouterLink} to="/collage" color="white" underline="hover">
         Collage
         </Link>
-        <Link href="/gallery" color="white" underline="hover">
+        <Link component={RouterLink} to="/gallery" color="white" underline="hover">
           Gallery
         </Link>
-        <Link href="/upload-image" color="white" underline="hover">
+        <Link component={RouterLink} to="/upload-image" color="white" underline="hover">
           Upload Image
         </Link>
-        <Link href="/messages" color="white" underline="hover">
+        <Link component={RouterLink} to="/messages" color="white" underline="hover">
           Messages
         </Link>
-        <Link href="/dashboard" color="white" underline="hover">
+        <Link component={RouterLink} to="/dashboard" color="white" underline="hover">
           Dashboard
         </Link>
       </Box>

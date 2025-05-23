@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router"
+import { createHashRouter } from "react-router"
 import AppLayout from "./components/AppLayout"
 import ErrorPage from "./components/ErrorPage"
 import UploadImage from "./components/images/upload/UploadImage"
@@ -12,7 +12,7 @@ import HomeContainer from "./components/home/HomeContainer"
 import CollageLoader from "./components/collage/CollageLoader"
 
 
-export const router = createBrowserRouter([
+export const router =  createHashRouter([
     {
         path: '/', element: <AppLayout />,
         errorElement: <ErrorPage />,
