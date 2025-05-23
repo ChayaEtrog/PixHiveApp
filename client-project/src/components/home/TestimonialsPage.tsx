@@ -9,7 +9,7 @@ import {
     useTheme,
 } from '@mui/material';
 import { motion, useScroll, useTransform, useAnimation } from 'framer-motion';
-import backgroundPic from '../../assets//HomePagePictures/emptyBackground.png'
+import backgroundPic from '../../assets/pictures/emptyBackground.png'
 
 const testimonials = [
     {
