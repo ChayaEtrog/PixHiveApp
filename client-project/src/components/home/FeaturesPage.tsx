@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { gradientBorderButton } from "../../styles/buttonsStyle";
 import { useNavigate } from "react-router";
-import h from "../../assets/HomePagePictures/26e76ab82d8372e069827ec68299ca34.jpg"
 const ImageCarousel = ({ images }: { images: string[] }) => {
     const [index, setIndex] = useState(0);
     const handlePrev = () => setIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
