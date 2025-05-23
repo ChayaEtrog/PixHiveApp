@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { gradientBorderButton } from "../../styles/buttonsStyle";
 import { useNavigate } from "react-router";
-
+import h from "../../assets/HomePagePictures/26e76ab82d8372e069827ec68299ca34.jpg"
 const ImageCarousel = ({ images }: { images: string[] }) => {
     const [index, setIndex] = useState(0);
     const handlePrev = () => setIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -68,17 +68,17 @@ const animatedGradientStyle = {
 
 export default function FeaturesPage() {
     const exampleCollageImages = [
-        "../../assets/HomePagePictures/26e76ab82d8372e069827ec68299ca34.jpg",
-        "../../assets/HomePagePictures/9066555d20cff721dfff5a43b9b8e3fb.jpg",
-        "../../assets/HomePagePictures/b92183db6b2707cd94a72b7afdc6342d.jpg",
-        "../../assets/HomePagePictures/be494e569d56436ad6aa7d0ec522a07d.jpg",
-        "../../assets/HomePagePictures/ea43e88b6abccb38da2469a99d482dd4.jpg",
-        "../../assets/HomePagePictures/d7289b35fb4b55f433f32d76533b898a.jpg",
+        "../../../public/HomePagePictures/26e76ab82d8372e069827ec68299ca34.jpg",
+        "../../../public/HomePagePictures/9066555d20cff721dfff5a43b9b8e3fb.jpg",
+        "../../../public/HomePagePictures/b92183db6b2707cd94a72b7afdc6342d.jpg",
+        "../../../public/HomePagePictures/be494e569d56436ad6aa7d0ec522a07d.jpg",
+        "../../../public/HomePagePictures/ea43e88b6abccb38da2469a99d482dd4.jpg",
+        "../../../public/HomePagePictures/d7289b35fb4b55f433f32d76533b898a.jpg",
     ];
 
     const exampleEditedImages=[
-        "../../assets/HomePagePictures/oil picture1.png",
-         "../../assets/HomePagePictures/turn child eyes1.png"
+        "../../../public/HomePagePictures/oil picture1.png",
+        "../../../public/HomePagePictures/turn child eyes1.png"
     ]
     const navigate = useNavigate();
 
