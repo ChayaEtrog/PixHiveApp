@@ -66,10 +66,16 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return sessionStorage.getItem('token');
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      return sessionStorage.getItem('token');
+    }
+    return null;
   }
 
   isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('token'); 
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      return !!sessionStorage.getItem('token');
+    }
+    return false;
   }
 }

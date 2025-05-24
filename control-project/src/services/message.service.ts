@@ -28,14 +28,23 @@ export class MessageService {
   }
 
   addMessage(message: Partial<Message>): Observable<Message> {
-    const userId = JSON.parse(sessionStorage.getItem('user') || '{}').id;
-    return this.http.post<Message>(this.apiUrl, {...message,userId}).pipe(
+    let userId: number | null = null;
+  
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      const user = sessionStorage.getItem('user');
+      if (user) {
+        userId = JSON.parse(user).id;
+      }
+    }
+  
+    return this.http.post<Message>(this.apiUrl, { ...message, userId }).pipe(
       tap(newMessage => {
         const currentMessages = this.messagesSubject.getValue();
         this.messagesSubject.next([...currentMessages, newMessage]);
       })
     );
   }
+  
 
   toggleMessageStatus(id: number): Observable<Message> {
     return this.http.put<Message>(`${this.apiUrl}/${id}`, {}).pipe(

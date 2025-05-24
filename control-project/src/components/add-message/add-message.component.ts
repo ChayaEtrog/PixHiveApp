@@ -56,7 +56,10 @@ export class AddMessageComponent {
   onSubmit(): void {
     if (this.messageForm.valid) {
       const userId = this.messageForm.value.userId === 'null' ? null : this.messageForm.value.userId;
-      const userString = sessionStorage.getItem('user');
+      let userString =null
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+          userString = sessionStorage.getItem('user');
+      }
       const user = userString ? JSON.parse(userString) : null
       const senderId = user?.id;
       this.messageService.addMessage({
