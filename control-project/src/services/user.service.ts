@@ -10,9 +10,8 @@ import { UserGrowth } from '../types/UserGrowth';
 })
 export class UserService {
 
-  // private readonly apiUrl = 'https://pixhiveapp-production.up.railway.app/api/User';
-  private readonly apiUrl = 'https://localhost:7091/api/User';
-
+  private readonly apiUrl = 'https://pixhiveapp-production.up.railway.app/api/User';
+  
   private usersSubject = new BehaviorSubject<User[]>([]); 
   public users$ = this.usersSubject.asObservable();
 
