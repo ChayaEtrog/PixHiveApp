@@ -1,0 +1,11 @@
+{
+  "routes": [
+    "/add-user",
+    "/admin-auth",
+    "/home",
+    "/login",
+    "/messages",
+    "/user-statistics",
+    "/users"
+  ]
+}
