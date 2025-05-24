@@ -4,7 +4,7 @@ import { Box, Button, Grid, IconButton, Paper, Skeleton, Typography } from '@mui
 import CheckIcon from '@mui/icons-material/Check';
 import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle';
 import {  useState } from 'react';
-import { LazyImage } from '../images/LazyImage';
+import { LazyImage } from './LazyImage';
 import FancyCollage from './FancyCollage';
 
 

@@ -13,12 +13,10 @@ export class StatisticsService {
 
   constructor(private http: HttpClient) { }
 
-  // קריאה לסטטיסטיקות של משתמשים
   getUserStatistics(): Observable<UserStatisticsDto[]> {
     return this.http.get<any>(`${this.apiUrl}/user-statistics`);
   }
 
-  // קריאה לסטטיסטיקות של המערכת
   getSystemStatistics(): Observable<SystemStatisticsDto> {
     return this.http.get<any>(`${this.apiUrl}/system-statistics`);
   }

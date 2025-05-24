@@ -90,7 +90,7 @@ export class MessagesListComponent {
   }
 
   toggleFilterByEmail() {
-    const targetEmail = 'xxxx@gmail.com';
+    const targetEmail = 'x@gmail.com';
     console.log(this.isFilterActive);
 
     if (this.isFilterActive) {

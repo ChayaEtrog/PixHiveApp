@@ -48,6 +48,7 @@ export const LazyImage = ({ src, alt }: { src: string; alt?: string }) => {
                 objectFit: 'cover',
                 display: isLoaded ? 'block' : 'none',
               }}
+              
             />
           </>
         ) : (
