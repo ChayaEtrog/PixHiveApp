@@ -32,13 +32,18 @@ export class AddMessageComponent {
   @Output() formClosed = new EventEmitter<void>();
   users: User[] = [];
   messageForm: FormGroup;
-  private notyf = new Notyf({
-    duration: 40000,
-    position: { x: 'center', y: 'top' },
-    dismissible: true
-  });
+
+  private notyf: Notyf | null = null;
 
   constructor(private fb: FormBuilder, private userService: UserService, private messageService: MessageService, private router: Router) {
+    if (typeof document !== 'undefined') {
+      this.notyf = new Notyf({
+        duration: 40000,
+        position: { x: 'center', y: 'top' },
+        dismissible: true
+      });
+    }
+
     this.messageForm = this.fb.group({
       message: ['', [Validators.required]],
       isActive: [true],
@@ -56,12 +61,15 @@ export class AddMessageComponent {
   onSubmit(): void {
     if (this.messageForm.valid) {
       const userId = this.messageForm.value.userId === 'null' ? null : this.messageForm.value.userId;
-      let userString =null
+      let userString = null;
+
       if (typeof window !== 'undefined' && window.sessionStorage) {
-          userString = sessionStorage.getItem('user');
+        userString = sessionStorage.getItem('user');
       }
-      const user = userString ? JSON.parse(userString) : null
+
+      const user = userString ? JSON.parse(userString) : null;
       const senderId = user?.id;
+
       this.messageService.addMessage({
         senderId: senderId,
         message: this.messageForm.value.message,
@@ -70,7 +78,9 @@ export class AddMessageComponent {
       }).subscribe(response => {
         this.formClosed.emit();
       }, error => {
-        this.notyf.error(`${error.error}`);
+        if (this.notyf) {
+          this.notyf.error(`${error.error}`);
+        }
       });
     }
   }

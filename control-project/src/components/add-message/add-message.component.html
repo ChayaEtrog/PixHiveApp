@@ -11,9 +11,11 @@
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Message</mat-label>
               <textarea matInput id="message" formControlName="message" rows="3"></textarea>
-              <mat-error *ngIf="messageForm.get('message')?.invalid && messageForm.get('message')?.touched">
+              @if(messageForm.get('message')?.invalid && messageForm.get('message')?.touched){
+              <mat-error >
                 Message is required.
               </mat-error>
+            }
             </mat-form-field>
   
             <!-- שדה של הבחירה מתוך רשימת משתמשים -->

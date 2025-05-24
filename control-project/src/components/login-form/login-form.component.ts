@@ -15,27 +15,33 @@ import { Notyf } from 'notyf';
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule,
+  imports: [
+    ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
     MatCardModule,
     MatToolbarModule,
-    MatIconModule],
+    MatIconModule
+  ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css'
 })
 export class LoginFormComponent {
   @Output() formClosed = new EventEmitter<void>();
   loginForm: FormGroup;
-  private notyf = new Notyf({
-    duration: 40000,
-    position: { x: 'center', y: 'top' },
-    dismissible: true 
-  });
+  private notyf: Notyf | null = null;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    if (typeof document !== 'undefined') {
+      this.notyf = new Notyf({
+        duration: 40000,
+        position: { x: 'center', y: 'top' },
+        dismissible: true
+      });
+    }
+
     this.loginForm = this.fb.group({
       userNameOrEmail: ['', [Validators.required]],
       password: ['', [Validators.required]],
@@ -47,11 +53,16 @@ export class LoginFormComponent {
       this.authService.login(
         this.loginForm.value.userNameOrEmail,
         this.loginForm.value.password,
-      ).subscribe(response => {
-        this.router.navigate(['/admin-auth']);
-        this.formClosed.emit();
-      }, error => {
-        this.notyf.error(`${error.error}`);
+      ).subscribe({
+        next: () => {
+          this.router.navigate(['/admin-auth']);
+          this.formClosed.emit();
+        },
+        error: (error) => {
+          if (this.notyf) {
+            this.notyf.error(`${error.error || 'Login failed'}`);
+          }
+        }
       });
     }
   }

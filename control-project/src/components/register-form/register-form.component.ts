@@ -16,50 +16,63 @@ import { Notyf } from 'notyf';
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [MatInputModule,
+  imports: [
+    MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
     MatCardModule,
     MatToolbarModule,
     MatIconModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule
+  ],
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.css'
 })
 export class RegisterFormComponent {
   @Output() formClosed = new EventEmitter<void>();
+
   registerForm: FormGroup;
-  userTypes: string[] = ["student", "teacher", "admin"]
+  userTypes: string[] = ['student', 'teacher', 'admin'];
+
   private notyf = new Notyf({
-    duration: 40000, 
+    duration: 40000,
     position: { x: 'center', y: 'top' },
-    dismissible: true 
+    dismissible: true
   });
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      password: ['', Validators.required], // לא מועבר לשרת לפי הקוד שלך
       phoneNumber: ['', Validators.required]
     });
   }
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      this.authService.register(
-        new UserPostModel(
-          this.registerForm.value.name,
-          this.registerForm.value.email,
-          this.registerForm.value.phoneNumber,
-        )
-      ).subscribe(response => {
-        this.router.navigate(['/admin-auth']);
-        this.formClosed.emit();
-      }, error => {
-        this.notyf.error(`Registration failed ${error.error}`);
-        console.error('Registration failed', error);
+      const { name, email, phoneNumber } = this.registerForm.value;
+
+      const user = new UserPostModel(name, email, phoneNumber);
+
+      this.authService.register(user).subscribe({
+        next: () => {
+          this.router.navigate(['/admin-auth']);
+          this.formClosed.emit();
+        },
+        error: (error) => {
+          const message = error?.error || 'Registration failed';
+          this.notyf.error(message);
+          console.error('Registration failed', error);
+        }
       });
+    } else {
+      this.notyf.error('Please fill out the form correctly.');
     }
   }
 }

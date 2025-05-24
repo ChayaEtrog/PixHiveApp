@@ -34,15 +34,18 @@ export class UpdateUserComponent implements OnChanges {
   @Output() closeForm = new EventEmitter<void>();
   @Input() user = new User(-1, '', '', '', '');
   updateUserForm: FormGroup;
-  userTypes: string[] = ["student", "teacher", "admin"]
-  private notyf = new Notyf({
-    duration: 40000,
-    position: { x: 'center', y: 'top' },
-    dismissible: true 
-  });
+  userTypes: string[] = ["student", "teacher", "admin"];
+
+  private notyf: Notyf | null = null;
 
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
-    console.log(this.user);
+    if (typeof document !== 'undefined') {
+      this.notyf = new Notyf({
+        duration: 40000,
+        position: { x: 'center', y: 'top' },
+        dismissible: true
+      });
+    }
 
     this.updateUserForm = this.fb.group({
       name: [this.user.userName, Validators.required],
@@ -73,7 +76,9 @@ export class UpdateUserComponent implements OnChanges {
       ).subscribe(response => {
         this.closeForm.emit();
       }, error => {
-        this.notyf.error(`${error.error}`);
+        if (this.notyf) {
+          this.notyf.error(`${error.error}`);
+        }
       });
     }
   }

@@ -18,14 +18,20 @@ import Swal from 'sweetalert2';
   styleUrl: './user-details.component.css'
 })
 export class UserDetailsComponent implements OnInit {
-  user: User = { userName: '', email: '', id: -1, phoneNumber: '',passwordHash: ''  };
+  user: User = { userName: '', email: '', id: -1, phoneNumber: '', passwordHash: '' };
   updateUser: boolean = false;
-  private notyf = new Notyf({
-    duration: 40000,
-    position: { x: 'center', y: 'top' },
-    dismissible: true 
-  });
-  constructor(private route: ActivatedRoute, private userService: UserService, private router: Router) { }
+  
+  private notyf: Notyf | null = null;
+
+  constructor(private route: ActivatedRoute, private userService: UserService, private router: Router) {
+    if (typeof document !== 'undefined') {
+      this.notyf = new Notyf({
+        duration: 40000,
+        position: { x: 'center', y: 'top' },
+        dismissible: true
+      });
+    }
+  }
 
   ngOnInit() {
     const userIdString = this.route.snapshot.paramMap.get('id');
@@ -36,7 +42,9 @@ export class UserDetailsComponent implements OnInit {
         this.user = data;
       });
     } else {
-      this.notyf.error('Invalid user ID');
+      if (this.notyf) {
+        this.notyf.error('Invalid user ID');
+      }
     }
   }
 
@@ -45,31 +53,37 @@ export class UserDetailsComponent implements OnInit {
   }
 
   onDeleteUser() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you really want to delete this user?',
-      icon: "question",
-      showCloseButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete',
-      cancelButtonText: 'Cancel'
-    }).then((result:any) => {
-      if (result.isConfirmed) {
-        this.userService.deleteUser(this.user.id).subscribe(() => {
-          this.router.navigate(['/users']); 
-        }, error => {
-          this.notyf.error(`${error.error}`)
-        });
-      }
-    });
+    if (typeof document !== 'undefined') {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you really want to delete this user?',
+        icon: "question",
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete',
+        cancelButtonText: 'Cancel'
+      }).then((result: any) => {
+        if (result.isConfirmed) {
+          this.userService.deleteUser(this.user.id).subscribe(() => {
+            this.router.navigate(['/users']);
+          }, error => {
+            if (this.notyf) {
+              this.notyf.error(`${error.error}`);
+            }
+          });
+        }
+      });
+    }
   }
-  closeUpdateUser(){
+
+  closeUpdateUser() {
     this.updateUser = false;
     const userIdString = this.route.snapshot.paramMap.get('id');
     const userId = userIdString ? Number(userIdString) : null;
-    if (userId!== null &&!isNaN(userId)) {
-    this.userService.getUserById(userId).subscribe(data => {
-      this.user = data;
-    });}
+    if (userId !== null && !isNaN(userId)) {
+      this.userService.getUserById(userId).subscribe(data => {
+        this.user = data;
+      });
+    }
   }
 }

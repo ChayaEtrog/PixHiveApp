@@ -12,54 +12,64 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Notyf } from 'notyf';
+
 @Component({
   selector: 'app-add-user',
   standalone: true,
-  imports: [MatInputModule,
+  imports: [
+    MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
     MatCardModule,
     MatToolbarModule,
     MatIconModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule
+  ],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.css'
 })
 export class AddUserComponent {
 
-  @Output()closeForm= new EventEmitter<void>();
+  @Output() closeForm = new EventEmitter<void>();
   addUserForm: FormGroup;
-  userTypes: string[]=["student", "teacher", "admin"]
-  private notyf = new Notyf({
-    duration: 40000,
-    position: { x: 'center', y: 'top' },
-    dismissible: true 
-  });
-  
-    constructor(private fb: FormBuilder, private userService: UserService,private router: Router) {
-      this.addUserForm = this.fb.group({
-        name: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required]],
-        phoneNumber: ['', Validators.required]
+  userTypes: string[] = ["student", "teacher", "admin"];
+  private notyf: Notyf | null = null;
+
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
+    if (typeof document !== 'undefined') {
+      this.notyf = new Notyf({
+        duration: 40000,
+        position: { x: 'center', y: 'top' },
+        dismissible: true
       });
     }
-  
-    onSubmit() {
-      if (this.addUserForm.valid) {
-        this.userService.addUser(
-          new UserPostModel(
+
+    this.addUserForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+      phoneNumber: ['', Validators.required]
+    });
+  }
+
+  onSubmit() {
+    if (this.addUserForm.valid) {
+      this.userService.addUser(
+        new UserPostModel(
           this.addUserForm.value.name,
           this.addUserForm.value.email,
           this.addUserForm.value.phoneNumber,
-          )
-        ).subscribe(response => {
-          this.closeForm.emit();
-          this.router.navigate(['/users']);
-        }, error => {
+          // שים לב: לא העברת password ב-UserPostModel, אולי כדאי להוסיף אותו בהתאם להגדרת המודל שלך
+        )
+      ).subscribe(response => {
+        this.closeForm.emit();
+        this.router.navigate(['/users']);
+      }, error => {
+        if (this.notyf) {
           this.notyf.error(`${error.error}`);
-        });
-      }
+        }
+      });
     }
+  }
 }

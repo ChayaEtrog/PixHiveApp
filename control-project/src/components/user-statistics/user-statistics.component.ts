@@ -32,11 +32,7 @@ export class UserStatisticsComponent implements OnInit {
       }
     ]
   };
-  private notyf = new Notyf({
-    duration: 40000,
-    position: { x: 'center', y: 'top' },
-    dismissible: true 
-  });
+  private notyf!: Notyf;
   
   public chartOptions: ChartOptions = {
     responsive: true,
@@ -92,6 +88,13 @@ export class UserStatisticsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (typeof document !== 'undefined') {
+      this.notyf = new Notyf({
+        duration: 40000,
+        position: { x: 'center', y: 'top' },
+        dismissible: true 
+      });
+    }
     this.loadUserGrowthData();
     this.loadUserStatistics();
     this.loadSystemStatistics();
@@ -103,10 +106,15 @@ export class UserStatisticsComponent implements OnInit {
         this.userGrowthData = data;
         this.prepareChartData();
         this.cdr.detectChanges();
-        this.userGrowthChart?.update(); 
+
+        if (typeof document !== 'undefined') {
+          this.userGrowthChart?.update();
+        }
       },
       error: (error) => {
-        this.notyf.error(`Error loading user growth:'${error.error}`)
+        if (typeof document !== 'undefined') {
+          this.notyf.error(`Error loading user growth:'${error.error}`)
+        }
         console.error('Error loading user growth:', error);
       }
     });
@@ -136,12 +144,16 @@ export class UserStatisticsComponent implements OnInit {
           this.dataSource = new MatTableDataSource(response.data);
           setTimeout(() => this.dataSource.paginator = this.paginator);
         } else {
-          this.notyf.error(`Error loading user statistics:, ${response.errorMessage}`)
+          if (typeof document !== 'undefined') {
+            this.notyf.error(`Error loading user statistics:, ${response.errorMessage}`)
+          }
           console.error('Error loading user statistics:', response.errorMessage);
         }
       },
       error: (error) => {
-        this.notyf.error(`Error loading user statistics:, ${error.error}`)
+        if (typeof document !== 'undefined') {
+          this.notyf.error(`Error loading user statistics:, ${error.error}`)
+        }
         console.error('Error loading user statistics:', error);
       }
     });
@@ -156,19 +168,25 @@ export class UserStatisticsComponent implements OnInit {
           this.systemBarChartData.datasets[0].data = [this.systemStatistics.totalUsers];
           this.systemBarChartData.datasets[1].data = [this.systemStatistics.totalAlbums];
           this.systemBarChartData.datasets[2].data = [this.systemStatistics.totalFiles];
-  
+
           setTimeout(() => {
-            this.cdr.detectChanges(); 
-            this.systemBarChart.update();
+            this.cdr.detectChanges();
+            if (typeof document !== 'undefined') {
+              this.systemBarChart.update();
+            }
             console.log('systemBarChart:', this.systemBarChart);
           });
         } else {
-          this.notyf.error(`Error loading system statistics:, ${response.errorMessage}`)
+          if (typeof document !== 'undefined') {
+            this.notyf.error(`Error loading system statistics:, ${response.errorMessage}`)
+          }
           console.error('Error loading system statistics:', response.errorMessage);
         }
       },
       error: (error) => {
-        this.notyf.error(`Error loading system statistics:, ${error.error}`)
+        if (typeof document !== 'undefined') {
+          this.notyf.error(`Error loading system statistics:, ${error.error}`)
+        }
         console.error('Error loading system statistics:', error);
       }
     });

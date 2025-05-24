@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,28 +15,33 @@ import { Notyf } from 'notyf';
 @Component({
   selector: 'app-admin-auth',
   standalone: true,
-  imports: [MatInputModule,
+  imports: [
+    MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
     MatCardModule,
     MatToolbarModule,
     MatIconModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule
+  ],
   templateUrl: './admin-auth.component.html',
   styleUrl: './admin-auth.component.css'
 })
 export class AdminAuthComponent implements OnInit {
-  adminPassword: string = '';
   userId: number | null = null;
   adminForm: FormGroup;
-  private notyf = new Notyf({
-    duration: 40000,
-    position: { x: 'center', y: 'top' },
-    dismissible: true
-  });
+  private notyf: Notyf | null = null;
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {
+    if (typeof document !== 'undefined') {
+      this.notyf = new Notyf({
+        duration: 40000,
+        position: { x: 'center', y: 'top' },
+        dismissible: true
+      });
+    }
+
     this.adminForm = this.fb.group({
       password: ['', Validators.required]
     });
@@ -51,18 +56,31 @@ export class AdminAuthComponent implements OnInit {
   }
 
   upgradeToAdmin() {
-    console.log(this.adminForm.value.password);
-    
-    if (this.userId) {
-      this.authService.upgradeToAdmin(this.userId, this.adminForm.value.password).subscribe({
-        next: response => {
-          this.router.navigate(['/home']);
-        },
-        error: () => {
-          this.notyf.error("The administrator password is incorrect. Try again.")
-          this.router.navigate(['/home']);
-        }
-      });
+    if (!this.userId) {
+      if (this.notyf) {
+        this.notyf.error('User not logged in.');
+      }
+      return;
     }
+
+    const password = this.adminForm.value.password;
+    if (!password) {
+      if (this.notyf) {
+        this.notyf.error('Please enter the administrator password.');
+      }
+      return;
+    }
+
+    this.authService.upgradeToAdmin(this.userId, password).subscribe({
+      next: () => {
+        this.router.navigate(['/home']);
+      },
+      error: () => {
+        if (this.notyf) {
+          this.notyf.error('The administrator password is incorrect. Try again.');
+        }
+        this.router.navigate(['/home']);
+      }
+    });
   }
 }
