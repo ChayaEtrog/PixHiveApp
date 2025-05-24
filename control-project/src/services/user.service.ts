@@ -12,8 +12,8 @@ export class UserService {
 
   private readonly apiUrl = 'https://pixhiveapp-production.up.railway.app/api/User';
 
-  private usersSubject = new BehaviorSubject<User[]>([]); // משתנה פנימי מסוג BehaviorSubject
-  public users$ = this.usersSubject.asObservable(); // Observable שמחזיר את הרשימה
+  private usersSubject = new BehaviorSubject<User[]>([]); 
+  public users$ = this.usersSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -32,7 +32,6 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
-  // הוספת משתמש חדש
 addUser(user: UserPostModel): Observable<User> {
   return this.http.post<User>(this.apiUrl, user).pipe(
     tap((newUser) => {

@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { User } from '../../types/User';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserPostModel } from '../../types/UserPostModel';
 import { Notyf } from 'notyf';
@@ -33,9 +32,9 @@ export class RegisterFormComponent {
   registerForm: FormGroup;
   userTypes: string[] = ["student", "teacher", "admin"]
   private notyf = new Notyf({
-    duration: 40000, // 40 שניות
-    position: { x: 'center', y: 'top' }, // מיקום למעלה באמצע
-    dismissible: true // אפשרות לסגירה
+    duration: 40000, 
+    position: { x: 'center', y: 'top' },
+    dismissible: true 
   });
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.registerForm = this.fb.group({

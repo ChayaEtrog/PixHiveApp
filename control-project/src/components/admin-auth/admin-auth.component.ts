@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import Swal from 'sweetalert2';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';

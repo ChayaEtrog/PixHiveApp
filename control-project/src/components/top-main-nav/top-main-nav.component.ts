@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { UserAuthComponent } from "../user-auth/user-auth.component";
 import { AuthService } from '../../services/auth.service';
-import { HomeComponent } from '../home/home.component';
 
 @Component({
   selector: 'app-top-main-nav',

@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { User } from '../../types/User';
 import { MatCardModule } from '@angular/material/card';
-import { MatButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UpdateUserComponent } from '../update-user/update-user.component';

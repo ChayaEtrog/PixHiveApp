@@ -18,10 +18,10 @@ import {MatButtonModule} from '@angular/material/button';
 
 export class UsersListComponent implements OnInit {
 
-  private userService = inject(UserService); // אינג'קט לשירות
+  private userService = inject(UserService); 
   private router = inject(Router)
-  dataSource = new MatTableDataSource<User>(); // הגדרת dataSource ריק כברירת מחדל
-  displayedColumns: string[] = ['id', 'name', 'email']; // לדוגמה, עמודות מוצגות
+  dataSource = new MatTableDataSource<User>();
+  displayedColumns: string[] = ['id', 'name', 'email']; 
   users: User[] = [];
   addUser:boolean = false;
 
@@ -30,13 +30,13 @@ export class UsersListComponent implements OnInit {
     this.userService.users$.subscribe(users => {
       if (users) {
         this.dataSource.data = users;
-        this.users = users;// עדכון dataSource כשהנתונים מתקבלים
+        this.users = users;
       }
     });
   }
 
   goToDetails(userId: number) {
-    this.router.navigate(['/user', userId]); // מעבר לעמוד פרטי המשתמש
+    this.router.navigate(['/user', userId]); 
   }
 
  closeAddUser(){

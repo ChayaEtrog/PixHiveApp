@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { LoginFormComponent } from "../login-form/login-form.component";
 import { RegisterFormComponent } from "../register-form/register-form.component";
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-home',
   standalone: true,

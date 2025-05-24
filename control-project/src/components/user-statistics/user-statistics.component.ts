@@ -46,7 +46,6 @@ export class UserStatisticsComponent implements OnInit {
     }
   };
 
-  // Bar chart - System Summary (Users, Albums, Files)
   public systemBarChartData: ChartData<'bar'> = {
     labels: ['System Statistics'],
     datasets: [
@@ -73,20 +72,17 @@ export class UserStatisticsComponent implements OnInit {
     plugins: { legend: { display: true, position: 'top' } }
   };
 
-  // System stats
   public systemStatistics: SystemStatisticsDto = {
     totalUsers: 0,
     totalAlbums: 0,
     totalFiles: 0
   };
 
-  // Table
   displayedColumns: string[] = ['username', 'albumCount', 'fileCount', 'usedMegabytes'];
   dataSource!: MatTableDataSource<UserStatisticsDto>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // ViewChilds for both charts
-  @ViewChild('systemBarChart') systemBarChart!: BaseChartDirective;
+  @ViewChild('systemBarChart', { static: false }) systemBarChart!: BaseChartDirective;
   @ViewChild('userGrowthChart') userGrowthChart!: BaseChartDirective;
 
   constructor(

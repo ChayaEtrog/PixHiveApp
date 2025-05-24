@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from '../../services/message.service';
 import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
-// import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
@@ -48,7 +47,7 @@ export class AddMessageComponent {
   }
 
   ngOnInit(): void {
-    this.userService.getUsers(); // ← שולף מהשרת
+    this.userService.getUsers();
     this.userService.users$.subscribe(users => {
       this.users = users;
     });

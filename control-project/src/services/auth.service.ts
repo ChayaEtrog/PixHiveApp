@@ -29,8 +29,6 @@ export class AuthService {
   login(userNameOrEmail: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { userNameOrEmail, password }).pipe(
       tap(response => {
-        // sessionStorage.setItem('token', response.token);
-        // sessionStorage.setItem('user', JSON.stringify(response.user));
         this.currentUserSubject.next(response.user);
       })
     );
@@ -39,8 +37,6 @@ export class AuthService {
   register(user: UserPostModel): Observable<LoginResponse> { 
     return this.http.post<LoginResponse>(`${this.apiUrl}/register`, user).pipe(
       tap(response => {
-        // sessionStorage.setItem('token', response.token);
-        // sessionStorage.setItem('user', JSON.stringify(response.user));
         this.currentUserSubject.next(response.user);
       })
     );
@@ -57,7 +53,7 @@ export class AuthService {
       }),
       catchError(error => {
         console.log("error");
-        this.logout(); // אם נכשל – ננקה את המידע מה-sessionStorage וה-Observable
+        this.logout(); 
         throw error;
       })
     );
@@ -74,6 +70,6 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('token'); // אם יש טוקן המשתמש מחובר
+    return !!sessionStorage.getItem('token'); 
   }
 }

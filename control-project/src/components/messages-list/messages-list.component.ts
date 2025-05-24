@@ -13,7 +13,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../services/user.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { log } from 'node:console';
 
 @Component({
   selector: 'app-messages-list',

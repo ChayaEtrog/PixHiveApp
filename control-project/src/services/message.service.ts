@@ -8,15 +8,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MessageService {
 
-  private apiUrl = 'https://pixhiveapp-production.up.railway.app/api/Message'; // כתובת ה-API
+  private apiUrl = 'https://pixhiveapp-production.up.railway.app/api/Message'; 
 
-  // Subject לניהול רשימת ההודעות
   private messagesSubject = new BehaviorSubject<Message[]>([]);
   messages$ = this.messagesSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  /** מביא את כל ההודעות מהשרת ומעדכן את ה-Observable */
   loadMessages(): void {
     this.http.get<Message[]>(this.apiUrl).subscribe(messages => {
       this.messagesSubject.next(messages);
@@ -25,12 +23,10 @@ export class MessageService {
     });
   }
 
-  /** מביא הודעה לפי מזהה */
   getMessageById(id: number): Observable<Message> {
     return this.http.get<Message>(`${this.apiUrl}/${id}`);
   }
 
-  /** שולח הודעה חדשה ומעדכן את הרשימה */
   addMessage(message: Partial<Message>): Observable<Message> {
     const userId = JSON.parse(sessionStorage.getItem('user') || '{}').id;
     return this.http.post<Message>(this.apiUrl, {...message,userId}).pipe(
@@ -41,7 +37,6 @@ export class MessageService {
     );
   }
 
-  /** מעדכן הודעה לפי ID */
   toggleMessageStatus(id: number): Observable<Message> {
     return this.http.put<Message>(`${this.apiUrl}/${id}`, {}).pipe(
       tap(updatedMessage => {
@@ -53,7 +48,6 @@ export class MessageService {
     );
   }
 
-  /** מוחק הודעה לפי ID */
   deleteMessage(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       tap(() => {

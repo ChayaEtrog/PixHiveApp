@@ -13,6 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Notyf } from 'notyf';
+
 @Component({
   selector: 'app-update-user',
   standalone: true,
