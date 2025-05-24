@@ -1,8 +1,8 @@
 import  { useEffect, useRef, useState } from "react";
 import { TextField } from "@mui/material";
 
-const typingSpeed = 120; // מהירות הקלדה
-const pauseBetweenExamples = 1500; // זמן השהיה בין דוגמאות
+const typingSpeed = 120;
+const pauseBetweenExamples = 1500; 
 const examples = [
     "Turn this into a pencil sketch",
     "Make it look like a painting",

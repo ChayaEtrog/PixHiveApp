@@ -22,8 +22,8 @@ const AddTag = ({ fileId, closeForm }: { closeForm: Function; fileId: number }) 
         const newTagName = tagInputRef.current?.value.trim();
         if (newTagName) {
             await dispatch(addTag(newTagName));
-            dispatch(fetchUnassignedTags(fileId)); // רענון הרשימה לאחר ההוספה
-            if (tagInputRef.current) tagInputRef.current.value = ""; // ניקוי השדה
+            dispatch(fetchUnassignedTags(fileId));
+            if (tagInputRef.current) tagInputRef.current.value = ""; 
         }
     };
 

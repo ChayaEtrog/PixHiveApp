@@ -32,9 +32,6 @@ const ImageGallery = ({ files }: { files: Image[] }) => {
   const [addTag, setAddTag] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState<string|null>(null)
   const [removeTag, setRemoveTag] = useState(false);
-  // const {
-  //   image: { deleteStatusMessage, },
-  // } = useSelector((store: StoreType) => ({ image: store.image }));
 
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>, file: Image) => {
     setSelectedFile({ id: file.id, displayName: file.displayName, name: file.name });

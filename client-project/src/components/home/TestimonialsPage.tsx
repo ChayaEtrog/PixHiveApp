@@ -58,7 +58,6 @@ export default function TestimonialsPage() {
     const theme = useTheme();
     const scrollRef = useRef(null);
 
-    // scroll-linked animation bar
     const { scrollYProgress } = useScroll({
         target: scrollRef,
         offset: ["start start", "end end"],
@@ -66,7 +65,6 @@ export default function TestimonialsPage() {
 
     const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-    // headline animation
     const headingControls = useAnimation();
     const headingRef = useRef<HTMLDivElement | null>(null);
 

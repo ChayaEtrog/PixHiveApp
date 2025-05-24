@@ -47,15 +47,6 @@ const transition = {
   repeat: Infinity,
 };
 
-// const cardVariants = {
-//   hidden: { opacity: 0, y: 80 },
-//   visible: (i: number) => ({
-//     opacity: 1,
-//     y: 0,
-//     transition: { delay: i * 0.3, type: 'spring', stiffness: 80 },
-//   }),
-// };
-
 const TargetAudience = () => {
   return (
     <Box sx={{ bgcolor: 'rgba(206, 204, 204, 0.14)', height: '100vh', display: 'flex' }}>

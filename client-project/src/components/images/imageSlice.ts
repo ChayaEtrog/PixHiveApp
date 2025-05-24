@@ -4,7 +4,7 @@ import { ImagePostModal } from '../../types/ImagePostModal';
 import { Image } from '../../types/Image';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-//upload image
+
 export const uploadImage = createAsyncThunk(
   'image/uploadImage',
   async ({ image, albumId }: { image: ImagePostModal, albumId: number }, thunkAPI) => {
@@ -31,7 +31,6 @@ export const uploadImage = createAsyncThunk(
   }
 );
 
-//get all images by user id
 export const getFilesByUser = createAsyncThunk(
   'image/getFilesByUser',
   async (userId: number, thunkAPI) => {
@@ -48,7 +47,6 @@ export const getFilesByUser = createAsyncThunk(
   }
 );
 
-//get root files by user id
 export const getRootFilesByUser = createAsyncThunk(
   'image/getRootFilesByUser',
   async (userId: number, thunkAPI) => {
@@ -72,7 +70,6 @@ export const getRootFilesByUser = createAsyncThunk(
   }
 );
 
-//rename file
 export const updateFileName = createAsyncThunk(
   'file/updateFileName',
   async ({ userId, fileId, newName }: { userId: number; fileId: number; newName: string }, thunkAPI) => {
@@ -97,7 +94,6 @@ export const updateFileName = createAsyncThunk(
   }
 );
 
-// add file to album
 export const addFileToAlbum = createAsyncThunk(
   'album/addFile',
   async ({ albumId, fileId }: { albumId: number; fileId: number }, thunkAPI) => {
@@ -119,7 +115,6 @@ export const addFileToAlbum = createAsyncThunk(
   }
 );
 
-// get files from album
 export const getFilesByAlbum = createAsyncThunk(
   'album/getFilesByAlbum',
   async (albumId: number, thunkAPI) => {
@@ -138,10 +133,8 @@ export const getFilesByAlbum = createAsyncThunk(
   }
 );
 
-//reset image state
 export const resetFiles = createAction('image/resetFiles');
 
-//download image
 export const getDownloadUrl = createAsyncThunk(
   'image/getDownloadUrl',
   async (fileName: string, thunkAPI) => {
@@ -164,7 +157,6 @@ export const getDownloadUrl = createAsyncThunk(
   }
 );
 
-//delete image
 export const removeFileFromAlbum = createAsyncThunk(
   'files/removeFileFromAlbum',
   async ({ fileId, albumId }: { fileId: number; albumId: number }, thunkAPI) => {
@@ -187,7 +179,6 @@ export const removeFileFromAlbum = createAsyncThunk(
   }
 );
 
-//get recycle bin files
 export const fetchDeletedFiles = createAsyncThunk(
   'files/fetchDeletedFiles', 
   async (_, thunkAPI) => {
@@ -204,7 +195,6 @@ export const fetchDeletedFiles = createAsyncThunk(
   }
 );
 
-//recycle file
 export const recycleFile = createAsyncThunk(
   'image/recycleFile',
   async (fileId: number, { rejectWithValue }) => {
@@ -221,7 +211,6 @@ export const recycleFile = createAsyncThunk(
   }
 );
 
-//delete file permenently
 export const deleteFile = createAsyncThunk(
   'image/deleteFile',
   async (fileId: number, { rejectWithValue }) => {
@@ -235,12 +224,11 @@ export const deleteFile = createAsyncThunk(
       console.log("File deleted successfully:", response.status);
       return fileId;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data || error.message); // מחזיר שגיאה אם נכשל
+      return rejectWithValue(error.response?.data || error.message); 
     }
   }
 );
 
-// Search files by name
 export const searchFiles = createAsyncThunk(
   'files/searchFiles',
   async ({ parentId, name, userId }: { parentId: number, name: string, userId: number }, { rejectWithValue }) => {
@@ -258,7 +246,6 @@ export const searchFiles = createAsyncThunk(
   }
 );
 
-// Fetch files by tag and user
 export const getFilesByTagAndUser = createAsyncThunk(
   'files/getFilesByTagAndUser',
   async (
@@ -279,7 +266,6 @@ export const getFilesByTagAndUser = createAsyncThunk(
   }
 );
 
-// Fetch files by date range for a user
 export const getFilesByDateAndUser = createAsyncThunk(
   'files/getFilesByDateAndUser',
   async (
@@ -339,7 +325,6 @@ const imageSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // upload image
       .addCase(uploadImage.pending, (state) => {
         state.uploading = true;
         state.error = '';
@@ -357,8 +342,6 @@ const imageSlice = createSlice({
         state.error = action.payload as string;
         state.success = false;
       })
-
-      // get all files
       .addCase(getFilesByUser.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -372,8 +355,6 @@ const imageSlice = createSlice({
         state.pending = false;
         state.error = action.payload as string;
       })
-
-      // Add File To Album
       .addCase(addFileToAlbum.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -389,8 +370,6 @@ const imageSlice = createSlice({
         state.pending = false;
         state.error = action.payload as string;
       })
-
-      // Get Files By Album
       .addCase(getFilesByAlbum.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -406,8 +385,6 @@ const imageSlice = createSlice({
         state.pending = false;
         state.error = action.payload as string;
       })
-
-      //get root files
       .addCase(getRootFilesByUser.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -422,15 +399,11 @@ const imageSlice = createSlice({
         state.pending = false;
         state.error = action.payload as string;
       })
-
-      //reset files
       .addCase(resetFiles, (state) => {
         state.files = [];
         state.isRootFiles = false;
         state.isSearch = false;
       })
-
-      //get download url
       .addCase(getDownloadUrl.fulfilled, (state, action) => {
         state.pending = false;
         state.downloadUrl = action.payload;
@@ -443,8 +416,6 @@ const imageSlice = createSlice({
         state.pending = true;
         state.error = '';
       })
-
-      //update file name
       .addCase(updateFileName.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -462,8 +433,6 @@ const imageSlice = createSlice({
         state.pending = false;
         state.error = action.payload as string;
       })
-
-      //delete file
       .addCase(removeFileFromAlbum.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -480,8 +449,6 @@ const imageSlice = createSlice({
         state.pending = false;
         state.error = action.payload as string;
       })
-
-      //get deleted files
       .addCase(fetchDeletedFiles.pending, (state) => {
         state.pending = true;
         state.error = '';
@@ -495,12 +462,7 @@ const imageSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      //recycle file
       .addCase(recycleFile.fulfilled, (state, action) => {
-        // if(state.deletedFromRoot==true){
-        //   const item=state.deletedFiles.find(item => item.id === action.payload)
-        //   state.files.push(item!)
-        // }
         state.deletedFiles = state.deletedFiles.filter(file => file.id !== action.payload);
       })
       .addCase(recycleFile.pending, (state) => {
@@ -511,8 +473,6 @@ const imageSlice = createSlice({
         state.error = action.payload as string;
         state.pending = false;
       })
-
-      //delete file permanently
       .addCase(deleteFile.pending, (state) => {
         state.pending = true;
         state.error = '';

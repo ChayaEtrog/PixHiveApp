@@ -4,7 +4,6 @@ import { Tag } from '../../types/Tag';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// fetch all tags
 export const fetchTags = createAsyncThunk(
     'tags/fetchTags',
     async (_, { rejectWithValue }) => {
@@ -21,7 +20,6 @@ export const fetchTags = createAsyncThunk(
     }
 );
 
-// fetch tag by id
 export const fetchTagById = createAsyncThunk(
     'tags/fetchTagById',
     async (id: number, { rejectWithValue }) => {
@@ -38,7 +36,6 @@ export const fetchTagById = createAsyncThunk(
     }
 );
 
-// add tag
 export const addTag = createAsyncThunk(
     'tags/addTag',
     async (tagName: string, { rejectWithValue }) => {
@@ -60,7 +57,6 @@ export const addTag = createAsyncThunk(
     }
 );
 
-// rename tag
 export const updateTag = createAsyncThunk(
     'tags/updateTag',
     async ({ id, newName }: { id: number; newName: string }, { rejectWithValue }) => {
@@ -82,7 +78,6 @@ export const updateTag = createAsyncThunk(
     }
 );
 
-// fetch all tags of file
 export const fetchTagsByFile = createAsyncThunk(
     'fileTags/fetchTagsByFile',
     async (fileId: number, { rejectWithValue }) => {
@@ -99,7 +94,6 @@ export const fetchTagsByFile = createAsyncThunk(
     }
 );
 
-// add tag to file
 export const addTagToFile = createAsyncThunk(
     'fileTags/addTagToFile',
     async ({ fileId, tagId }: { fileId: number; tagId: number }, { rejectWithValue }) => {
@@ -120,7 +114,6 @@ export const addTagToFile = createAsyncThunk(
     }
 );
 
-// delete tag from file
 export const removeTagFromFile = createAsyncThunk(
     'fileTags/removeTagFromFile',
     async ({ fileId, tagId }: { fileId: number; tagId: number }, { rejectWithValue }) => {
@@ -137,7 +130,6 @@ export const removeTagFromFile = createAsyncThunk(
     }
 );
 
-// fetch tags which are not assigned to this file
 export const fetchUnassignedTags = createAsyncThunk(
     'tags/fetchUnassignedTags',
     async (fileId: number, { rejectWithValue }) => {
@@ -165,7 +157,6 @@ const tagSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // שליפת כל התיוגים
             .addCase(fetchTags.pending, (state) => {
                 state.pending = true;
                 state.error = '';
@@ -178,15 +169,11 @@ const tagSlice = createSlice({
                 state.pending = false;
                 state.error = action.payload as string;
             })
-
-            // שליפת תיוג לפי מזהה
             .addCase(fetchTagById.fulfilled, (state, action) => {
                 if (!state.tags.find((tag) => tag.id === action.payload.id)) {
                     state.tags.push(action.payload);
                 }
             })
-
-            // הוספת תיוג
             .addCase(addTag.pending, (state) => {
                 state.pending = true;
                 state.error = '';
@@ -199,8 +186,6 @@ const tagSlice = createSlice({
                 state.pending = false;
                 state.error = action.payload as string;
             })
-
-            // עדכון תיוג
             .addCase(updateTag.pending, (state) => {
                 state.pending = true;
                 state.error = '';
@@ -216,7 +201,6 @@ const tagSlice = createSlice({
                 state.pending = false;
                 state.error = action.payload as string;
             })
-            // Fetch tags by file
             .addCase(fetchTagsByFile.pending, (state) => {
                 state.pending = true;
                 state.error = '';
@@ -229,8 +213,6 @@ const tagSlice = createSlice({
                 state.pending = false;
                 state.error = action.payload as string;
             })
-
-            // Add tag to file
             .addCase(addTagToFile.pending, (state) => {
                 state.pending = true;
                 state.error = '';
@@ -243,8 +225,6 @@ const tagSlice = createSlice({
                 state.pending = false;
                 state.error = action.payload as string;
             })
-
-            // Remove tag from file
             .addCase(removeTagFromFile.pending, (state) => {
                 state.pending = true;
                 state.error = '';

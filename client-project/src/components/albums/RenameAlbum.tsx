@@ -9,12 +9,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle';
 
-// הגדרת הסכימה של yup
 const schema = yup.object().shape({
     albumName: yup.string().required("Album Name is required"),
 });
 
-// הגדרת הטיפוס של הנתונים בטופס
 type FormData = {
     albumName: string;
 };

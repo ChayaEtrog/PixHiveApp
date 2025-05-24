@@ -10,12 +10,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { gradientBorderButton, GradientButton } from '../../styles/buttonsStyle';
 
-// הגדרת הסכימה של yup
 const schema = yup.object().shape({
     albumName: yup.string().required("Album Name is required"),
 });
 
-// הגדרת הטיפוס של הנתונים בטופס
 type FormData = {
     albumName: string;
 };
@@ -25,13 +23,11 @@ const CreateAlbum = ({closeForm}:{closeForm:Function}) => {
     const { user } = useContext(UserContext);
     const { albumId } = useParams();
 
-    // יצירת useForm עם validation של yup
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
         resolver: yupResolver(schema),
     });
 
     const onSubmit: SubmitHandler<FormData> = (data) => {
-        // אם albumId לא מוגדר, המערכת יוצרת אלבום חדש ללא הורה, אחרת עם ה-ID של ההורה
         if (albumId === undefined) {
             closeForm(false)
             dispatch(createAlbum({ albumName: data.albumName, userId: user.id, parentId: null }));

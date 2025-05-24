@@ -46,7 +46,6 @@ export default function ImageEditor() {
       const processRes = await axios.post(`${url}/process-image`, formData);
       setResultUrl(processRes.data.output_url);
 
-      // 3. עדכון הספירה
       const updateRes = await axios.post(`${baseUrl}/UserImageEditCount/${parsedUser?.id}/increment`);
       if (!updateRes.data.isSuccess) {
         console.warn("Could not update edit count:", updateRes.data.errorMessage);

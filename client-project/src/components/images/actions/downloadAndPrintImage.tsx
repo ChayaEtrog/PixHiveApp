@@ -14,7 +14,7 @@ export const DownloadImage = async (fileName: string, dispatch: AppDispatch, set
       const blob = await response.blob();
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = fileName; // שם הקובץ שנשמור
+      link.download = fileName; 
       link.click();
     } catch (error) {
       console.error('Error downloading the file:', error);
@@ -41,7 +41,6 @@ export const PrintImage = async (
     const blob = await response.blob();
     const imageUrl = URL.createObjectURL(blob);
 
-    // יצירת אלמנט דינמי עבור הדפסה
     const printContainer = document.createElement('div');
     printContainer.id = 'print-section';
     printContainer.innerHTML = `
@@ -72,7 +71,6 @@ export const PrintImage = async (
 
     document.body.appendChild(printContainer);
 
-    // הדפסה ואז ניקוי
     setTimeout(() => {
       window.print();
       setTimeout(() => {

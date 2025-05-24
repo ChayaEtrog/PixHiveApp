@@ -11,10 +11,10 @@ import { gradientBorderButton, GradientButton } from "../../../styles/buttonsSty
 const MoveImageToAlbum = ({ fileId, closeForm }: { closeForm: Function, fileId: number }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { user } = useContext(UserContext);
-    
+
     useEffect(() => {
         dispatch(fetchAlbumsByUser(user.id));
-        
+
     }, [])
 
     const { allAlbums } = useSelector((store: StoreType) => store.album);
@@ -50,36 +50,33 @@ const MoveImageToAlbum = ({ fileId, closeForm }: { closeForm: Function, fileId: 
                     borderRadius: 2,
                     boxShadow: 3,
                     width: "350px",
-                    maxHeight:"60vh"
+                    maxHeight: "60vh"
                 }}
             >
-               {/* (
-                    <CircularProgress /> // תוכל להוסיף spinner של טעינה
-                ) : ( */}
-                    <List>
-                        {allAlbums.length === 0 ? (
-                            <ListItem>No albums found</ListItem>
-                        ) : (
-                            allAlbums.map((album: Album) => (
-                                <ListItem key={album.id} disablePadding>
-                                    <ListItemButton
-                                        selected={selectedAlbumId === album.id}
-                                        onClick={() => setSelectedAlbumId(album.id)}
-                                    >
-                                        <ListItemText primary={album.albumName} />
-                                    </ListItemButton>
-                                </ListItem>
-                            ))
-                        )}
-                    </List>
+                <List>
+                    {allAlbums.length === 0 ? (
+                        <ListItem>No albums found</ListItem>
+                    ) : (
+                        allAlbums.map((album: Album) => (
+                            <ListItem key={album.id} disablePadding>
+                                <ListItemButton
+                                    selected={selectedAlbumId === album.id}
+                                    onClick={() => setSelectedAlbumId(album.id)}
+                                >
+                                    <ListItemText primary={album.albumName} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))
+                    )}
+                </List>
                 {/* )} */}
-    
-                <Button onClick={handleMove}  sx={GradientButton} style={{height:40, marginRight:10,marginLeft:10, marginBottom:15,width:'45%'}}>copy</Button>
-                <Button onClick={() => closeForm(false)} sx={gradientBorderButton} style={{height:40, marginBottom:15,width:'45%'}}>cancel</Button>
+
+                <Button onClick={handleMove} sx={GradientButton} style={{ height: 40, marginRight: 10, marginLeft: 10, marginBottom: 15, width: '45%' }}>copy</Button>
+                <Button onClick={() => closeForm(false)} sx={gradientBorderButton} style={{ height: 40, marginBottom: 15, width: '45%' }}>cancel</Button>
             </Box>
         </Box>
     );
-}    
+}
 
 export default MoveImageToAlbum;
 

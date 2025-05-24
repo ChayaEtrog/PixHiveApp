@@ -30,15 +30,13 @@ const CollageLoader = ({ initialSelection }: { initialSelection?: string[] }) =>
         const action = await dispatch(getFilesByUser(user.id));
         if (getFilesByUser.fulfilled.match(action)) {
           const files = action.payload as { name: string; displayName: string }[];
-          
-          // קודם כל – שימי את כולן עם url ריק (עד שנביא אותו)
+
           setFiles(files.map(f => ({ ...f, url: '' })));
   
           for (const file of files) {
             const urlAction = await dispatch(getDownloadUrl(file.name));
             if (getDownloadUrl.fulfilled.match(urlAction)) {
               const blobUrl = await convertToBlobUrl(urlAction.payload);
-              // עדכני כל קובץ ספציפי כשה-URL מוכן
               setFiles(prev =>
                 prev.map(f => f.name === file.name ? { ...f, url: blobUrl } : f)
               );

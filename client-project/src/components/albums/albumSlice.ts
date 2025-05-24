@@ -5,7 +5,6 @@ import { Album } from '../../types/Album';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// create an album
 export const createAlbum = createAsyncThunk(
   'album/create',
   async (album: AlbumPostModel, thunkAPI) => {
@@ -28,7 +27,6 @@ export const createAlbum = createAsyncThunk(
   }
 );
 
-// rename album
 export const updateAlbum = createAsyncThunk(
   'album/update',
   async ({ id, userId, albumName }: { id: number; userId: number; albumName: string }, thunkAPI) => {
@@ -52,7 +50,6 @@ export const updateAlbum = createAsyncThunk(
   }
 );
 
-//get albums by user
 export const fetchAlbumsByUser = createAsyncThunk(
   'album/fetchByUser',
   async (userId: number, thunkAPI) => {
@@ -77,8 +74,6 @@ export const fetchAlbumsByUser = createAsyncThunk(
   }
 );
 
-
-// get albums child
 export const fetchChildAlbums = createAsyncThunk(
   'album/fetchChildAlbums',
   async ({ userId, parentId }: { userId: number; parentId: number }, thunkAPI) => {
@@ -116,7 +111,7 @@ export const deleteAlbum = createAsyncThunk(
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      return albumId; // מחזירים את ה-albumId כדי לעדכן את ה-Redux
+      return albumId; 
     } catch (error: any) {
       console.log(error);
       return thunkAPI.rejectWithValue(error.response?.data || 'Failed to delete album');
@@ -143,7 +138,6 @@ export const searchAlbumsByName = createAsyncThunk(
   }
 );
 
-// albumThunks.ts
 export const searchAlbumsByDate = createAsyncThunk(
   'albums/searchByDate',
   async ({ userId, startDate, endDate, parentAlbumId,}: { userId: number; startDate?: Date; endDate?: Date; parentAlbumId?: number },
@@ -163,7 +157,6 @@ export const searchAlbumsByDate = createAsyncThunk(
   }
 );
 
-// Slice
 const albumSlice = createSlice({
   name: 'album',
   initialState: {
@@ -187,7 +180,6 @@ const albumSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Create Album
       .addCase(createAlbum.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -201,7 +193,6 @@ const albumSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Update Album
       .addCase(updateAlbum.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -219,7 +210,6 @@ const albumSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Get Child Albums
       .addCase(fetchChildAlbums.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -233,18 +223,13 @@ const albumSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      //get all albums 
       .addCase(fetchAlbumsByUser.pending, (_state) => {
-        // state.loading = true;
-        // state.error = null;
+
       })
       .addCase(fetchAlbumsByUser.fulfilled, (state, action) => {
-        // state.loading = false;
         state.allAlbums = action.payload;
       })
       .addCase(fetchAlbumsByUser.rejected, (_state, _action) => {
-        // state.loading = false;
-        // state.error = action.payload as string;
       })
       .addCase(deleteAlbum.pending, (state) => {
         state.loading = true;
@@ -259,7 +244,6 @@ const albumSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      //Search album by date
       .addCase(searchAlbumsByDate.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -272,7 +256,6 @@ const albumSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      //search album by name
       .addCase(searchAlbumsByName.pending, (state) => {
         state.loading = true;
         state.error = null;

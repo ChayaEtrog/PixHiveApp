@@ -17,7 +17,7 @@ const GalleryBreadcrumbs: React.FC<Props> = ({ pathStack, onNavigateToBreadcrumb
         style={{ cursor: 'pointer', color: '#555' }}
         onClick={() => {
           navigate('/gallery');
-          onNavigateToBreadcrumb(-1); // חזרה להתחלה
+          onNavigateToBreadcrumb(-1);
         }}
       >
         Gallery

@@ -72,7 +72,7 @@ const DeletedFilesGallery = () => {
                 {deletedFiles.map((file) => (
                   <TableRow key={file.id} hover sx={{ cursor: 'pointer' }}
                     onClick={() => {
-                      if (openImage !== file.name) { // בודק אם התמונה שכבר מוצגת היא אותה תמונה
+                      if (openImage !== file.name) { 
                         setOpenImage(file.name);
                       }
                     }}

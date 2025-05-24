@@ -5,14 +5,12 @@ import { MessagePostModel } from "../../types/MessagePostModel";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// Helper function to get the auth headers
 const getAuthHeaders = () => ({
   headers: {
     Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
   },
 });
 
-// 1️⃣ Fetch all messages
 export const fetchMessages = createAsyncThunk(
   "messages/fetchMessages",
   async (_, { rejectWithValue }) => {
@@ -25,7 +23,6 @@ export const fetchMessages = createAsyncThunk(
   }
 );
 
-// 2️⃣ Fetch messages for a specific user
 export const fetchUserMessages = createAsyncThunk(
   "messages/fetchUserMessages",
   async (userId:number, { rejectWithValue }) => {
@@ -38,7 +35,6 @@ export const fetchUserMessages = createAsyncThunk(
   }
 );
 
-// 3️⃣ Mark a message as read
 export const markMessageAsRead = createAsyncThunk(
   "messages/markMessageAsRead",
   async ({ userId, messageId }:{userId:number,messageId:number}, { rejectWithValue }) => {
@@ -66,14 +62,13 @@ export const postMessage = createAsyncThunk(
 const messagesSlice = createSlice({
   name: "messages",
   initialState: {
-    messages: [] as Message[], // Stores all messages
-    loading: false, // Loading state
-    error: '', // Error state
+    messages: [] as Message[],
+    loading: false,
+    error: '', 
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Handle fetching all messages
       .addCase(fetchMessages.pending, (state) => {
         state.loading = true;
         state.error = '';
@@ -87,8 +82,6 @@ const messagesSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
-      // Handle fetching user-specific messages
       .addCase(fetchUserMessages.pending, (state) => {
         state.loading = true;
         state.error = '';

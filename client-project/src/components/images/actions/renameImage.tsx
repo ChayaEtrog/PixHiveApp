@@ -9,12 +9,10 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { gradientBorderButton, GradientButton } from '../../../styles/buttonsStyle';
 import { updateFileName } from '../imageSlice';
 
-// הגדרת הסכימה של yup
 const schema = yup.object().shape({
   newName: yup.string().required("Image Name is required"),
 });
 
-// הגדרת הטיפוס של הנתונים בטופס
 type FormData = {
   newName: string;
 };
@@ -23,7 +21,6 @@ const RenameImage = ({ oldName, fileId, closeForm }: { oldName: string, closeFor
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useContext(UserContext);
 
-  // יצירת useForm עם validation של yup
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
@@ -34,7 +31,7 @@ const RenameImage = ({ oldName, fileId, closeForm }: { oldName: string, closeFor
         newName: data.newName,
         fileId: fileId,
         userId: user.id
-      })).unwrap(); // מחכה שהתהליך יסתיים
+      })).unwrap(); 
 
       closeForm(false);
     } catch (error) {

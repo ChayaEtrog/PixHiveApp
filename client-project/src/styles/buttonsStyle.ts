@@ -30,13 +30,13 @@ export const gradientBorderButton = {
     color: '#743ad5',
     borderRadius: 0,
     width: '5vw',
-    '@media (max-width:1200px)': { // lg לפי MUI
+    '@media (max-width:1200px)': { 
       width: '70%',
     }
   };
   
  export const GradientButton ={
-    background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)', // הגדרת הגרדיאנט
+    background: 'linear-gradient(45deg, #47dcd1 , #dc8dec)', 
     border: 0,
     borderRadius: 0,
     color: 'white',

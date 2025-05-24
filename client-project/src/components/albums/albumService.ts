@@ -16,7 +16,7 @@ export const fetchAlbumById = async (id: number): Promise<Album | null> => {
 };
 
 export const buildBreadcrumbsPath = async (
-  album: Album|null,  // האלבום הנוכחי
+  album: Album|null, 
 ): Promise<Album[]> => {
   const path: Album[] = [album?album:emptyAlbum];
 
