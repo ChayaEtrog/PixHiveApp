@@ -13,7 +13,7 @@ import { useParams } from 'react-router';
 import { motion } from 'framer-motion';
 
 const allowedFileTypes = ["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/jpg"];
-const maxFileSize = 10 * 1024 * 1024; 
+const maxFileSize = 5 * 1024 * 1024; 
 
 const UploadImagePopup = ({ onClose }: { onClose: Function }) => {
     const { albumId } = useParams();  
@@ -40,7 +40,7 @@ const UploadImagePopup = ({ onClose }: { onClose: Function }) => {
             return false;
         }
         if (selectedFile.size > maxFileSize) {
-            setError("File size exceeds the limit of 10MB.");
+            setError("File size exceeds the limit of 5MB.");
             return false;
         }
         setError(null);
@@ -154,12 +154,15 @@ const UploadImagePopup = ({ onClose }: { onClose: Function }) => {
     return (
         <div style={{
             position: 'fixed',
+            height: '100vh',
+            width: '100vw',
             top: 0, left: 0, right: 0, bottom: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.26)',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            zIndex: 9999,
+            zIndex: 12000,
+            marginTop:0,
         }} onClick={() => onClose(false)}>
             <div
                 style={{
@@ -266,7 +269,6 @@ const UploadImagePopup = ({ onClose }: { onClose: Function }) => {
                         </Button>
                     </div>
                 )}
-
                 {error && <ErrorMessage message={error} setError={setError} />}
                 {alert && <AlertMessage message={alert} setMessage={setAlert} />}
             </div>

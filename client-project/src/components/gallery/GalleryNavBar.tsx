@@ -45,7 +45,7 @@ const GalleryNavBar = () => {
         alignItems: "end",
         paddingTop: "10px",
         overflowX: "hidden",
-        zIndex: 1000,
+        zIndex: 1400,
       }}
     >
       <IconButton onClick={toggleCollapse} sx={{ mb: 1, mr: 1 }}>
