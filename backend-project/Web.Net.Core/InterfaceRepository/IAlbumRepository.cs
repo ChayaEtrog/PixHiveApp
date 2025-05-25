@@ -11,7 +11,7 @@ namespace Web.Net.Core.InterfaceRepository
     {
         Task<List<AlbumEntity>> GetFullAsync();
 
-        void DeleteAlbumAsync(int albumId);
+        Task DeleteAlbumAsync(int albumId);
 
         Task<AlbumEntity> UpdateAlbumNameAsync(int albumId, string newName);
 

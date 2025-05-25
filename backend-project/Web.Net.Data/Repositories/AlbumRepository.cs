@@ -25,27 +25,26 @@ namespace Web.Net.Data.Repositories
 
         }
 
-        public void DeleteAlbumAsync(int albumId)
+        public async Task DeleteAlbumAsync(int albumId)
         {
-
-            var album = _context.Albums
+            var album = await _context.Albums
                 .Include(a => a.Files)
                 .Include(a => a.User)
-                .FirstOrDefault(a => a.Id == albumId);
+                .FirstOrDefaultAsync(a => a.Id == albumId);
 
             if (album == null) return;
 
-            var childAlbums = _context.Albums.Where(a => a.ParentId == albumId).ToList();
+            var childAlbums = await _context.Albums
+                .Where(a => a.ParentId == albumId)
+                .ToListAsync();
+
             foreach (var child in childAlbums)
             {
-                DeleteAlbumAsync(child.Id);
+                await DeleteAlbumAsync(child.Id);
             }
 
             album.Files.Clear();
-            _context.SaveChanges();
-
             _context.Albums.Remove(album);
-            _context.SaveChanges();
         }
 
         public async Task<AlbumEntity> UpdateAlbumNameAsync(int albumId, string newName)
@@ -58,8 +57,6 @@ namespace Web.Net.Data.Repositories
             }
 
             album.AlbumName = newName;
-
-            await _context.SaveChangesAsync();
 
             return album;
         }
@@ -79,22 +76,22 @@ namespace Web.Net.Data.Repositories
             {
                 file.Albums.Add(album);
                 album.Files.Add(file);
-                await _context.SaveChangesAsync();
             }
 
             return file;
         }
 
-        public async Task<List<FileEntity>> GetFilesByAlbumIdAsync(int albumId )
+
+        public async Task<List<FileEntity>> GetFilesByAlbumIdAsync(int albumId)
         {
 
-                var album = await _context.Albums
-                    .Include(a => a.Files)
-                    .FirstOrDefaultAsync(a => a.Id == albumId);
+            var album = await _context.Albums
+                .Include(a => a.Files)
+                .FirstOrDefaultAsync(a => a.Id == albumId);
 
-                if (album == null) return null;
+            if (album == null) return null;
 
-                return album.Files;
+            return album.Files;
         }
 
         public async Task<List<AlbumEntity>> GetAlbumsByUserIdAsync(int userId)
