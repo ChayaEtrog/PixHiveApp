@@ -67,7 +67,7 @@ const AddTag = ({ fileId, closeForm }: { closeForm: Function; fileId: number }) 
                         <ListItem>No tags found</ListItem>
                     ) : (
                         tags.map((tag: Tag) => (
-                            <ListItem key={tag.id} disablePadding>
+                            <ListItem key={tag.tagName} disablePadding>
                                 <ListItemButton selected={selectedTagId === tag.id} onClick={() => setSelectedTagId(tag.id)}>
                                     <ListItemText primary={tag.tagName} />
                                 </ListItemButton>

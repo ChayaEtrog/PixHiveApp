@@ -26,7 +26,7 @@ namespace Web.Net.Service
 
             var result = await _repositoryManager.Messages.ToggleMessageStatusAsync(id);
             await _repositoryManager.Save();
-            return Result<MessageDto>.Success(_mapper.Map<MessageDto>(result)); // Return updated message wrapped in Result
+            return Result<MessageDto>.Success(_mapper.Map<MessageDto>(result)); 
         }
 
         public async Task<Result<List<MessageDto>>> GetAllMessagesAsync()

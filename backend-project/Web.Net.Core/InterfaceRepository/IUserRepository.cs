@@ -13,7 +13,7 @@ namespace Web.Net.Core.InterfaceRepository
 
         Task<UserEntity> GetFullUserByEmail(string UserEmail);
 
-        void DeleteStudent(int userId);
+        void DeleteUser(int userId);
 
         Task<UserEntity> UpdateUserAsync(UserEntity user, int index);
 

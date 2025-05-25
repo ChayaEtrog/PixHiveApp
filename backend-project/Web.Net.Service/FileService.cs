@@ -132,12 +132,14 @@ namespace Web.Net.Service
         public async Task<Result<bool>> AddTagToFileAsync(int fileId, int tagId)
         {
             var success = await _repositoryManager.Files.AddTagToFileAsync(fileId, tagId);
+            await _repositoryManager.Save();
             return Result<bool>.Success(success); 
         }
 
         public async Task<Result<bool>> RemoveTagFromFileAsync(int fileId, int tagId)
         {
             var success = await _repositoryManager.Files.RemoveTagFromFileAsync(fileId, tagId);
+            await _repositoryManager.Save();
             return Result<bool>.Success(success); 
         }
 

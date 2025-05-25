@@ -121,7 +121,7 @@ const Search = ({ userId }: { userId: number }) => {
                             label="Select Tag"
                         >
                             {tags.map(tag => (
-                                <MenuItem key={tag.id} value={tag.tagName}>{tag.tagName}</MenuItem>
+                                <MenuItem key={tag.tagName} value={tag.tagName}>{tag.tagName}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>

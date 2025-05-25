@@ -31,17 +31,17 @@ namespace Web.Net.Data.Repositories
         public async Task<UserEntity> GetFullUserByEmail(string UserEmail)
         {
             return await _context.Users
-        .Include(u => u.UserRoles)  // טוען את רשימת התפקידים
+        .Include(u => u.UserRoles) 
         .FirstOrDefaultAsync(u => u.Email == UserEmail);
         }
 
-        public void DeleteStudent(int userId)
+        public void DeleteUser(int userId)
         {
             var user = _context.Users
                 .Include(u => u.Files)
                 .Include(u => u.Albums)
-                .Include(u => u.UserMessages)    // הודעות שהוא קיבל
-                .Include(u => u.SentMessages)    // הודעות שהוא שלח
+                .Include(u => u.UserMessages)   
+                .Include(u => u.SentMessages)    
                 .FirstOrDefault(u => u.Id == userId);
 
             if (user == null)
@@ -50,37 +50,26 @@ namespace Web.Net.Data.Repositories
             var fileIds = user.Files.Select(f => f.Id).ToList();
             var albumIds = user.Albums.Select(a => a.Id).ToList();
 
-            // 1️⃣ מחיקת רשומות מטבלת האמצע AlbumFile
             var albumFiles = _context.Set<Dictionary<string, object>>("AlbumFile")
                 .Where(af => fileIds.Contains((int)af["FilesId"]) || albumIds.Contains((int)af["AlbumsId"]))
                 .ToList();
             _context.RemoveRange(albumFiles);
 
-            // 2️⃣ מחיקת רשומות מטבלת האמצע FileEntityTagEntity
             var fileTags = _context.Set<Dictionary<string, object>>("FileEntityTagEntity")
                 .Where(ft => fileIds.Contains((int)ft["FilesId"]))
                 .ToList();
             _context.RemoveRange(fileTags);
 
-            // 3️⃣ מחיקת קבצים
             _context.Files.RemoveRange(user.Files);
 
-            // 4️⃣ מחיקת אלבומים
             _context.Albums.RemoveRange(user.Albums);
 
-            // 5️⃣ מחיקת הודעות שנשלחו (SenderId - אם הוא Restrict)
             _context.Messages.RemoveRange(user.SentMessages);
 
-            // 5️⃣.1 מחיקת ההודעות שהמשתמש קיבל (כדי למנוע שגיאת FK על ReceiverId)
             var receivedMessages = _context.Messages.Where(m => m.ReceiverId == userId).ToList();
             _context.Messages.RemoveRange(receivedMessages);
-            _context.SaveChanges();
 
-            // 7️⃣ מחיקת המשתמש
             _context.Users.Remove(user);
-
-            // 💾 שמירת כל השינויים ביחד
-            _context.SaveChanges();
         }
 
         public async Task<UserEntity> UpdateUserAsync(UserEntity user, int index)
@@ -95,7 +84,6 @@ namespace Web.Net.Data.Repositories
                 existing.Email = user.Email;
                 existing.PhoneNumber = user.PhoneNumber;
 
-                await _context.SaveChangesAsync();
                 return existing;
             }
             catch (Exception ex)
@@ -126,7 +114,7 @@ namespace Web.Net.Data.Repositories
         public async Task<UserEntity> GetUserByIdAsync(int userId)
         {
             return await _context.Users
-                .Include(u => u.UserRoles) // מבטיח שהתפקידים נטענים יחד עם המשתמש
+                .Include(u => u.UserRoles) 
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
     }

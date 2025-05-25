@@ -45,10 +45,7 @@ namespace Web.Net.Data.Repositories
 
             file.Albums.Clear();
 
-            _context.SaveChanges();
-
             _context.Files.Remove(file);
-            _context.SaveChanges();
         }
 
         public async Task<FileEntity> UpdateFileNameAsync(int fileId, string newName)
@@ -62,8 +59,6 @@ namespace Web.Net.Data.Repositories
 
             file.DisplayName = newName;
             file.UpdateAt = DateTime.Now;
-
-            await _context.SaveChangesAsync();
 
             return file;
         }
@@ -146,7 +141,6 @@ namespace Web.Net.Data.Repositories
             if (!file.Tags.Contains(tag))
             {
                 file.Tags.Add(tag);
-                await _context.SaveChangesAsync();
             }
 
             return true;
@@ -164,14 +158,14 @@ namespace Web.Net.Data.Repositories
             if (tag == null) return false;
 
             file.Tags.Remove(tag);
-            await _context.SaveChangesAsync();
 
             if (!file.Tags.Any())
             {
                 var defaultTag = await _context.Tags.FirstOrDefaultAsync(t => t.TagName == "DefultTag");
-
-                file.Tags.Add(defaultTag);
-                await _context.SaveChangesAsync();
+                if (defaultTag != null)
+                {
+                    file.Tags.Add(defaultTag);
+                }
             }
 
             return true;

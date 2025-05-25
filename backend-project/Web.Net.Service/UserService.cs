@@ -36,7 +36,7 @@ namespace Web.Net.Service
             if (users == null)
                 return Result<UserDto>.NotFound("User not found.");
 
-            _repositoryManager.Users.DeleteStudent(userId);
+            _repositoryManager.Users.DeleteUser(userId);
             await _repositoryManager.Save();
 
             return Result<UserDto>.Success(null);
@@ -72,14 +72,11 @@ namespace Web.Net.Service
         {
             var usersResult = await GetUsersAsync();
 
-            // בדיקה אם הקריאה ל-GetUsersAsync הצליחה
             if (!usersResult.IsSuccess || usersResult.Data == null || !usersResult.Data.Any())
             {
-                // אם לא הצלחנו לקבל את הנתונים או שהרשימה ריקה, מחזירים שגיאה
                 return Result<List<UserGrowthDto>>.Failure("No users found or failed to fetch users.");
             }
 
-            // ביצוע פעולת grouping על המשתמשים והפיכת התוצאה לרשימה של UserGrowthDTO
             var result = usersResult.Data
                 .GroupBy(u => new { Year = u.CreatedAt.Year, Month = u.CreatedAt.Month })
                 .Select(g => new UserGrowthDto
@@ -92,7 +89,6 @@ namespace Web.Net.Service
                 .ThenBy(x => x.Month)
                 .ToList();
 
-            // אם הצלחנו, מחזירים את התוצאה עם Success
             return Result<List<UserGrowthDto>>.Success(result);
         }
     }

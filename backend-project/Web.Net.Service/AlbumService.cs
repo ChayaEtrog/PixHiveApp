@@ -216,7 +216,7 @@ namespace Web.Net.Service
                 }
             }
 
-            _repositoryManager.Albums.DeleteAlbumAsync(album.Id);
+            await _repositoryManager.Albums.DeleteAlbumAsync(album.Id);
             await _repositoryManager.Save();
 
             return Result<int>.Success(album.Id);

@@ -20,7 +20,7 @@ namespace Web.Net.Data.Repositories
         public async Task<UserEntityMessageEntity> AddAsync(UserEntityMessageEntity entity)
         {
             await _context.UserMessages.AddAsync(entity);
-            await _context.SaveChangesAsync();
+
             return entity;
         }
 

@@ -36,8 +36,6 @@ namespace Web.Net.Data.Repositories
 
             tag.TagName = newName;
 
-            await _context.SaveChangesAsync();
-
             return tag;
         }
 
