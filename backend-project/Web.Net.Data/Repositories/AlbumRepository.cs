@@ -44,6 +44,7 @@ namespace Web.Net.Data.Repositories
             }
 
             album.Files.Clear();
+            await _context.SaveChangesAsync();
             _context.Albums.Remove(album);
         }
 
